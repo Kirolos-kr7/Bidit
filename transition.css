@@ -1,0 +1,14 @@
+.curtain-enter-active,
+.curtain-leave-active {
+  transition: clip-path 0.3s ease-in-out;
+}
+
+.curtain-enter-from,
+.curtain-leave-to {
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}
+
+.curtain-enter-to,
+.curtain-leave-from {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}

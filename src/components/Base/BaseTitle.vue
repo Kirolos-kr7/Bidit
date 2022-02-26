@@ -1,0 +1,10 @@
+<script setup></script>
+
+<template>
+  <h2 class="text-4xl font-extrabold">
+    <slot />
+    <span
+      class="mt-2 block h-0.5 w-12 bg-gradient-to-r from-indigo-800 to-indigo-300"
+    ></span>
+  </h2>
+</template>
