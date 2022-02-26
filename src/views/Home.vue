@@ -42,7 +42,7 @@ const text = $ref({
 
 <template>
   <header
-    class="relative mx-auto -mt-6 flex max-h-screen max-w-[1200px] flex-col items-center md:mt-12 md:flex-row md:justify-evenly"
+    class="relative mx-auto -mt-6 mb-20 flex max-h-screen max-w-[1200px] flex-col items-center md:mt-12 md:flex-row md:justify-evenly"
   >
     <div class="relative z-[2] flex max-w-lg flex-col items-start gap-3">
       <h1

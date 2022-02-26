@@ -5,26 +5,43 @@ import { useStore } from '../store'
 const { $state: state } = $(useStore())
 
 const text = ref({
-  listA: {
-    name: { ar: 'الاقسام', en: 'Categories' },
-    items: [
-      {
-        ar: 'الكل',
-        en: 'All Bids',
-        to: 'bids',
-      },
-      {
-        ar: 'تحف',
-        en: 'Antiques',
-        to: 'bids/antiques',
-      },
-      {
-        ar: 'فن',
-        en: 'Art',
-        to: 'bids/art',
-      },
-    ],
-  },
+  lists: [
+    {
+      name: { ar: 'الاقسام', en: 'Categories' },
+      items: [
+        {
+          ar: 'الكل',
+          en: 'All Bids',
+          to: 'bids',
+        },
+        {
+          ar: 'تحف',
+          en: 'Antiques',
+          to: 'bids/antiques',
+        },
+        {
+          ar: 'فن',
+          en: 'Art',
+          to: 'bids/art',
+        },
+      ],
+    },
+    {
+      name: { ar: 'التنقل', en: 'Navigation' },
+      items: [
+        {
+          ar: 'تواصل معنا',
+          en: 'Contact',
+          to: '',
+        },
+        {
+          ar: '؟من نحن',
+          en: 'Who are we?',
+          to: '',
+        },
+      ],
+    },
+  ],
 })
 </script>
 
@@ -33,22 +50,15 @@ const text = ref({
     class="pt- m-4 flex w-[calc(100%-2rem)] flex-col gap-5 rounded-md border border-neutral-800 bg-bi-700 p-4 backdrop-blur-sm"
   >
     <div class="flex items-start gap-10">
-      <ul>
+      <ul v-for="list in text.lists">
         <li class="mb-2 text-lg font-semibold text-gray-400">
-          {{ $t(text.listA.name) }}
+          {{ $t(list.name) }}
         </li>
-        <li v-for="item in text.listA.items">
+        <li v-for="item in list.items">
           <RouterLink :to="`/${state.lang}/${item.to}`"
             >{{ $t(item) }}
           </RouterLink>
         </li>
-      </ul>
-      <ul>
-        <li class="mb-2 text-lg font-semibold text-gray-400">Company</li>
-        <li>dkjfbsdk</li>
-        <li>dkjfbsdk</li>
-        <li>dkjfbsdk</li>
-        <li>dkjfbsdk</li>
       </ul>
     </div>
     <div class="relative">

@@ -2,11 +2,14 @@
 import BaseDDL from './Base/BaseDDL.vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
+import BaseDialog from './Base/BaseDialog.vue'
+import SearchBar from './SearchBar.vue'
 
 const { $state: state } = $(useStore())
 const router = useRouter()
 const catDDL = $ref(false)
 const langDDL = $ref(false)
+const searchDialog = $ref(true)
 
 const text = $ref({
   navDDLButton: {
@@ -112,21 +115,45 @@ const changeLang = (lang) => {
 
 <template>
   <nav
-    class="fixed top-4 z-10 mx-4 flex h-16 max-h-screen w-[calc(100%-2rem)] items-stretch justify-between gap-5 rounded-md border border-neutral-800 bg-neutral-800/75 px-4 backdrop-blur-sm"
+    class="fixed top-4 z-10 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border border-neutral-800 bg-neutral-800/75 px-4 backdrop-blur-sm md:mx-4 md:w-[calc(100%-2rem)] md:rounded-md"
     dir="ltr"
   >
-    <RouterLink
-      :to="`/${state.lang}`"
-      class="bg-gradient-to-br from-indigo-800 to-blue-300 bg-clip-text py-3 font-bioRhyme text-3xl font-extrabold text-transparent"
-      >BID IT.</RouterLink
-    >
-    <ul class="hidden h-full items-center font-semibold md:flex">
+    <div class="flex items-center gap-2">
+      <button
+        class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75 md:hidden"
+        @click="searchDialog = true"
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          data-v-d2eb525e=""
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.8"
+            d="M4 8h16M4 16h16"
+            data-v-d2eb525e=""
+          ></path>
+        </svg>
+      </button>
+      <RouterLink
+        :to="`/${state.lang}`"
+        class="bg-gradient-to-br from-indigo-800 to-blue-300 bg-clip-text py-3 font-bioRhyme text-3xl font-extrabold text-transparent"
+        >BID IT.</RouterLink
+      >
+    </div>
+    <ul class="flex h-full items-center font-semibold">
       <li
         class="relative h-full"
         v-if="text.account.requiresUNAuth && !state.user"
       >
         <button
           class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          @click="searchDialog = true"
         >
           <svg
             class="h-5 w-5"
@@ -144,7 +171,7 @@ const changeLang = (lang) => {
           </svg>
         </button>
       </li>
-      <li class="relative h-full">
+      <li class="relative hidden h-full md:block">
         <button
           class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
           :data-catButton="true"
@@ -169,7 +196,7 @@ const changeLang = (lang) => {
           </BaseDDL>
         </transition>
       </li>
-      <li class="relative h-full">
+      <li class="relative hidden h-full md:block">
         <button
           class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
           :data-langButton="true"
@@ -237,4 +264,10 @@ const changeLang = (lang) => {
       </li>
     </ul>
   </nav>
+
+  <transition name="fade">
+    <BaseDialog v-if="searchDialog" @click="searchDialog = false">
+      <SearchBar />
+    </BaseDialog>
+  </transition>
 </template>
