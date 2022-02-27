@@ -281,8 +281,8 @@ const changeLang = (lang) => {
     </ul>
   </nav>
 
-  <transition name="slideLeft">
-    <DropDownNav v-if="hamburgerMenu" />
+  <transition :name="state.lang === 'ar' ? 'slideRight' : 'slideLeft'">
+    <DropDownNav v-if="hamburgerMenu" @hideNav="hamburgerMenu = false" />
   </transition>
 
   <transition name="fade">

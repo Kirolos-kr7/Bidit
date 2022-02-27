@@ -1,97 +1,33 @@
 <script setup>
 import { useStore } from '../store'
+import { useRouter } from 'vue-router'
 import { lists } from '../lang/navigation.json'
 
 const { $state: state } = $(useStore())
+const emits = defineEmits(['hideNav'])
+const router = useRouter()
 
 const text = $ref({
-  navDDLButton: {
-    ar: 'الاقسام',
-    en: 'Categories',
-  },
-  catDDLItems: [
-    {
-      ar: 'الكل',
-      en: 'All Bids',
-      to: 'bids',
+  lang: {
+    name: {
+      ar: 'اللغة',
+      en: 'Languages',
     },
-    {
-      ar: 'تحف',
-      en: 'Antiques',
-      to: 'bids/antiques',
-    },
-    {
-      ar: 'فن',
-      en: 'Art',
-      to: 'bids/art',
-    },
-  ],
-  langDDLItems: [
-    {
-      lang: 'ع',
-      flag: '/images/flags/eg.svg',
-    },
-    {
-      lang: 'en',
-      flag: '/images/flags/us.svg',
-    },
-  ],
-  account: {
-    ar: 'حسابي',
-    en: 'My Account',
-    to: 'account',
-    requiresUNAuth: true,
-  },
-  login: {
-    ar: 'تسجيل الدخول',
-    en: 'Login',
-    to: 'login',
-    requiresAuth: true,
+    languages: [
+      {
+        lang: 'ع',
+        flag: '/images/flags/eg.svg',
+      },
+      {
+        lang: 'en',
+        flag: '/images/flags/us.svg',
+      },
+    ],
   },
 })
 
-const toggleDDL = (ddl = null) => {
-  if (ddl === 'cat') {
-    if (!catDDL) {
-      catDDL = true
-      langDDL = false
-      addEventListener(
-        'mousedown',
-        (e) => {
-          if (!e.target.dataset.catbutton) {
-            langDDL = false
-            catDDL = false
-          }
-        },
-        {
-          once: true,
-        },
-      )
-    } else {
-      catDDL = false
-    }
-  }
-
-  if (ddl === 'lang') {
-    if (!langDDL) {
-      langDDL = true
-      catDDL = false
-      addEventListener(
-        'mousedown',
-        (e) => {
-          if (!e.target.dataset.langbutton) {
-            langDDL = false
-            catDDL = false
-          }
-        },
-        {
-          once: true,
-        },
-      )
-    } else {
-      langDDL = false
-    }
-  }
+const hideNav = () => {
+  emits('hideNav')
 }
 
 const changeLang = (lang) => {
@@ -102,23 +38,44 @@ const changeLang = (lang) => {
   localStorage.setItem('lang', newLang)
   state.lang = newLang
   router.replace({ params: { lang: newLang } })
-  langDDL = false
+  hideNav()
 }
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 z-10 h-full w-3/4 bg-[#111111] transition-all">
+  <div
+    class="fixed top-0 left-0 z-10 h-full w-full bg-[#111111] transition-all"
+  >
     <ul class="mt-20 flex w-full flex-col items-start gap-5">
       <ul v-for="list in lists" class="w-full">
         <li class="mb-3 px-3 text-xl font-semibold text-gray-400">
           {{ $t(list.name) }}
         </li>
-        <li v-for="item in list.items" class="h-full">
+        <li v-for="item in list.items" class="h-full" @click="hideNav">
           <RouterLink
             :to="`/${state.lang}/${item.to}`"
             class="block py-2 px-3 text-lg font-semibold hover:bg-bi-800"
             >{{ $t(item) }}
           </RouterLink>
+        </li>
+      </ul>
+      <ul class="w-full">
+        <li class="mb-3 px-3 text-xl font-semibold text-gray-400">
+          {{ $t(text.lang.name) }}
+        </li>
+        <li v-for="item in text.lang.languages" class="w-full">
+          <button
+            class="flex w-full items-center gap-3 py-2 px-3 text-lg font-semibold hover:bg-bi-800"
+            @click="changeLang(item.lang)"
+          >
+            <img :src="item.flag" :alt="item.lang" class="w-6" />
+            <span
+              class="font-semibold uppercase"
+              :class="{ '-mt-2': item.lang === 'ar' }"
+            >
+              {{ item.lang }}</span
+            >
+          </button>
         </li>
       </ul>
     </ul>

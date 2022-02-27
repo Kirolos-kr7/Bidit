@@ -28,6 +28,21 @@
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
+.slideRight-enter-active,
+.slideRight-leave-active {
+  transition: clip-path 0.3s ease-in-out;
+}
+
+.slideRight-enter-from,
+.slideRight-leave-to {
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+}
+
+.slideRight-enter-to,
+.slideRight-leave-from {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease-in-out;

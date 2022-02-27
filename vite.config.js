@@ -19,6 +19,8 @@ export default defineConfig({
         '/images/pwa/pwa-512x512.png',
         '/images/blob-haikei.svg',
         '/images/kisspng-vaporwave-aesthetics-youtube-marble-sculpture-art-aesthetic-5ad7a8eba95279.8260165215240829236936.png',
+        '/public/images/flags/eg.svg',
+        '/public/images/flags/us.svg',
       ],
       manifest: {
         name: 'Bidit',
