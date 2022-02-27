@@ -4,12 +4,28 @@ import { useRouter } from 'vue-router'
 import { useStore } from '../store'
 import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
+import { onMounted, onUnmounted } from 'vue'
+import DropDownNav from './DropDownNav.vue'
 
 const { $state: state } = $(useStore())
 const router = useRouter()
-const catDDL = $ref(false)
-const langDDL = $ref(false)
-const searchDialog = $ref(true)
+let catDDL = $ref(false)
+let langDDL = $ref(false)
+let searchDialog = $ref(false)
+let hamburgerMenu = $ref(false)
+let windowTop = $ref(0)
+
+const handleScroll = (e) => {
+  windowTop = window.scrollY
+}
+
+onMounted(() => {
+  addEventListener('scroll', handleScroll, true)
+})
+
+onUnmounted(() => {
+  removeEventListener('scroll', handleScroll, true)
+})
 
 const text = $ref({
   navDDLButton: {
@@ -115,13 +131,13 @@ const changeLang = (lang) => {
 
 <template>
   <nav
-    class="fixed top-4 z-10 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border border-neutral-800 bg-neutral-800/75 px-4 backdrop-blur-sm md:mx-4 md:w-[calc(100%-2rem)] md:rounded-md"
+    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border border-neutral-800 bg-neutral-800/75 backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
   >
     <div class="flex items-center gap-2">
       <button
         class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75 md:hidden"
-        @click="searchDialog = true"
+        @click="hamburgerMenu = !hamburgerMenu"
       >
         <svg
           class="h-5 w-5"
@@ -264,6 +280,10 @@ const changeLang = (lang) => {
       </li>
     </ul>
   </nav>
+
+  <transition name="slideLeft">
+    <DropDownNav v-if="hamburgerMenu" />
+  </transition>
 
   <transition name="fade">
     <BaseDialog v-if="searchDialog" @click="searchDialog = false">

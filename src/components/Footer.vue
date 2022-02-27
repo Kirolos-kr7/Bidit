@@ -1,48 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useStore } from '../store'
+import { lists } from '../lang/navigation.json'
 
 const { $state: state } = $(useStore())
-
-const text = ref({
-  lists: [
-    {
-      name: { ar: 'الاقسام', en: 'Categories' },
-      items: [
-        {
-          ar: 'الكل',
-          en: 'All Bids',
-          to: 'bids',
-        },
-        {
-          ar: 'تحف',
-          en: 'Antiques',
-          to: 'bids/antiques',
-        },
-        {
-          ar: 'فن',
-          en: 'Art',
-          to: 'bids/art',
-        },
-      ],
-    },
-    {
-      name: { ar: 'التنقل', en: 'Navigation' },
-      items: [
-        {
-          ar: 'تواصل معنا',
-          en: 'Contact',
-          to: '',
-        },
-        {
-          ar: '؟من نحن',
-          en: 'Who are we?',
-          to: '',
-        },
-      ],
-    },
-  ],
-})
 </script>
 
 <template>
@@ -50,7 +11,7 @@ const text = ref({
     class="pt- m-4 flex w-[calc(100%-2rem)] flex-col gap-5 rounded-md border border-neutral-800 bg-bi-700 p-4 backdrop-blur-sm"
   >
     <div class="flex items-start gap-10">
-      <ul v-for="list in text.lists">
+      <ul v-for="list in lists">
         <li class="mb-2 text-lg font-semibold text-gray-400">
           {{ $t(list.name) }}
         </li>

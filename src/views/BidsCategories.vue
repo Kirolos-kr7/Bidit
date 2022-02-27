@@ -7,7 +7,7 @@ import { useStore } from '../store'
 
 const route = useRoute()
 const router = useRouter()
-const title = $ref()
+let title = $ref()
 const { $state: state } = useStore()
 
 const cats = () => {
