@@ -7,7 +7,7 @@ const { $state: state } = $(useStore())
 
 <template>
   <footer
-    class="flex flex-col gap-5 border border-neutral-800 bg-bi-700 p-5 backdrop-blur-sm"
+    class="mt-6 flex flex-col gap-5 border border-neutral-800 bg-bi-700 p-5 backdrop-blur-sm"
   >
     <div class="flex items-start gap-10">
       <ul v-for="(list, index) in lists" :key="index">
