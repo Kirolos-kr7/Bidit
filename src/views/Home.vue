@@ -55,7 +55,7 @@ const text = $ref({
         {{ $t(text.description) }}
       </p>
       <RouterLink :to="`/${state.lang}/bids`" class="mt-4">
-        <BaseMegaButton tabindex="-1"> {{ $t(text.cta) }}</BaseMegaButton>
+        <BaseMegaButton tabindex="-1">{{ $t(text.cta) }}</BaseMegaButton>
       </RouterLink>
 
       <div class="my-8 hidden flex-row gap-5 md:flex">
