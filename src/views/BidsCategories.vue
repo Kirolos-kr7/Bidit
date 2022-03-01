@@ -8,7 +8,7 @@ import { useStore } from '../store'
 const route = useRoute()
 const router = useRouter()
 const { $state: state } = useStore()
-const title = $ref()
+let title = $ref()
 
 const cats = () => {
   if (route.name === 'bids categories') {
