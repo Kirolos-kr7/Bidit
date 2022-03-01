@@ -4,13 +4,6 @@ import { useStore } from '../store'
 
 const { $state: state } = $(useStore())
 
-const zidIt = (e) => {
-  Array.from(images.children).forEach((img) => {
-    img.style.zIndex = 0
-  })
-  e.target.style.zIndex = 1
-}
-
 const text = $ref({
   mainTitle: {
     ar: `المنصة #1 للمزادات في مصر`,
@@ -59,7 +52,7 @@ const text = $ref({
       </RouterLink>
 
       <div class="my-8 hidden flex-row gap-5 md:flex">
-        <div v-for="stat in text.stats">
+        <div v-for="(stat, index) in text.stats" :key="index">
           <div
             class="block bg-gradient-to-r from-green-300 to-blue-300 bg-clip-text text-2xl font-black text-transparent"
           >

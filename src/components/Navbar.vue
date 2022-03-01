@@ -1,10 +1,9 @@
 <script setup>
-import BaseDDL from './Base/BaseDDL.vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
+import BaseDDL from './Base/BaseDDL.vue'
 import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
-import { onMounted, onUnmounted } from 'vue'
 import DropDownNav from './DropDownNav.vue'
 
 const { $state: state } = $(useStore())
@@ -13,19 +12,6 @@ let catDDL = $ref(false)
 let langDDL = $ref(false)
 let searchDialog = $ref(false)
 let hamburgerMenu = $ref(false)
-let windowTop = $ref(0)
-
-const handleScroll = (e) => {
-  windowTop = window.scrollY
-}
-
-onMounted(() => {
-  addEventListener('scroll', handleScroll, true)
-})
-
-onUnmounted(() => {
-  removeEventListener('scroll', handleScroll, true)
-})
 
 const text = $ref({
   navDDLButton: {
@@ -199,7 +185,8 @@ const changeLang = (lang) => {
         <transition name="curtain">
           <BaseDDL class="absolute right-0" v-if="catDDL" dir="auto">
             <li
-              v-for="item in text.catDDLItems"
+              v-for="(item, index) in text.catDDLItems"
+              :key="index"
               class="border-b border-neutral-700/50 last-of-type:border-none"
             >
               <RouterLink
@@ -237,7 +224,8 @@ const changeLang = (lang) => {
         <transition name="curtain">
           <BaseDDL class="absolute !w-full" v-if="langDDL">
             <li
-              v-for="item in text.langDDLItems"
+              v-for="(item, index) in text.langDDLItems"
+              :key="index"
               class="border-b border-neutral-700/50 last-of-type:border-none"
             >
               <button

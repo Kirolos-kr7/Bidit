@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useStore } from '../store'
 import { lists } from '../lang/navigation.json'
 
@@ -11,11 +10,11 @@ const { $state: state } = $(useStore())
     class="flex flex-col gap-5 border border-neutral-800 bg-bi-700 p-5 backdrop-blur-sm"
   >
     <div class="flex items-start gap-10">
-      <ul v-for="list in lists">
+      <ul v-for="(list, index) in lists" :key="index">
         <li class="mb-2 text-lg font-semibold text-gray-400">
           {{ $t(list.name) }}
         </li>
-        <li v-for="item in list.items">
+        <li v-for="(item, index) in list.items" :key="index">
           <RouterLink :to="`/${state.lang}/${item.to}`"
             >{{ $t(item) }}
           </RouterLink>

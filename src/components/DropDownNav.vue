@@ -47,11 +47,16 @@ const changeLang = (lang) => {
     class="fixed top-0 left-0 z-10 h-full w-full bg-[#111111] transition-all"
   >
     <ul class="mt-20 flex w-full flex-col items-start gap-5">
-      <ul v-for="list in lists" class="w-full">
+      <ul v-for="(list, index) in lists" class="w-full" :key="index">
         <li class="mb-3 px-3 text-xl font-semibold text-gray-400">
           {{ $t(list.name) }}
         </li>
-        <li v-for="item in list.items" class="h-full" @click="hideNav">
+        <li
+          v-for="(item, index) in list.items"
+          class="h-full"
+          @click="hideNav"
+          :key="index"
+        >
           <RouterLink
             :to="`/${state.lang}/${item.to}`"
             class="block py-2 px-3 text-lg font-semibold hover:bg-bi-800"
@@ -63,7 +68,11 @@ const changeLang = (lang) => {
         <li class="mb-3 px-3 text-xl font-semibold text-gray-400">
           {{ $t(text.lang.name) }}
         </li>
-        <li v-for="item in text.lang.languages" class="w-full">
+        <li
+          v-for="(item, index) in text.lang.languages"
+          class="w-full"
+          :key="index"
+        >
           <button
             class="flex w-full items-center gap-3 py-2 px-3 text-lg font-semibold hover:bg-bi-800"
             @click="changeLang(item.lang)"
