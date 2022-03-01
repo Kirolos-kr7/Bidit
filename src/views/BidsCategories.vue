@@ -1,8 +1,8 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue'
+import BaseTitle from '../components/Base/BaseTitle.vue'
+import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $t } from '../functions'
-import BaseTitle from '../components/Base/BaseTitle.vue'
 import { useStore } from '../store'
 
 const route = useRoute()

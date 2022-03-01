@@ -159,7 +159,7 @@ const changeLang = (lang) => {
       <RouterLink
         :to="`/${state.lang}`"
         class="bg-gradient-to-br from-indigo-800 to-blue-300 bg-clip-text py-3 font-bioRhyme text-3xl font-extrabold text-transparent"
-        >BID IT.</RouterLink
+        >BID!T</RouterLink
       >
     </div>
     <ul class="flex h-full items-center font-semibold">
