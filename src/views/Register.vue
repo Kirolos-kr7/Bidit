@@ -17,8 +17,52 @@ let profilePicture = $ref('')
 
 const text = $ref({
   myAccount: {
+    ar: 'حساب جديد',
+    en: 'New Account',
+  },
+  fullNamePlaceholder: {
+    ar: 'الاسم كامل',
+    en: 'Full Name',
+  },
+  phoneNumberPlaceholder: {
+    ar: 'رقم الهاتف',
+    en: 'Phone Number',
+  },
+  emailPlaceholder: {
+    ar: 'البريد الالكتروني',
+    en: 'Email',
+  },
+  addressPlaceholder: {
+    ar: 'العنوان',
+    en: 'Address',
+  },
+  passwordPlaceholder:{
+    ar: 'كلمه السر',
+    en: 'Password',
+  },
+  newPasswordPlaceholder:{
+    ar: 'كلمه السر مره اخري',
+    en: 'Password Again',
+  },
+  birthdatePlaceholder:{
+    ar: 'تاريخ الميلاد',
+    en: 'Birthdate',
+  },
+  male:{
+    ar: 'ذكر',
+    en: 'Male',
+  },
+  female:{
+    ar: 'أنثي',
+    en: 'Female',
+  },
+  loginPlaceholder:{
     ar: 'انشاء حساب',
-    en: 'Register',
+    en: 'Create Account',
+  },
+  account:{
+    ar: 'لدي حساب؟',
+    en: `Already Have an Account?`,
   },
 })
 </script>
@@ -34,49 +78,49 @@ const text = $ref({
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Enter your Full Name"
+          :placeholder="$t(text.fullNamePlaceholder)"
           v-model="fullName"
           @updateInput="(val) => (fullName = val)"
         />
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Enter your Phone Number"
+          :placeholder="$t(text.phoneNumberPlaceholder)"
           v-model="phoneNumber"
           @updateInput="(val) => (phoneNumber = val)"
         />
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Enter your Email"
+          :placeholder="$t(text.emailPlaceholder)"
           v-model="email"
           @updateInput="(val) => (email = val)"
         />
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Enter your Address"
+          :placeholder="$t(text.addressPlaceholder)"
           v-model="address"
           @updateInput="(val) => (address = val)"
         />
         <BaseInput
           type="password"
           class="!w-full"
-          placeholder="Enter your Password"
+          :placeholder="$t(text.passwordPlaceholder)"
           v-model="password"
           @updateInput="(val) => (password = val)"
         />
         <BaseInput
           type="password"
           class="!w-full"
-          placeholder="Enter your Password Again"
+          :placeholder="$t(text.newPasswordPlaceholder)"
           v-model="confirmPassword"
           @updateInput="(val) => (confirmPassword = val)"
         />
         <BaseInput
           type="date"
           class="!w-full"
-          placeholder="Enter your Birthdate"
+          :placeholder="$t(text.birthdatePlaceholder)"
           v-model="birthdate"
           @updateInput="(val) => (birthdate = val)"
         />
@@ -85,18 +129,18 @@ const text = $ref({
           @change="(e) => (gender = e.target.value)"
           class="peer w-full rounded-md bg-bi-600 px-3 py-1 placeholder:text-transparent focus:outline-none sm:w-full"
         >
-          <option class="capitalize" value="male">Male</option>
-          <option class="capitalize" value="female">Female</option>
+          <option class="capitalize" value="male">{{ $t(text.male) }}</option>
+          <option class="capitalize" value="female">{{ $t(text.female) }}</option>
         </select>
       </div>
 
       <div class="flex flex-col items-start gap-4">
-        <BaseButton>Login</BaseButton>
+        <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
         <div class="flex flex-col">
           <RouterLink
             :to="`/${state.lang}/login`"
             class="text-indigo-400 transition-colors hover:text-indigo-600"
-            >Already Have an Account ?</RouterLink
+            >{{ $t(text.account) }}</RouterLink
           >
         </div>
       </div>
