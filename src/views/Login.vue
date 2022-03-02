@@ -13,6 +13,28 @@ const text = $ref({
     ar: 'تسجيل الدخول',
     en: 'Login',
   },
+  emailPlaceholder:{
+    ar: 'البريد الالكتروني',
+    en: 'Email',
+
+  },
+  passwordPlaceholder:{
+    ar: 'كلمه السر',
+    en: 'Password',
+  },
+  loginPlaceholder:{
+    ar: 'تسجيل الدخول',
+    en: 'Login',
+  },
+  newHere:{
+    ar: 'جديد هنا؟',
+    en: `Don't have an Account Yet ? `,
+  },
+  forgotPassword:{
+    ar: 'هل نسيت كلمه السر؟',
+    en: `Forgot Password ?`,
+  },
+  
 })
 
 const loginUser = (value) => {
@@ -31,30 +53,30 @@ const loginUser = (value) => {
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Enter your Email"
+          :placeholder="$t(text.emailPlaceholder)"
           @updateInput="(val) => (email = val)"
           v-model="email"
         />
         <BaseInput
           type="password"
           class="!w-full"
-          placeholder="Enter your Password"
+          :placeholder="$t(text.passwordPlaceholder)"
           v-model="password"
           @updateInput="(val) => (password = val)"
         />
       </div>
       <div class="flex flex-col items-start gap-4">
-        <BaseButton>Login</BaseButton>
+        <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
         <div class="flex flex-col">
           <RouterLink
             :to="`/${state.lang}/register`"
             class="text-indigo-400 transition-colors hover:text-indigo-600"
-            >Don't have an Account Yet ?</RouterLink
+            >{{ $t(text.newHere) }}</RouterLink
           >
           <RouterLink
             :to="`/${state.lang}/register`"
             class="text-indigo-400 transition-colors hover:text-indigo-600"
-            >Forgot Password ?</RouterLink
+            >{{ $t(text.forgotPassword) }}</RouterLink
           >
         </div>
       </div>
