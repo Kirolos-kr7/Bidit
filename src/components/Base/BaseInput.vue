@@ -25,9 +25,9 @@ const { $state: state } = $(useStore())
       @keyup="(e) => emits('updateInput', e.target.value)"
     />
     <label
-      class="pointer-events-none absolute -top-1/2 -translate-y-1/2 bg-bi-900 px-1.5 text-xs text-white transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-0 peer-focus:text-xs peer-focus:text-white"
+      class="pointer-events-none absolute top-0 -translate-y-1/2 bg-bi-900 px-1.5 text-xs text-white transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-0 peer-focus:text-xs peer-focus:text-white"
       :class="state.lang === 'ar' ? 'right-1.5' : 'left-1.5'"
-      for="placeholder"
+      :for="placeholder"
       >{{ placeholder }}</label
     >
   </div>

@@ -3,17 +3,15 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
+import BaseSelect from '../components/Base/BaseSelect.vue'
 const { $state: state } = $(useStore())
 
 let fullName = $ref('')
-let phoneNumber = $ref('')
 let email = $ref('')
 let address = $ref('')
 let password = $ref('')
 let confirmPassword = $ref('')
-let birthdate = $ref('')
 let gender = $ref('male')
-let profilePicture = $ref('')
 
 const text = $ref({
   myAccount: {
@@ -24,10 +22,6 @@ const text = $ref({
     ar: 'الاسم كامل',
     en: 'Full Name',
   },
-  phoneNumberPlaceholder: {
-    ar: 'رقم الهاتف',
-    en: 'Phone Number',
-  },
   emailPlaceholder: {
     ar: 'البريد الالكتروني',
     en: 'Email',
@@ -36,31 +30,35 @@ const text = $ref({
     ar: 'العنوان',
     en: 'Address',
   },
-  passwordPlaceholder:{
+  passwordPlaceholder: {
     ar: 'كلمه السر',
     en: 'Password',
   },
-  newPasswordPlaceholder:{
-    ar: 'كلمه السر مره اخري',
-    en: 'Password Again',
+  newPasswordPlaceholder: {
+    ar: 'تأكيد كلمه السر',
+    en: 'Confirm Password',
   },
-  birthdatePlaceholder:{
+  birthdatePlaceholder: {
     ar: 'تاريخ الميلاد',
     en: 'Birthdate',
   },
-  male:{
+  genderPlaceholder: {
+    ar: 'الجنس',
+    en: 'Gender',
+  },
+  male: {
     ar: 'ذكر',
     en: 'Male',
   },
-  female:{
+  female: {
     ar: 'أنثي',
     en: 'Female',
   },
-  loginPlaceholder:{
+  loginPlaceholder: {
     ar: 'انشاء حساب',
     en: 'Create Account',
   },
-  account:{
+  account: {
     ar: 'لدي حساب؟',
     en: `Already Have an Account?`,
   },
@@ -85,24 +83,11 @@ const text = $ref({
         <BaseInput
           type="text"
           class="!w-full"
-          :placeholder="$t(text.phoneNumberPlaceholder)"
-          v-model="phoneNumber"
-          @updateInput="(val) => (phoneNumber = val)"
-        />
-        <BaseInput
-          type="text"
-          class="!w-full"
           :placeholder="$t(text.emailPlaceholder)"
           v-model="email"
           @updateInput="(val) => (email = val)"
         />
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.addressPlaceholder)"
-          v-model="address"
-          @updateInput="(val) => (address = val)"
-        />
+
         <BaseInput
           type="password"
           class="!w-full"
@@ -118,20 +103,25 @@ const text = $ref({
           @updateInput="(val) => (confirmPassword = val)"
         />
         <BaseInput
-          type="date"
+          type="text"
           class="!w-full"
-          :placeholder="$t(text.birthdatePlaceholder)"
-          v-model="birthdate"
-          @updateInput="(val) => (birthdate = val)"
+          :placeholder="$t(text.addressPlaceholder)"
+          v-model="address"
+          @updateInput="(val) => (address = val)"
         />
-        <select
-          :value="gender"
-          @change="(e) => (gender = e.target.value)"
-          class="peer w-full rounded-md bg-bi-600 px-3 py-1 placeholder:text-transparent focus:outline-none sm:w-full"
-        >
-          <option class="capitalize" value="male">{{ $t(text.male) }}</option>
-          <option class="capitalize" value="female">{{ $t(text.female) }}</option>
-        </select>
+        <div class="flex items-center gap-5">
+          <label for="gender">{{ $t(text.genderPlaceholder) }}</label>
+          <BaseSelect
+            :value="gender"
+            id="gender"
+            @change="(e) => (gender = e.target.value)"
+          >
+            <option class="capitalize" value="male">{{ $t(text.male) }}</option>
+            <option class="capitalize" value="female">
+              {{ $t(text.female) }}
+            </option>
+          </BaseSelect>
+        </div>
       </div>
 
       <div class="flex flex-col items-start gap-4">
