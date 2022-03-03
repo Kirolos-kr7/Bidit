@@ -1,8 +1,9 @@
 <script setup>
 import { useStore } from '../store'
 import { lists } from '../lang/navigation.json'
-import BaseInput from './Base/BaseInput.vue';
-import BaseTitle from './Base/BaseTitle.vue';
+import BaseInput from './Base/BaseInput.vue'
+import BaseTitle from './Base/BaseTitle.vue'
+import BaseButton from './Base/BaseButton.vue'
 
 const { $state: state } = $(useStore())
 
@@ -19,39 +20,57 @@ const text = $ref({
     ar: 'ادخل البريد الالكتروني',
     en: 'Leave Your Email',
   },
+  by: {
+    ar: 'تصميم وبرمجة',
+    en: 'Designed and Developed by',
+    logo: 'Bid!T',
+  },
 })
 </script>
 
 <template>
   <footer
-    class="mt-6 flex flex-col gap-5 border border-neutral-800 bg-bi-700 p-5 backdrop-blur-sm"
+    class="mt-6 flex flex-col gap-5 border border-neutral-800 bg-bi-800 p-5 pt-6 backdrop-blur-sm"
   >
-    <div class="flex items-start gap-16 ">
-      <ul v-for="(list, index) in lists" :key="index">
-        <li class="mb-2 text-lg font-semibold text-gray-400">
-          {{ $t(list.name) }}
-        </li>
-        <li v-for="(item, index) in list.items" :key="index">
-          <RouterLink :to="`/${state.lang}/${item.to}`"
-            >{{ $t(item) }}
-          </RouterLink>
-        </li>
-      </ul>
+    <div class="grid gap-x-20 gap-y-10 md:grid-cols-[50%,1fr]">
       <div class="!w-full">
-        <BaseTitle class="!text-2xl mb-3">{{ $t(text.title) }}</BaseTitle>
+        <BaseTitle class="mb-3 !text-2xl">{{ $t(text.title) }}</BaseTitle>
         <p class="mb-3 text-gray-300">{{ $t(text.subTitle) }}</p>
-        <BaseInput type="email" :placeholder="$t(text.emailplaceholder)" class="!w-full"/>
+        <div class="grid gap-y-2 md:grid-cols-[1fr,min-content]">
+          <BaseInput
+            type="email"
+            :placeholder="$t(text.emailplaceholder)"
+            class="!w-full"
+          />
+          <BaseButton
+            class="w-[max-content] justify-self-end border border-bi-600 px-3 py-2"
+          >
+            Keep Me Updated
+          </BaseButton>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-start gap-x-20 gap-y-5">
+        <ul v-for="(list, index) in lists" :key="index">
+          <li class="mb-2 text-lg font-semibold text-gray-400">
+            {{ $t(list.name) }}
+          </li>
+          <li v-for="(item, index) in list.items" :key="index">
+            <RouterLink
+              :to="`/${state.lang}/${item.to}`"
+              class="transition-colors hover:text-teal-600"
+              >{{ $t(item) }}
+            </RouterLink>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="relative">
-      <div class="mx-auto block w-fit bg-bi-700 px-3">
-        <h4
-          class="inline-block bg-gradient-to-r from-indigo-300 to-green-300 bg-clip-text font-semibold text-transparent"
-        >
-          Designed and Developed by SHA#1
-        </h4>
-      </div>
-      <span class="absolute top-1/2 left-0 z-[-1] h-px w-full bg-bi-900"></span>
+      <h4
+        class="mt-6 mb-2 inline-block bg-gradient-to-r from-indigo-300 to-green-300 bg-clip-text font-semibold text-transparent"
+      >
+        {{ $t(text.by) }}
+        <span class="font-bioRhyme font-extrabold">{{ text.by.logo }}</span>
+      </h4>
     </div>
   </footer>
 </template>
