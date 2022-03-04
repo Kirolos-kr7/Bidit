@@ -10,8 +10,6 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     VitePWA({
-      registerType: 'autoUpdate',
-
       includeAssets: [
         '/images/pwa/favicon.ico',
         '/images/pwa/apple-touch-icon.png',
