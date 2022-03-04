@@ -104,9 +104,13 @@ router.beforeEach((to, from, next) => {
 
   if (state.user && to.meta.requiresUnAuth) {
     next({ name: 'home', params: { lang: state.lang } })
-  } else if (!state.user && to.meta.requiresAuth) {
+    return
+  }
+  if (!state.user && to.meta.requiresAuth) {
     next({ name: 'home', params: { lang: state.lang } })
-  } else next()
+    return
+  }
+  next()
 })
 
 export default router
