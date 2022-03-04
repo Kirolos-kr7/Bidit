@@ -6,8 +6,8 @@ const { $state: state } = $(useStore())
 
 const text = $ref({
   mainTitle: {
-    ar: `المنصة #2 للمزادات في مصر`,
-    en: `#2 Auction platform in egypt`,
+    ar: `المنصة #1 للمزادات في مصر`,
+    en: `#1 Auction platform in egypt`,
   },
   description: {
     ar: `نحن نقصي المسافة بين الراهن والمزائد من اجل توفير مزاد آلي وآمن من اي مكان وفي اي وقت.`,
