@@ -263,7 +263,7 @@ const logout = () => {
           </BaseDDL>
         </transition>
       </li>
-      <li class="relative hidden h-full md:block" v-if="state.user">
+      <li class="relative block h-full" v-if="state.user">
         <button
           class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
           :data-user="true"
