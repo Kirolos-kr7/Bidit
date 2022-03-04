@@ -1,6 +1,7 @@
 <script setup>
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+import PWAPrompt from './components/PWAPrompt.vue'
 </script>
 
 <template>
@@ -9,4 +10,6 @@ import Footer from './components/Footer.vue'
     <RouterView></RouterView>
   </main>
   <Footer />
+
+  <PWAPrompt />
 </template>
