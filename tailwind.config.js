@@ -13,6 +13,9 @@ module.exports = {
       fontFamily: {
         bioRhyme: '"BioRhyme" ,"Noto Sans Arabic"',
       },
+      minWidth: {
+        prose: '65ch',
+      },
     },
     screens: {
       xs: '520px',
