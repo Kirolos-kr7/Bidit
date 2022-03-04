@@ -8,8 +8,7 @@ import DropDownNav from './DropDownNav.vue'
 
 const { $state: state } = $(useStore())
 const router = useRouter()
-let catDDL = $ref(false)
-let langDDL = $ref(false)
+let activeMenu = $ref(null)
 let searchDialog = $ref(false)
 let hamburgerMenu = $ref(false)
 
@@ -18,6 +17,38 @@ const text = $ref({
     ar: 'الاقسام',
     en: 'Categories',
   },
+  userItems: [
+    {
+      ar: 'الحساب',
+      en: 'Account',
+      to: 'account',
+    },
+    {
+      ar: 'المخزون',
+      en: 'Inventory',
+      to: 'account/inventory',
+    },
+    {
+      ar: 'الاشعارات',
+      en: 'Notification',
+      to: 'account/notification',
+    },
+    {
+      ar: 'مشترياتي',
+      en: 'Purchases',
+      to: 'account/purchases',
+    },
+    {
+      ar: 'مبيعاتي',
+      en: 'Sales',
+      to: 'account/sales',
+    },
+    {
+      ar: 'تسجيل الخروج',
+      en: 'Logout',
+      to: 'logout',
+    },
+  ],
   catDDLItems: [
     {
       ar: 'الكل',
@@ -60,46 +91,22 @@ const text = $ref({
 })
 
 const toggleDDL = (ddl = null) => {
-  if (ddl === 'cat') {
-    if (!catDDL) {
-      catDDL = true
-      langDDL = false
-      addEventListener(
-        'mousedown',
-        (e) => {
-          if (!e.target.dataset.catbutton) {
-            langDDL = false
-            catDDL = false
-          }
-        },
-        {
-          once: true,
-        },
-      )
-    } else {
-      catDDL = false
-    }
-  }
+  if (activeMenu !== ddl) {
+    activeMenu = ddl
 
-  if (ddl === 'lang') {
-    if (!langDDL) {
-      langDDL = true
-      catDDL = false
-      addEventListener(
-        'mousedown',
-        (e) => {
-          if (!e.target.dataset.langbutton) {
-            langDDL = false
-            catDDL = false
-          }
-        },
-        {
-          once: true,
-        },
-      )
-    } else {
-      langDDL = false
-    }
+    addEventListener(
+      'mousedown',
+      (e) => {
+        if (!e.target?.dataset[ddl]) {
+          activeMenu = null
+        }
+      },
+      {
+        once: true,
+      },
+    )
+  } else {
+    activeMenu = null
   }
 }
 
@@ -111,7 +118,11 @@ const changeLang = (lang) => {
   localStorage.setItem('lang', newLang)
   state.lang = newLang
   router.replace({ params: { lang: newLang } })
-  langDDL = false
+}
+
+const logout = () => {
+  state.user = null
+  router.replace(`/${state.lang}/`)
 }
 </script>
 
@@ -176,14 +187,18 @@ const changeLang = (lang) => {
       <li class="relative hidden h-full md:block">
         <button
           class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
-          :data-catButton="true"
+          :data-cat="true"
           @click="toggleDDL('cat')"
         >
           {{ $t(text.navDDLButton) }}
           <span class="pointer-events-none ml-1">&darr;</span>
         </button>
         <transition name="curtain">
-          <BaseDDL class="absolute right-0" v-if="catDDL" dir="auto">
+          <BaseDDL
+            class="absolute right-0"
+            v-if="activeMenu === 'cat'"
+            dir="auto"
+          >
             <li
               v-for="(item, index) in text.catDDLItems"
               :key="index"
@@ -202,7 +217,7 @@ const changeLang = (lang) => {
       <li class="relative hidden h-full md:block">
         <button
           class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
-          :data-langButton="true"
+          :data-lang="true"
           @click="toggleDDL('lang')"
         >
           <div class="pointer-events-none flex items-center">
@@ -222,7 +237,7 @@ const changeLang = (lang) => {
           </div>
         </button>
         <transition name="curtain">
-          <BaseDDL class="absolute !w-full" v-if="langDDL">
+          <BaseDDL class="absolute !w-full" v-if="activeMenu === 'lang'">
             <li
               v-for="(item, index) in text.langDDLItems"
               :key="index"
@@ -232,7 +247,11 @@ const changeLang = (lang) => {
                 class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-neutral-700/50"
                 @click="changeLang(item.lang)"
               >
-                <img :src="item.flag" :alt="item.lang" class="w-6" />
+                <img
+                  :src="item.flag"
+                  :alt="item.lang"
+                  class="pointer-events-none w-6"
+                />
                 <span
                   class="font-semibold uppercase"
                   :class="{ '-mt-2': item.lang === 'ar' }"
@@ -244,16 +263,39 @@ const changeLang = (lang) => {
           </BaseDDL>
         </transition>
       </li>
-      <li
-        class="relative h-full"
-        v-if="text.account.requiresAuth && state.user"
-      >
-        <RouterLink
-          class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75"
-          :to="`/${state.lang}/${text.account.to}`"
+      <li class="relative hidden h-full md:block" v-if="state.user">
+        <button
+          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          :data-user="true"
+          @click="toggleDDL('user')"
         >
-          {{ $t(text.account) }}
-        </RouterLink>
+          <img class="pointer-events-none w-10" src="/images/avatar.png" />
+        </button>
+        <transition name="curtain">
+          <BaseDDL class="absolute right-0" v-if="activeMenu === 'user'">
+            <li
+              v-for="(item, index) in text.userItems"
+              :key="index"
+              class="border-b border-neutral-700/50 last-of-type:border-none"
+              dir="auto"
+            >
+              <button
+                v-if="item.to === 'logout'"
+                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-neutral-700/50"
+                @mousedown="logout()"
+              >
+                {{ $t(item) }}
+              </button>
+              <RouterLink
+                v-else
+                :to="`/${state.lang}/${item.to}`"
+                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-neutral-700/50"
+              >
+                {{ $t(item) }}</RouterLink
+              >
+            </li>
+          </BaseDDL>
+        </transition>
       </li>
       <li
         class="relative h-full"

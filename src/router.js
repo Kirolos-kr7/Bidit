@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { routerLang } from './functions'
 import { useStore } from './store'
 
 const router = createRouter({
@@ -34,16 +35,57 @@ const router = createRouter({
           path: 'account',
           name: 'account',
           component: () => import('./views/Account.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'account/inventory',
+          name: 'account/inventory',
+          component: () => import('./views/Account.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'account/notification',
+          name: 'account/notification',
+          component: () => import('./views/Account.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'account/purchases',
+          name: 'account/purchases',
+          component: () => import('./views/Account.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'account/sales',
+          name: 'account/sales',
+          component: () => import('./views/Account.vue'),
+          meta: {
+            requiresAuth: true,
+          },
         },
         {
           path: 'login',
           name: 'login',
           component: () => import('./views/Login.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
         },
         {
           path: 'register',
           name: 'register',
           component: () => import('./views/Register.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
         },
         {
           path: '404',
@@ -58,36 +100,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { $state: state } = useStore()
 
-  if (to.params.lang === 'ar') {
-    state.lang = 'ar'
-    localStorage.setItem('lang', 'ar')
-  } else if (to.params.lang === 'en') {
-    state.lang = 'en'
-    localStorage.setItem('lang', 'en')
-  } else {
-    const currentLang = localStorage.getItem('lang')
+  routerLang(state, to, next)
 
-    if (!currentLang) {
-      const preferdLang = navigator.language.split('-')[0]
-
-      if (preferdLang === 'en') {
-        state.lang = 'en'
-        localStorage.setItem('lang', 'en')
-      } else {
-        state.lang = 'ar'
-        localStorage.setItem('lang', 'ar')
-      }
-    } else state.lang = currentLang
-    next({ name: to.name, params: { lang: state.lang } })
-    return
-  }
-
-  if (state.lang === 'ar') {
-    document.body.dir = 'rtl'
-  } else {
-    document.body.dir = 'ltr'
-  }
-  next()
+  if (state.user && to.meta.requiresUnAuth) {
+    next({ name: 'home', params: { lang: state.lang } })
+  } else if (!state.user && to.meta.requiresAuth) {
+    next({ name: 'home', params: { lang: state.lang } })
+  } else next()
 })
 
 export default router
