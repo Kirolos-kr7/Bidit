@@ -25,6 +25,10 @@ const text = $ref({
     en: 'Designed and Developed by',
     logo: 'Bid!T',
   },
+  cta: {
+    ar: 'ابقني على اطلاع',
+    en: 'Keep Me Updated',
+  },
 })
 </script>
 
@@ -43,9 +47,9 @@ const text = $ref({
             class="!w-full"
           />
           <BaseButton
-            class="w-[max-content] justify-self-end border border-bi-600 px-3 py-2"
+            class="w-[max-content] justify-self-end border border-neutral-700 bg-bi-600 px-3 py-2 hover:!bg-bi-800"
           >
-            Keep Me Updated
+            {{ $t(text.cta) }}
           </BaseButton>
         </div>
       </div>
