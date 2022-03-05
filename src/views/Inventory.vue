@@ -7,41 +7,42 @@ import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { categories } from '../lang/categories.json'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 
-let itemsDialog = $ref(true),
+let itemsDialog = $ref(false),
+  deleteDialog = $ref(false),
+  isEditing = $ref(false),
   itemName = $ref(''),
   itemType = $ref(''),
   itemDesc = $ref('')
 
 let items = $ref([
   {
-    productName:
-      'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
+    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
     type: 'Art',
     decription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
   },
   {
-    productName: 'abcx',
+    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
     type: 'Art',
     decription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
   },
   {
-    productName: 'abcx',
+    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
     type: 'Art',
     decription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
   },
   {
-    productName: 'abcx',
+    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
     type: 'Art',
     decription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
   },
   {
-    productName: 'abcx',
+    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
     type: 'Art',
     decription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
@@ -52,8 +53,29 @@ onMounted(() => {
   itemType = categories[0].en
 })
 
+const resetDialog = () => {
+  itemsDialog = false
+  isEditing = false
+  deleteDialog = false
+  itemName = ''
+  itemType = ''
+  itemDesc = ''
+}
+
 const addItem = () => {
   console.log({ itemName, itemType, itemDesc })
+}
+
+const editItem = (val) => {
+  itemsDialog = true
+  isEditing = true
+  itemName = val.name
+  itemType = val.type
+  itemDesc = val.decription
+}
+
+const deleteItem = (val) => {
+  deleteDialog = false
 }
 </script>
 
@@ -65,18 +87,25 @@ const addItem = () => {
   <div
     class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
   >
-    <Item v-for="(item, index) in items" :key="index" :item="item" />
+    <Item
+      v-for="(item, index) in items"
+      :key="index"
+      :item="item"
+      @editItem="editItem"
+      @deleteItem="deleteDialog = true"
+    />
   </div>
 
   <transition name="fade">
-    <BaseDialog v-if="itemsDialog" @click="itemsDialog = false"> </BaseDialog>
+    <BaseDialog v-if="itemsDialog || deleteDialog" @click="resetDialog">
+    </BaseDialog>
   </transition>
   <transition name="zoom">
     <div
-      class="fixed top-1/2 left-1/2 z-30 min-w-prose max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 rounded-md bg-bi-900 p-5"
+      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
       v-if="itemsDialog"
     >
-      <BaseTitle>New Item</BaseTitle>
+      <BaseTitle> {{ isEditing ? 'Edit' : 'New' }} Item</BaseTitle>
       <div class="mt-5 grid gap-5">
         <BaseInput
           type="text"
@@ -100,13 +129,30 @@ const addItem = () => {
           </option>
         </BaseSelect>
         <BaseTextArea
+          rows="8"
           type="text"
           class="col-span-2 !w-full"
           placeholder="Description"
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem">Add</BaseButton>
+        <BaseButton @click="addItem">{{
+          isEditing ? 'Edit' : 'Add'
+        }}</BaseButton>
+      </div>
+    </div> </transition
+  ><transition name="zoom">
+    <div
+      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
+      v-if="deleteDialog"
+    >
+      <BaseTitle>Delete Item</BaseTitle>
+      <p class="my-3">Are you sure you want to proceed?</p>
+      <div class="flex justify-end gap-2">
+        <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem"
+          >Yes</BaseButton
+        >
+        <BaseButton @click="resetDialog">No</BaseButton>
       </div>
     </div>
   </transition>

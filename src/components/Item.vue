@@ -6,6 +6,7 @@ const props = defineProps({
     required: true,
   },
 })
+const emits = defineEmits(['editItem', 'deleteItem'])
 </script>
 
 <template>
@@ -24,7 +25,7 @@ const props = defineProps({
             -webkit-box-orient: vertical;
           "
         >
-          {{ item.productName }}
+          {{ item.name }}
         </h2>
         <span
           class="my-1 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
@@ -65,6 +66,7 @@ const props = defineProps({
         <button
           class="flex items-center justify-center rounded-full bg-indigo-900 p-2 hover:!bg-indigo-800"
           title="Edit"
+          @click="emits('editItem', item)"
         >
           <svg
             class="h-5 w-5"
@@ -84,6 +86,7 @@ const props = defineProps({
         <button
           class="flex items-center justify-center rounded-full bg-red-700 p-2 hover:!bg-red-600"
           title="Delete"
+          @click="emits('deleteItem', item)"
         >
           <svg
             class="h-5 w-5"

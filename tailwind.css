@@ -7,3 +7,18 @@
 * {
   font-family: 'Noto Sans Arabic', 'Montserrat';
 }
+
+*::-webkit-scrollbar {
+  background: #111111;
+  width: 16px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 2rem;
+  border: 3px solid #111111;
+}
+
+*::-webkit-scrollbar-track {
+  margin: 5px;
+}
