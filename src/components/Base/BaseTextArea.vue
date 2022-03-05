@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { useStore } from '../../store'
-const props = defineProps(['placeholder', 'modelValue'])
+defineProps(['placeholder', 'modelValue'])
 const emits = defineEmits(['updateInput'])
 const { $state: state } = $(useStore())
 </script>

@@ -13,28 +13,26 @@ const text = $ref({
     ar: 'تسجيل الدخول',
     en: 'Login',
   },
-  emailPlaceholder:{
+  emailPlaceholder: {
     ar: 'البريد الالكتروني',
     en: 'Email',
-
   },
-  passwordPlaceholder:{
+  passwordPlaceholder: {
     ar: 'كلمه السر',
     en: 'Password',
   },
-  loginPlaceholder:{
+  loginPlaceholder: {
     ar: 'تسجيل الدخول',
     en: 'Login',
   },
-  newHere:{
+  newHere: {
     ar: 'جديد هنا؟',
     en: `Don't have an Account Yet ? `,
   },
-  forgotPassword:{
+  forgotPassword: {
     ar: 'هل نسيت كلمه السر؟',
     en: `Forgot Password ?`,
   },
-  
 })
 
 const loginUser = (value) => {

@@ -7,7 +7,7 @@ import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { categories } from '../lang/categories.json'
-import { onMounted, watch } from 'vue'
+import { onMounted } from 'vue'
 
 let itemsDialog = $ref(false),
   deleteDialog = $ref(false),
@@ -74,13 +74,13 @@ const editItem = (val) => {
   itemDesc = val.decription
 }
 
-const deleteItem = (val) => {
+const deleteItem = () => {
   deleteDialog = false
 }
 </script>
 
 <template>
-  <div class="flex items-start justify-between">
+  <div class="flex items-start justify-between gap-3">
     <BaseTitle>Inventory</BaseTitle>
     <BaseButton @click="itemsDialog = true">Add item</BaseButton>
   </div>

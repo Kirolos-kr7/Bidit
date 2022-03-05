@@ -2,7 +2,7 @@
 import { useStore } from '../../store'
 const { $state: state } = useStore()
 
-const props = defineProps(['placeholder'])
+defineProps(['placeholder'])
 </script>
 
 <template>

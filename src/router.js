@@ -9,7 +9,12 @@ const router = createRouter({
       path: '/',
       redirect: () => {
         const { $state: state } = useStore()
-        return state.lang || 'ar'
+        let lang = localStorage.getItem('lang')
+        if (lang) {
+          return lang
+        } else {
+          state.lang || 'ar'
+        }
       },
     },
     {
@@ -50,7 +55,7 @@ const router = createRouter({
         {
           path: 'account/notification',
           name: 'account/notification',
-          component: () => import('./views/Account.vue'),
+          component: () => import('./views/Notifications.vue'),
           meta: {
             requiresAuth: true,
           },
