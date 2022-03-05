@@ -45,10 +45,25 @@
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.zoom-enter-active,
+.zoom-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoom-enter-from,
+.zoom-leave-to {
+  transform: scale(0) translate(-50%, -50%);
+}
+
+.zoom-enter-to,
+.zoom-leave-from {
+  transform: scale(1) translate(-50%, -50%);
 }
