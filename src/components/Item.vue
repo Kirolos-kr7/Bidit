@@ -11,10 +11,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
 
 <template>
   <div class="relative flex flex-col overflow-hidden rounded-md bg-bi-700">
-    <img
-      src="../../public/images/monalisa-art.jpg"
-      class="h-[260px] object-cover"
-    />
+    <img src="/images/monalisa-art.jpg" class="h-[260px] object-cover" />
     <div class="p-3">
       <div class="my-2 flex max-w-full items-start justify-between gap-3">
         <h2
