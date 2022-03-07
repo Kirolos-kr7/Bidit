@@ -1,16 +1,22 @@
 {
-  "categories": [
-    {
-      "ar": "فن",
-      "en": "art"
-    },
-    {
-      "ar": "تحف",
-      "en": "antiques"
-    },
-    {
-      "ar": "تكنولوجيا",
-      "en": "technology"
-    }
-  ]
+  "categories": {
+    "name": { "ar": "الاقسام", "en": "Categories" },
+    "items": [
+      {
+        "ar": "فن",
+        "en": "art",
+        "to": "art"
+      },
+      {
+        "ar": "تحف",
+        "en": "antiques",
+        "to": "antiques"
+      },
+      {
+        "ar": "تكنولوجيا",
+        "en": "technology",
+        "to": "technology"
+      }
+    ]
+  }
 }
