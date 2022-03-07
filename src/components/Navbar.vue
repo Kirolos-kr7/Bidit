@@ -34,12 +34,12 @@ const text = $ref({
       to: 'account/notification',
     },
     {
-      ar: 'مشترياتي',
+      ar: 'المشتريات',
       en: 'Purchases',
       to: 'account/purchases',
     },
     {
-      ar: 'مبيعاتي',
+      ar: 'المبيعات',
       en: 'Sales',
       to: 'account/sales',
     },

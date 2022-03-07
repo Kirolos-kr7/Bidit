@@ -6,7 +6,7 @@ import PWAPrompt from './components/PWAPrompt.vue'
 
 <template>
   <Navbar />
-  <main class="min-h-[70vh] px-4 pt-20 md:px-8">
+  <main class="min-h-[70vh] px-4 pt-[5.5rem] md:px-8">
     <RouterView></RouterView>
   </main>
   <Footer />

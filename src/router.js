@@ -63,7 +63,7 @@ const router = createRouter({
         {
           path: 'account/purchases',
           name: 'account/purchases',
-          component: () => import('./views/Account.vue'),
+          component: () => import('./views/Purchases.vue'),
           meta: {
             requiresAuth: true,
           },
@@ -71,7 +71,7 @@ const router = createRouter({
         {
           path: 'account/sales',
           name: 'account/sales',
-          component: () => import('./views/Account.vue'),
+          component: () => import('./views/Sales.vue'),
           meta: {
             requiresAuth: true,
           },
