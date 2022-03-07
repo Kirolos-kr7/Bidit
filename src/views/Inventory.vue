@@ -37,11 +37,11 @@ const text = $ref({
     ar: 'الوصف',
     en: 'Description',
   },
-  add: { 
+  add: {
     ar: 'أًضافه',
     en: 'Add',
   },
-  edit: { 
+  edit: {
     ar: 'تعديل',
     en: 'Edit',
   },
@@ -160,7 +160,9 @@ const deleteItem = () => {
       class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
       v-if="itemsDialog"
     >
-      <BaseTitle> {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle>
+      <BaseTitle>
+        {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
+      >
       <div class="mt-5 grid gap-5">
         <BaseInput
           type="text"
@@ -169,20 +171,22 @@ const deleteItem = () => {
           v-model="itemName"
           @updateInput="(val) => (itemName = val)"
         />
-        <BaseSelect
-          class="!w-full capitalize"
-          :placeholder="$t(text.typePlaceholder)"
-          @change="(e) => (itemType = e.target.value)"
-        >
-          <option
-            v-for="(category, index) in categories"
-            :key="index"
-            :value="category.en"
-            :selected="index === 0"
+        <div class="relative">
+          <BaseSelect
+            class="!w-full capitalize"
+            :placeholder="$t(text.typePlaceholder)"
+            @change="(e) => (itemType = e.target.value)"
           >
-            {{ $t(category) }}
-          </option>
-        </BaseSelect>
+            <option
+              v-for="(category, index) in categories"
+              :key="index"
+              :value="category.en"
+              :selected="index === 0"
+            >
+              {{ $t(category) }}
+            </option>
+          </BaseSelect>
+        </div>
         <BaseTextArea
           rows="8"
           type="text"
@@ -192,12 +196,9 @@ const deleteItem = () => {
           @updateInput="(val) => (itemDesc = val)"
         />
         <BaseButton @click="addItem" v-if="isEditing">{{
-           $t(text.edit)
+          $t(text.edit)
         }}</BaseButton>
-        <BaseButton @click="addItem" v-else>{{
-           $t(text.add)
-        }}</BaseButton>
-
+        <BaseButton @click="addItem" v-else>{{ $t(text.add) }}</BaseButton>
       </div>
     </div> </transition
   ><transition name="zoom">
@@ -208,9 +209,9 @@ const deleteItem = () => {
       <BaseTitle>{{ $t(text.deleted) }}</BaseTitle>
       <p class="my-3">{{ $t(text.doneProcess) }}</p>
       <div class="flex justify-end gap-2">
-        <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem"
-          >{{ $t(text.yes) }}</BaseButton
-        >
+        <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem">{{
+          $t(text.yes)
+        }}</BaseButton>
         <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
     </div>
