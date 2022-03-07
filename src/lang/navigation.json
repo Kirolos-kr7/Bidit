@@ -1,39 +1,17 @@
 {
-  "lists": [
-    {
-      "name": { "ar": "الاقسام", "en": "Categories" },
-      "items": [
-        {
-          "ar": "الكل",
-          "en": "All Bids",
-          "to": "bids"
-        },
-        {
-          "ar": "تحف",
-          "en": "Antiques",
-          "to": "bids/antiques"
-        },
-        {
-          "ar": "فن",
-          "en": "Art",
-          "to": "bids/art"
-        }
-      ]
-    },
-    {
-      "name": { "ar": "التنقل", "en": "Navigation" },
-      "items": [
-        {
-          "ar": "تواصل معنا",
-          "en": "Contact",
-          "to": ""
-        },
-        {
-          "ar": "من نحن؟",
-          "en": "Who are we?",
-          "to": ""
-        }
-      ]
-    }
-  ]
+  "list": {
+    "name": { "ar": "التنقل", "en": "Navigation" },
+    "items": [
+      {
+        "ar": "تواصل معنا",
+        "en": "Contact",
+        "to": ""
+      },
+      {
+        "ar": "من نحن؟",
+        "en": "Who are we?",
+        "to": ""
+      }
+    ]
+  }
 }

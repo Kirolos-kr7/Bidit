@@ -105,7 +105,7 @@ let items = $ref([
 ])
 
 onMounted(() => {
-  itemType = categories[0].en
+  itemType = categories.items[0].en
 })
 
 const resetDialog = () => {
@@ -178,7 +178,7 @@ const deleteItem = () => {
             @change="(e) => (itemType = e.target.value)"
           >
             <option
-              v-for="(category, index) in categories"
+              v-for="(category, index) in categories.items"
               :key="index"
               :value="category.en"
               :selected="index === 0"

@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
+import { categories } from '../lang/categories.json'
 import BaseDDL from './Base/BaseDDL.vue'
 import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
@@ -47,23 +48,6 @@ const text = $ref({
       ar: 'تسجيل الخروج',
       en: 'Logout',
       to: 'logout',
-    },
-  ],
-  catDDLItems: [
-    {
-      ar: 'الكل',
-      en: 'All Bids',
-      to: 'bids',
-    },
-    {
-      ar: 'تحف',
-      en: 'Antiques',
-      to: 'bids/antiques',
-    },
-    {
-      ar: 'فن',
-      en: 'Art',
-      to: 'bids/art',
     },
   ],
   langDDLItems: [
@@ -200,13 +184,23 @@ const logout = () => {
             dir="auto"
           >
             <li
-              v-for="(item, index) in text.catDDLItems"
-              :key="index"
-              class="border-b border-neutral-700/50 last-of-type:border-none"
+              class="border-b border-neutral-700/50 capitalize last-of-type:border-none"
             >
               <RouterLink
                 class="flex w-full px-3 py-2 transition-colors hover:bg-neutral-700/50"
-                :to="`/${state.lang}/${item.to}`"
+                :to="`/${state.lang}`"
+              >
+                {{ $t({ ar: 'الكل', en: 'all' }) }}
+              </RouterLink>
+            </li>
+            <li
+              v-for="(item, index) in categories.items"
+              :key="index"
+              class="border-b border-neutral-700/50 capitalize last-of-type:border-none"
+            >
+              <RouterLink
+                class="flex w-full px-3 py-2 transition-colors hover:bg-neutral-700/50"
+                :to="`/${state.lang}/bids/${item.to}`"
               >
                 {{ $t(item) }}
               </RouterLink>

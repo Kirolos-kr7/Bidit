@@ -1,6 +1,7 @@
 <script setup>
 import { useStore } from '../store'
-import { lists } from '../lang/navigation.json'
+import { list } from '../lang/navigation.json'
+import { categories } from '../lang/categories.json'
 import BaseInput from './Base/BaseInput.vue'
 import BaseTitle from './Base/BaseTitle.vue'
 import BaseButton from './Base/BaseButton.vue'
@@ -53,8 +54,27 @@ const text = $ref({
           </BaseButton>
         </div>
       </div>
-      <div class="flex flex-wrap items-start gap-x-20 gap-y-5">
-        <ul v-for="(list, index) in lists" :key="index">
+      <div class="flex flex-wrap items-start gap-x-20 gap-y-5 capitalize">
+        <ul>
+          <li class="mb-2 text-lg font-semibold text-gray-400">
+            {{ $t(categories.name) }}
+          </li>
+          <li>
+            <RouterLink
+              :to="`/${state.lang}/bids`"
+              class="transition-colors hover:text-teal-600"
+              >{{ $t({ ar: 'الكل', en: 'all' }) }}
+            </RouterLink>
+          </li>
+          <li v-for="(item, index) in categories.items" :key="index">
+            <RouterLink
+              :to="`/${state.lang}/bids/${item.to}`"
+              class="transition-colors hover:text-teal-600"
+              >{{ $t(item) }}
+            </RouterLink>
+          </li>
+        </ul>
+        <ul>
           <li class="mb-2 text-lg font-semibold text-gray-400">
             {{ $t(list.name) }}
           </li>
