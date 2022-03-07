@@ -2,7 +2,7 @@
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseDialog from '../components/Base/BaseDialog.vue'
-import Item from '../components/Item.vue'
+import InventoryItem from '../components/InventoryItem.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
@@ -142,7 +142,7 @@ const deleteItem = () => {
   <div
     class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
   >
-    <Item
+    <InventoryItem
       v-for="(item, index) in items"
       :key="index"
       :item="item"
@@ -198,7 +198,6 @@ const deleteItem = () => {
         <BaseButton @click="addItem">{{
           isEditing ? $t(text.edit) : $t(text.newItem)
         }}</BaseButton>
-      
       </div>
     </div> </transition
   ><transition name="zoom">

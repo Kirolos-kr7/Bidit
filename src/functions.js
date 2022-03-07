@@ -1,4 +1,6 @@
 import { useStore } from './store'
+import { categories } from './lang/categories.json'
+import { status } from './lang/bidstatus.json'
 
 export const $t = (x) => {
   const { $state: state } = useStore()
@@ -35,4 +37,28 @@ export const routerLang = (state, to, next) => {
   } else {
     document.body.dir = 'ltr'
   }
+}
+
+export const getType = (val) => {
+  let itemType = val
+
+  categories.items.forEach((item) => {
+    if (item.en.toLowerCase() === val.toLowerCase()) {
+      itemType = $t(item)
+    }
+  })
+
+  return itemType
+}
+
+export const getStatus = (val) => {
+  let itemType = val
+
+  status.forEach((item) => {
+    if (item.en.toLowerCase() === val.toLowerCase()) {
+      itemType = $t(item)
+    }
+  })
+
+  return itemType
 }

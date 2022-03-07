@@ -1,5 +1,10 @@
 <script setup>
+import { useStore } from '../store'
+import { categories } from '../lang/categories.json'
 import BaseButton from './Base/BaseButton.vue'
+import { getType } from '../functions'
+
+const { $state: state } = useStore()
 
 const text = $ref({
   start: {
@@ -18,7 +23,6 @@ const text = $ref({
     ar: 'حذف',
     en: 'Delete',
   },
-
 })
 
 defineProps({
@@ -36,7 +40,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
     <div class="p-3">
       <div class="my-2 flex max-w-full items-start justify-between gap-3">
         <h2
-          class="overflow-hidden break-all text-[22px] font-semibold capitalize"
+          class="overflow-hidden break-all text-lg font-semibold capitalize md:text-[22px]"
           style="
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -45,12 +49,12 @@ const emits = defineEmits(['editItem', 'deleteItem'])
         >
           {{ item.name }}
         </h2>
-        <span
+        <RouterLink
           class="my-1 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
+          :to="`/${state.lang}/bids/${item.type}`"
         >
-             {{ item.type }}
-          <!-- {{ $t(categories.en[item.type.toLowerCase()]) }} -->
-        </span>
+          {{ getType(item.type) }}
+        </RouterLink>
       </div>
       <p
         class="my-1 overflow-hidden text-neutral-400"
@@ -62,7 +66,10 @@ const emits = defineEmits(['editItem', 'deleteItem'])
       >
         {{ item.decription }}
       </p>
-      <div class="absolute top-0 right-3 mt-3 flex flex-col gap-2">
+      <div
+        class="absolute top-0 mt-3 flex flex-col gap-2"
+        :class="state.lang === 'ar' ? 'right-3' : 'left-3'"
+      >
         <button
           class="flex items-center justify-center rounded-full bg-neutral-900 p-2 hover:!bg-neutral-800"
           :title="$t(text.openTitle)"

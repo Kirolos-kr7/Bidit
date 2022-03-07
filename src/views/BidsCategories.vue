@@ -3,6 +3,7 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $t } from '../functions'
+import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 
 const route = useRoute()
@@ -14,7 +15,7 @@ const cats = () => {
   if (route.name === 'bids categories') {
     const category = route.params.cat.toLowerCase()
     let isFound = false
-    text.categories.forEach((cat) => {
+    categories.items.forEach((cat) => {
       if (cat.en.toLowerCase() === category) {
         isFound = true
         title = cat
@@ -28,19 +29,6 @@ const cats = () => {
 onMounted(cats)
 
 watch(route, cats)
-
-const text = $ref({
-  categories: [
-    {
-      ar: 'تحف',
-      en: 'Antiques',
-    },
-    {
-      ar: 'فن',
-      en: 'Art',
-    },
-  ],
-})
 </script>
 
 <template>
