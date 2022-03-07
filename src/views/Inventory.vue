@@ -16,6 +16,61 @@ let itemsDialog = $ref(false),
   itemType = $ref(''),
   itemDesc = $ref('')
 
+const text = $ref({
+  title: {
+    ar: 'المتجر',
+    en: 'Inventory',
+  },
+  addItem: {
+    ar: 'أضافه عنصر',
+    en: 'Add item',
+  },
+  namePlaceholder: {
+    ar: 'الاسم',
+    en: 'Name',
+  },
+  typePlaceholder: {
+    ar: 'النوع',
+    en: 'Type',
+  },
+  descriptionPlaceholder: {
+    ar: 'الوصف',
+    en: 'Description',
+  },
+  add: { 
+    ar: 'أًضافه',
+    en: 'Add',
+  },
+  edit: { 
+    ar: 'تعديل',
+    en: 'Edit',
+  },
+  deleted: {
+    ar: 'حذف العنصر',
+    en: 'Delete Item',
+  },
+  doneProcess: {
+    ar: 'تاكيد العمليه؟',
+    en: 'Are you sure you want to proceed?',
+  },
+  yes: {
+    ar: 'نعم',
+    en: 'Yes',
+  },
+  no: {
+    ar: 'لا',
+    en: 'No',
+  },
+  editItem: {
+    ar: 'تعديل عنصر',
+    en: 'Edit item',
+  },
+  newItem: {
+    ar: 'عنصر جديد',
+    en: 'New item',
+  },
+})
+
 let items = $ref([
   {
     name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
@@ -81,8 +136,8 @@ const deleteItem = () => {
 
 <template>
   <div class="flex items-start justify-between gap-3">
-    <BaseTitle>Inventory</BaseTitle>
-    <BaseButton @click="itemsDialog = true">Add item</BaseButton>
+    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+    <BaseButton @click="itemsDialog = true">{{ $t(text.addItem) }}</BaseButton>
   </div>
   <div
     class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
@@ -105,18 +160,18 @@ const deleteItem = () => {
       class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
       v-if="itemsDialog"
     >
-      <BaseTitle> {{ isEditing ? 'Edit' : 'New' }} Item</BaseTitle>
+      <BaseTitle> {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle>
       <div class="mt-5 grid gap-5">
         <BaseInput
           type="text"
           class="!w-full"
-          placeholder="Name"
+          :placeholder="$t(text.namePlaceholder)"
           v-model="itemName"
           @updateInput="(val) => (itemName = val)"
         />
         <BaseSelect
           class="!w-full capitalize"
-          placeholder="Type"
+          :placeholder="$t(text.typePlaceholder)"
           @change="(e) => (itemType = e.target.value)"
         >
           <option
@@ -132,13 +187,17 @@ const deleteItem = () => {
           rows="8"
           type="text"
           class="col-span-2 !w-full"
-          placeholder="Description"
+          :placeholder="$t(text.descriptionPlaceholder)"
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem">{{
-          isEditing ? 'Edit' : 'Add'
+        <BaseButton @click="addItem" v-if="isEditing">{{
+           $t(text.edit)
         }}</BaseButton>
+        <BaseButton @click="addItem" v-else>{{
+           $t(text.add)
+        }}</BaseButton>
+
       </div>
     </div> </transition
   ><transition name="zoom">
@@ -146,13 +205,13 @@ const deleteItem = () => {
       class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
       v-if="deleteDialog"
     >
-      <BaseTitle>Delete Item</BaseTitle>
-      <p class="my-3">Are you sure you want to proceed?</p>
+      <BaseTitle>{{ $t(text.deleted) }}</BaseTitle>
+      <p class="my-3">{{ $t(text.doneProcess) }}</p>
       <div class="flex justify-end gap-2">
         <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem"
-          >Yes</BaseButton
+          >{{ $t(text.yes) }}</BaseButton
         >
-        <BaseButton @click="resetDialog">No</BaseButton>
+        <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
     </div>
   </transition>

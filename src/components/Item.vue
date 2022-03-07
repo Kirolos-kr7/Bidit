@@ -1,5 +1,27 @@
 <script setup>
 import BaseButton from './Base/BaseButton.vue'
+import { categories } from '../lang/categories.json'
+
+const text = $ref({
+  start: {
+    ar: 'بدء المزاد',
+    en: 'Start Bid',
+  },
+  openTitle: {
+    ar: 'عرض',
+    en: 'Show',
+  },
+  editTitle: {
+    ar: 'تعديل',
+    en: 'Edit',
+  },
+  deleteTitle: {
+    ar: 'حذف',
+    en: 'Delete',
+  },
+
+})
+
 defineProps({
   item: {
     type: Object,
@@ -30,7 +52,8 @@ const emits = defineEmits(['editItem', 'deleteItem'])
         <span
           class="my-1 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
         >
-          {{ item.type }}
+             {{ item.type }}
+          <!-- {{ $t(categories.en[item.type.toLowerCase()]) }} -->
         </span>
       </div>
       <p
@@ -46,7 +69,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
       <div class="absolute top-0 right-3 mt-3 flex flex-col gap-2">
         <button
           class="flex items-center justify-center rounded-full bg-neutral-900 p-2 hover:!bg-neutral-800"
-          title="Open"
+          :title="$t(text.openTitle)"
         >
           <svg
             class="h-5 w-5"
@@ -65,7 +88,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
         </button>
         <button
           class="flex items-center justify-center rounded-full bg-indigo-900 p-2 hover:!bg-indigo-800"
-          title="Edit"
+          :title="$t(text.editTitle)"
           @click="emits('editItem', item)"
         >
           <svg
@@ -85,7 +108,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
         </button>
         <button
           class="flex items-center justify-center rounded-full bg-red-700 p-2 hover:!bg-red-600"
-          title="Delete"
+          :title="$t(text.deleteTitle)"
           @click="emits('deleteItem', item)"
         >
           <svg
@@ -104,7 +127,7 @@ const emits = defineEmits(['editItem', 'deleteItem'])
           </svg>
         </button>
       </div>
-      <BaseButton class="mt-2 w-full">Start Bid</BaseButton>
+      <BaseButton class="mt-2 w-full">{{ $t(text.start) }}</BaseButton>
     </div>
   </div>
 </template>
