@@ -1,6 +1,5 @@
 <script setup>
 import BaseButton from './Base/BaseButton.vue'
-import { categories } from '../lang/categories.json'
 
 const text = $ref({
   start: {

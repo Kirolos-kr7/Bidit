@@ -18,7 +18,7 @@ let itemsDialog = $ref(false),
 
 const text = $ref({
   title: {
-    ar: 'المتجر',
+    ar: 'المخزون',
     en: 'Inventory',
   },
   addItem: {
@@ -195,10 +195,10 @@ const deleteItem = () => {
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem" v-if="isEditing">{{
-          $t(text.edit)
+        <BaseButton @click="addItem">{{
+          isEditing ? $t(text.edit) : $t(text.newItem)
         }}</BaseButton>
-        <BaseButton @click="addItem" v-else>{{ $t(text.add) }}</BaseButton>
+      
       </div>
     </div> </transition
   ><transition name="zoom">
