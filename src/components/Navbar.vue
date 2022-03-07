@@ -112,7 +112,7 @@ const logout = () => {
 
 <template>
   <nav
-    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border border-neutral-800 bg-neutral-800/75 backdrop-blur-sm sm:px-2 md:px-8"
+    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border-b border-neutral-800 bg-neutral-800/75 backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
   >
     <div class="flex items-center gap-2">
