@@ -35,7 +35,7 @@ const text = $ref({
   <transition name="zoom">
     <div
       v-if="offlineReady || needRefresh"
-      class="fixed bottom-3 left-1/2 z-50 w-full max-w-prose -translate-x-1/2 rounded-xl bg-bi-600 p-3 md:-translate-x-0"
+      class="fixed bottom-0 left-1/2 z-50 w-full max-w-prose -translate-x-1/2 rounded-t-xl bg-bi-600 p-3 md:bottom-3 md:-translate-x-0 md:rounded-b-xl"
       :class="
         state.lang === 'ar'
           ? 'md:left-auto md:right-3'
