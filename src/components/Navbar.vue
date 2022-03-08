@@ -79,7 +79,7 @@ const toggleDDL = (ddl = null) => {
     activeMenu = ddl
 
     addEventListener(
-      'mousedown',
+      'mouseup',
       (e) => {
         if (!e.target?.dataset[ddl]) {
           activeMenu = null

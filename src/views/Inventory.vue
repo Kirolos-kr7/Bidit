@@ -8,9 +8,11 @@ import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { categories } from '../lang/categories.json'
 import { onMounted } from 'vue'
+import NewBid from '../components/NewBid.vue'
 
 let itemsDialog = $ref(false),
   deleteDialog = $ref(false),
+  bidDialog = $ref(false),
   isEditing = $ref(false),
   itemName = $ref(''),
   itemType = $ref(''),
@@ -45,7 +47,7 @@ const text = $ref({
     ar: 'تعديل',
     en: 'Edit',
   },
-  deleted: {
+  deleteItem: {
     ar: 'حذف العنصر',
     en: 'Delete Item',
   },
@@ -112,6 +114,7 @@ const resetDialog = () => {
   itemsDialog = false
   isEditing = false
   deleteDialog = false
+  bidDialog = false
   itemName = ''
   itemType = ''
   itemDesc = ''
@@ -147,23 +150,27 @@ const deleteItem = () => {
       :key="index"
       :item="item"
       @editItem="editItem"
+      @newBid="bidDialog = true"
       @deleteItem="deleteDialog = true"
     />
   </div>
 
   <transition name="fade">
-    <BaseDialog v-if="itemsDialog || deleteDialog" @click="resetDialog">
+    <BaseDialog
+      v-if="itemsDialog || bidDialog || deleteDialog"
+      @click="resetDialog"
+    >
     </BaseDialog>
   </transition>
   <transition name="zoom">
     <div
-      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
+      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-bi-600 bg-bi-900 p-5 md:min-w-prose"
       v-if="itemsDialog"
     >
       <BaseTitle>
         {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
       >
-      <div class="mt-5 grid gap-5">
+      <form @submit.prevent="" class="mt-5 grid gap-5">
         <BaseInput
           type="text"
           class="!w-full"
@@ -198,14 +205,15 @@ const deleteItem = () => {
         <BaseButton @click="addItem">{{
           isEditing ? $t(text.edit) : $t(text.newItem)
         }}</BaseButton>
-      </div>
-    </div> </transition
-  ><transition name="zoom">
+      </form>
+    </div>
+  </transition>
+  <transition name="zoom">
     <div
-      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md bg-bi-900 p-5 md:min-w-prose"
+      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-bi-600 bg-bi-900 p-5 md:min-w-prose"
       v-if="deleteDialog"
     >
-      <BaseTitle>{{ $t(text.deleted) }}</BaseTitle>
+      <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
       <p class="my-3">{{ $t(text.doneProcess) }}</p>
       <div class="flex justify-end gap-2">
         <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem">{{
@@ -214,5 +222,9 @@ const deleteItem = () => {
         <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
     </div>
+  </transition>
+
+  <transition name="zoom">
+    <NewBid v-if="bidDialog" @resetDialog="resetDialog" :item="items[0]" />
   </transition>
 </template>

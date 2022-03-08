@@ -31,7 +31,7 @@ defineProps({
     required: true,
   },
 })
-const emits = defineEmits(['editItem', 'deleteItem'])
+const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
 </script>
 
 <template>
@@ -130,7 +130,9 @@ const emits = defineEmits(['editItem', 'deleteItem'])
           </svg>
         </button>
       </div>
-      <BaseButton class="mt-2 w-full">{{ $t(text.start) }}</BaseButton>
+      <BaseButton class="mt-2 w-full" @click="emits('newBid')">{{
+        $t(text.start)
+      }}</BaseButton>
     </div>
   </div>
 </template>
