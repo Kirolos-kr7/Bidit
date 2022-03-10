@@ -10,10 +10,11 @@ const router = createRouter({
       redirect: () => {
         const { $state: state } = useStore()
         let lang = localStorage.getItem('lang')
+        console.log(lang)
         if (lang) {
           return lang
         } else {
-          state.lang || 'ar'
+          return state.lang || 'ar'
         }
       },
     },
