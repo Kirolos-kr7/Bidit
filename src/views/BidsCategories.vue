@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { $t } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
+import Bids from '../components/Bids.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -33,4 +34,6 @@ watch(route, cats)
 
 <template>
   <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
+
+  <Bids />
 </template>
