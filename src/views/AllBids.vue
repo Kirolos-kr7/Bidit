@@ -1,5 +1,6 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
+import Bids from '../components/Bids.vue'
 
 const text = $ref({
   allBids: {
@@ -11,4 +12,6 @@ const text = $ref({
 
 <template>
   <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
+
+  <Bids />
 </template>

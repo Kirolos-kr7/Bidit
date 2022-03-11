@@ -79,7 +79,7 @@ const toggleDDL = (ddl = null) => {
     activeMenu = ddl
 
     addEventListener(
-      'mousedown',
+      'mouseup',
       (e) => {
         if (!e.target?.dataset[ddl]) {
           activeMenu = null
@@ -188,7 +188,7 @@ const logout = () => {
             >
               <RouterLink
                 class="flex w-full px-3 py-2 transition-colors hover:bg-neutral-700/50"
-                :to="`/${state.lang}`"
+                :to="`/${state.lang}/bids`"
               >
                 {{ $t({ ar: 'الكل', en: 'all' }) }}
               </RouterLink>

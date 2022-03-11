@@ -1,22 +1,6 @@
 <script setup>
-import BaseTitle from '../components/Base/BaseTitle.vue'
-import BaseButton from '../components/Base/BaseButton.vue'
-import SalesItem from '../components/SalesItem.vue'
-import { useStore } from '../store'
 import moment from 'moment'
-const { $state: state } = $(useStore())
-
-const text = $ref({
-  title: {
-    ar: 'المبيعات',
-    en: 'Sales',
-  },
-  startBid: {
-    ar: 'بدء مزاد جديد',
-    en: 'Start New Bid',
-  },
-})
-
+import BidCard from './BidCard.vue'
 let bids = $ref([
   {
     item: {
@@ -58,15 +42,7 @@ let bids = $ref([
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
-    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-    <BaseButton @click="itemsDialog = true">
-      <RouterLink :to="`/${state.lang}/account/inventory`">
-        {{ $t(text.startBid) }}
-      </RouterLink>
-    </BaseButton>
-  </div>
-  <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
-    <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+  <div class="mt-6 grid gap-3 md:grid-cols-2">
+    <BidCard v-for="(bid, index) in bids" :key="index" :bid="bid" />
   </div>
 </template>
