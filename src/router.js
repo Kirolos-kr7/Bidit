@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routerLang } from './functions'
+import { getPreferedLanguage, routerLang } from './functions'
 import { useStore } from './store'
 
 const router = createRouter({
@@ -8,13 +8,13 @@ const router = createRouter({
     {
       path: '/',
       redirect: () => {
-        const { $state: state } = useStore()
         let lang = localStorage.getItem('lang')
+
         console.log(lang)
         if (lang) {
           return lang
         } else {
-          return state.lang || 'ar'
+          return getPreferedLanguage()
         }
       },
     },

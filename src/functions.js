@@ -39,6 +39,16 @@ export const routerLang = (state, to, next) => {
   }
 }
 
+export const getPreferedLanguage = () => {
+  let preferdLang = navigator.language.split('-')[0]
+
+  if (preferdLang === 'en') {
+    return (state.lang = 'en')
+  } else {
+    return 'ar'
+  }
+}
+
 export const getType = (val) => {
   let itemType = val
 
