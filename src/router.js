@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routerLang } from './functions'
+import { getPreferedLanguage, routerLang } from './functions'
 import { useStore } from './store'
 
 const router = createRouter({
@@ -14,7 +14,7 @@ const router = createRouter({
         if (lang) {
           return lang
         } else {
-          return state.lang || 'ar'
+          return getPreferedLanguage()
         }
       },
     },
