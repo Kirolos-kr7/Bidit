@@ -25,6 +25,14 @@ const text = $ref({
     ar: 'أضافه عنصر',
     en: 'Add item',
   },
+  editItem: {
+    ar: 'تعديل عنصر',
+    en: 'Edit item',
+  },
+  newItem: {
+    ar: 'عنصر جديد',
+    en: 'New item',
+  },
   namePlaceholder: {
     ar: 'الاسم',
     en: 'Name',
@@ -60,15 +68,7 @@ const text = $ref({
   no: {
     ar: 'لا',
     en: 'No',
-  },
-  editItem: {
-    ar: 'تعديل عنصر',
-    en: 'Edit item',
-  },
-  newItem: {
-    ar: 'عنصر جديد',
-    en: 'New item',
-  },
+  }
 })
 
 let items = $ref([
