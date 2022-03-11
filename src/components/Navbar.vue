@@ -11,7 +11,7 @@ import { ref, watch } from 'vue'
 const { $state: state } = $(useStore())
 const router = useRouter()
 let activeMenu = $ref(null)
-let searchDialog = ref(true)
+let searchDialog = ref(false)
 let hamburgerMenu = $ref(false)
 
 watch(searchDialog, () => {
