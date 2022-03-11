@@ -28,6 +28,11 @@ const router = createRouter({
           component: () => import('./views/Home.vue'),
         },
         {
+          path: 'bid',
+          name: 'bidview',
+          component: () => import('./views/BidView.vue'),
+        },
+        {
           path: 'bids',
           name: 'bids',
           component: () => import('./views/AllBids.vue'),
