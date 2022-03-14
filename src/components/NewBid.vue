@@ -28,7 +28,7 @@ const text = $ref({
     en: 'End Date',
   },
   minPricePlaceholder: {
-    ar: 'السعر الاولي',
+    ar: 'السعر المبدئي',
     en: 'Start Price',
   },
   startBid: {

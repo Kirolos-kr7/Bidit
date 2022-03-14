@@ -72,3 +72,21 @@ export const getStatus = (val) => {
 
   return itemType
 }
+
+export const getPricePerLang = (val) => {
+  const { $state: state } = useStore()
+
+  if (state.lang === 'ar') {
+    return new Intl.NumberFormat('ar-EG', {
+      style: 'currency',
+      currency: 'EGP',
+      maximumFractionDigits: 0,
+    }).format(val)
+  } else {
+    return new Intl.NumberFormat('en-EG', {
+      style: 'currency',
+      currency: 'EGP',
+      maximumFractionDigits: 0,
+    }).format(val)
+  }
+}
