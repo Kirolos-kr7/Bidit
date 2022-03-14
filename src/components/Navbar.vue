@@ -6,12 +6,19 @@ import BaseDDL from './Base/BaseDDL.vue'
 import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
 import DropDownNav from './DropDownNav.vue'
+import { ref, watch } from 'vue'
 
 const { $state: state } = $(useStore())
 const router = useRouter()
 let activeMenu = $ref(null)
-let searchDialog = $ref(false)
+let searchDialog = ref(false)
 let hamburgerMenu = $ref(false)
+
+watch(searchDialog, () => {
+  if (searchDialog.value === true)
+    document.documentElement.style.overflow = 'hidden'
+  else document.documentElement.style.overflow = 'auto'
+})
 
 const text = $ref({
   navDDLButton: {
@@ -144,10 +151,7 @@ const logout = () => {
       >
     </div>
     <ul class="flex h-full items-center font-semibold">
-      <li
-        class="relative h-full"
-        v-if="text.account.requiresUNAuth && !state.user"
-      >
+      <li class="relative h-full">
         <button
           class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75"
           @click="searchDialog = true"
@@ -310,8 +314,26 @@ const logout = () => {
   </transition>
 
   <transition name="fade">
-    <BaseDialog v-if="searchDialog" @click="searchDialog = false">
-      <SearchBar />
-    </BaseDialog>
+    <BaseDialog v-if="searchDialog" @click="searchDialog = false" />
+  </transition>
+  <transition name="zoomSearch">
+    <SearchBar v-if="searchDialog" @exitSearch="searchDialog = false" />
   </transition>
 </template>
+
+<style scoped>
+.zoomSearch-enter-active,
+.zoomSearch-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoomSearch-enter-from,
+.zoomSearch-leave-to {
+  transform: scale(0) translateX(-50%);
+}
+
+.zoomSearch-enter-to,
+.zoomSearch-leave-from {
+  transform: scale(1) translateX(-50%);
+}
+</style>
