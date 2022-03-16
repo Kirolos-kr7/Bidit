@@ -5,11 +5,11 @@ import PWAPrompt from './components/PWAPrompt.vue'
 </script>
 
 <template>
-  <Navbar />
+  <!-- <Navbar /> -->
   <main class="min-h-[70vh] px-4 pt-[5.5rem] md:px-8">
     <RouterView></RouterView>
   </main>
-  <Footer />
+  <!-- <Footer /> -->
 
   <PWAPrompt />
 </template>

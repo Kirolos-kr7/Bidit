@@ -4,10 +4,10 @@ module.exports = {
     extend: {
       colors: {
         bi: {
-          600: '#2b2b2b',
-          700: '#232323',
-          800: '#1e1e1e',
-          900: '#171717',
+          400: '#966CF0',
+          300: '#6E3DD6',
+          200: '#D1D5DB',
+          100: '#EEF0F1',
         },
       },
       fontFamily: {
@@ -15,6 +15,9 @@ module.exports = {
       },
       minWidth: {
         prose: '65ch',
+      },
+      maxWidth: {
+        kratos: '1600px',
       },
     },
     screens: {
