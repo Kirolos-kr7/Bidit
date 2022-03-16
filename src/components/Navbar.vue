@@ -1,3 +1,9 @@
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <script setup>
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
@@ -119,12 +125,13 @@ const logout = () => {
 
 <template>
   <nav
-    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 border-b border-neutral-800 bg-neutral-800/75 backdrop-blur-sm sm:px-2 md:px-8"
+    :="$attrs"
+    class="fixed top-4 z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
   >
     <div class="flex items-center gap-2">
       <button
-        class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75 md:hidden"
+        class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold text-black transition-colors hover:bg-bi-200 md:hidden"
         @click="hamburgerMenu = !hamburgerMenu"
       >
         <svg
@@ -146,14 +153,14 @@ const logout = () => {
       </button>
       <RouterLink
         :to="`/${state.lang}`"
-        class="bg-gradient-to-br from-indigo-800 to-blue-300 bg-clip-text py-3 font-bioRhyme text-3xl font-extrabold text-transparent"
+        class="font-bioRhyme text-3xl font-extrabold text-black"
         >BID!T</RouterLink
       >
     </div>
-    <ul class="flex h-full items-center font-semibold">
+    <ul class="flex h-full items-center font-semibold text-black">
       <li class="relative h-full">
         <button
-          class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-bi-200"
           @click="searchDialog = true"
         >
           <svg
@@ -174,7 +181,7 @@ const logout = () => {
       </li>
       <li class="relative hidden h-full md:block">
         <button
-          class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
           :data-cat="true"
           @click="toggleDDL('cat')"
         >
@@ -188,10 +195,10 @@ const logout = () => {
             dir="auto"
           >
             <li
-              class="border-b border-neutral-700/50 capitalize last-of-type:border-none"
+              class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
             >
               <RouterLink
-                class="flex w-full px-3 py-2 transition-colors hover:bg-neutral-700/50"
+                class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
                 :to="`/${state.lang}/bids`"
               >
                 {{ $t({ ar: 'الكل', en: 'all' }) }}
@@ -200,10 +207,10 @@ const logout = () => {
             <li
               v-for="(item, index) in categories.items"
               :key="index"
-              class="border-b border-neutral-700/50 capitalize last-of-type:border-none"
+              class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
             >
               <RouterLink
-                class="flex w-full px-3 py-2 transition-colors hover:bg-neutral-700/50"
+                class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
                 :to="`/${state.lang}/bids/${item.to}`"
               >
                 {{ $t(item) }}
@@ -214,7 +221,7 @@ const logout = () => {
       </li>
       <li class="relative hidden h-full md:block">
         <button
-          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
           :data-lang="true"
           @click="toggleDDL('lang')"
         >
@@ -239,10 +246,10 @@ const logout = () => {
             <li
               v-for="(item, index) in text.langDDLItems"
               :key="index"
-              class="border-b border-neutral-700/50 last-of-type:border-none"
+              class="border-b last-of-type:border-none hover:bg-bi-200"
             >
               <button
-                class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-neutral-700/50"
+                class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-bi-200"
                 @click="changeLang(item.lang)"
               >
                 <img
@@ -263,7 +270,7 @@ const logout = () => {
       </li>
       <li class="relative block h-full" v-if="state.user">
         <button
-          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
           :data-user="true"
           @click="toggleDDL('user')"
         >
@@ -274,12 +281,12 @@ const logout = () => {
             <li
               v-for="(item, index) in text.userItems"
               :key="index"
-              class="border-b border-neutral-700/50 last-of-type:border-none"
+              class="border-b last-of-type:border-none hover:bg-bi-200"
               dir="auto"
             >
               <button
                 v-if="item.to === 'logout'"
-                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-neutral-700/50"
+                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
                 @mousedown="logout()"
               >
                 {{ $t(item) }}
@@ -287,7 +294,7 @@ const logout = () => {
               <RouterLink
                 v-else
                 :to="`/${state.lang}/${item.to}`"
-                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-neutral-700/50"
+                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
               >
                 {{ $t(item) }}</RouterLink
               >
@@ -300,7 +307,7 @@ const logout = () => {
         v-if="text.account.requiresUNAuth && !state.user"
       >
         <RouterLink
-          class="flex h-full cursor-pointer items-center justify-center bg-indigo-700/75 px-3 font-semibold transition-colors hover:bg-neutral-700/75"
+          class="flex h-full cursor-pointer items-center justify-center bg-indigo-700/75 px-3 font-semibold transition-colors hover:bg-bi-200"
           :to="`/${state.lang}/${text.login.to}`"
         >
           {{ $t(text.login) }}
