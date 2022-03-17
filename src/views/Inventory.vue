@@ -70,7 +70,7 @@ const text = $ref({
   no: {
     ar: 'لا',
     en: 'No',
-  }
+  },
 })
 
 let items = $ref([
@@ -164,7 +164,7 @@ const deleteItem = () => {
   </transition>
   <transition name="zoom">
     <div
-      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-bi-600 bg-bi-900 p-5 md:min-w-prose"
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
       v-if="itemsDialog"
     >
       <BaseTitle>
@@ -202,24 +202,28 @@ const deleteItem = () => {
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem">{{
-          isEditing ? $t(text.edit) : $t(text.newItem)
-        }}</BaseButton>
+        <BaseButton @click="addItem" class="text-white"
+          >{{ isEditing ? $t(text.edit) : $t(text.newItem) }}
+        </BaseButton>
       </form>
     </div>
   </transition>
   <transition name="zoom">
     <div
-      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-bi-600 bg-bi-900 p-5 md:min-w-prose"
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
       v-if="deleteDialog"
     >
       <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
       <p class="my-3">{{ $t(text.doneProcess) }}</p>
       <div class="flex justify-end gap-2">
-        <BaseButton class="bg-red-900 hover:!bg-red-800" @click="deleteItem">{{
-          $t(text.yes)
+        <BaseButton
+          class="!bg-red-600 text-white hover:!bg-red-700"
+          @click="deleteItem"
+          >{{ $t(text.yes) }}</BaseButton
+        >
+        <BaseButton @click="resetDialog" class="text-white">{{
+          $t(text.no)
         }}</BaseButton>
-        <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
     </div>
   </transition>

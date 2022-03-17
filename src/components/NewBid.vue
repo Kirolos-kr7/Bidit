@@ -40,12 +40,12 @@ const text = $ref({
 
 <template>
   <div
-    class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-bi-600 bg-bi-900 p-5 md:min-w-prose"
+    class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 md:min-w-prose"
   >
     <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-    <form @submit.prevent="" class="mt-5 grid gap-5">
+    <form @submit.prevent="" class="mt-5 grid gap-5 text-black">
       <div
-        class="grid grid-cols-[4.5rem,1fr] overflow-hidden rounded-sm border border-bi-600"
+        class="border-bi-600 grid grid-cols-[4.5rem,1fr] overflow-hidden rounded-sm border"
       >
         <img src="/images/monalisa-art.jpg" class="h-full object-cover" />
         <div class="p-3">
@@ -78,7 +78,7 @@ const text = $ref({
         v-model="minPrice"
         @updateInput="(val) => (minPrice = val)"
       />
-      <BaseButton @click="$emit('resetDialog')">{{
+      <BaseButton @click="$emit('resetDialog')" class="text-white">{{
         $t(text.startBid)
       }}</BaseButton>
     </form>

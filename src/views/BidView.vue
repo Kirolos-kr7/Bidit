@@ -40,8 +40,8 @@ let bid = $ref({
 </script>
 
 <template>
-  <div class="-mx-4 -mt-6 grid bg-bi-800 sm:-mx-8 sm:grid-cols-3">
-    <div class="grid place-content-center bg-bi-600">
+  <div class="-mx-4 -mt-6 grid bg-white shadow-sm sm:-mx-8 sm:grid-cols-3">
+    <div class="grid place-content-center bg-bi-200">
       <img
         src="/images/monalisa-art.jpg"
         class="mx-auto my-auto h-[230px] w-[240px] object-cover"
@@ -58,7 +58,7 @@ let bid = $ref({
         </RouterLink>
 
         <h2
-          class="overflow-hidden break-all text-lg font-semibold capitalize md:text-[22px]"
+          class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
         >
           {{ bid.item.name }}
         </h2>
@@ -66,20 +66,22 @@ let bid = $ref({
         <div class="my-2 flex flex-wrap items-center gap-2">
           <div class="flex items-center gap-2">
             <img src="/images/avatar.png" class="w-7 cursor-pointer" />
-            <div class="inline-block text-blue-600 underline">
+            <div
+              class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
+            >
               {{ bid.user.fullName }}
             </div>
           </div>
           <span
-            class="relative mx-0.5 hidden h-1.5 w-1.5 rounded-full bg-gray-600 sm:inline-block"
+            class="relative mx-0.5 hidden h-1.5 w-1.5 rounded-full bg-gray-400 sm:inline-block"
           ></span>
           <p class="text-slate-500">Saturday 12 may 2021</p>
         </div>
 
-        <h3 class="my-3 text-lg font-semibold">
+        <h3 class="my-3 text-lg font-semibold text-black">
           {{ $t(text.price) }} : {{ getPricePerLang(bid.minPrice) }}
         </h3>
-        <p class="mb-2 text-neutral-400">
+        <p class="mb-2 font-medium text-neutral-500">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam hic
           corporis, doloribus debitis maxime harum placeat itaque fugit culpa
           nihil sit est rerum molestias asperiores quam alias! Odit,
@@ -107,7 +109,7 @@ let bid = $ref({
             </div>
           </div>
           <div class="grid gap-x-5 md:grid-cols-2">
-            <div class="flex items-center gap-2 p-4">
+            <div class="flex items-center gap-2 p-4 text-black">
               <h5>
                 <b class="text-xl">(12)</b> Bids Latest is
                 <b class="text-xl">{{ getPricePerLang(1800) }}</b>
@@ -117,20 +119,20 @@ let bid = $ref({
               <input
                 type="number"
                 placeholder="Your Price"
-                class="bg-transparent p-3 focus:outline-none"
+                class="bg-transparent p-3 font-semibold text-black focus:outline-none"
               />
-              <BaseButton
-                class="!w-full rounded-none border-none bg-gray-800 hover:!bg-gray-800/40"
-              >
+              <BaseButton class="!w-full rounded-none border-none">
                 {{ $t(text.startBid) }}
               </BaseButton>
             </div>
           </div>
         </div>
 
-        <a href="#" class="mt-8 flex justify-end text-blue-600 underline">{{
-          $t(text.report)
-        }}</a>
+        <a
+          href="#"
+          class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
+          >{{ $t(text.report) }}</a
+        >
       </div>
     </div>
   </div>

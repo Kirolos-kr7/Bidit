@@ -3,6 +3,7 @@ import { useStore } from '../store'
 import { categories } from '../lang/categories.json'
 import BaseButton from './Base/BaseButton.vue'
 import { getType } from '../functions'
+import BaseType from './Base/BaseType.vue'
 
 const { $state: state } = useStore()
 
@@ -35,12 +36,14 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
 </script>
 
 <template>
-  <div class="relative flex flex-col overflow-hidden rounded-md bg-bi-700">
+  <div
+    class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm"
+  >
     <img src="/images/monalisa-art.jpg" class="h-[260px] object-cover" />
     <div class="p-3">
       <div class="my-2 flex max-w-full items-start justify-between gap-3">
         <h2
-          class="overflow-hidden break-all text-lg font-semibold capitalize md:text-[22px]"
+          class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
           style="
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -49,15 +52,13 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
         >
           {{ item.name }}
         </h2>
-        <RouterLink
-          class="my-1 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
-          :to="`/${state.lang}/bids/${item.type}`"
-        >
+
+        <BaseType :to="`/${state.lang}/bids/${item.type}`">
           {{ getType(item.type) }}
-        </RouterLink>
+        </BaseType>
       </div>
       <p
-        class="my-1 overflow-hidden text-neutral-400"
+        class="my-1 overflow-hidden text-neutral-600"
         style="
           display: -webkit-box;
           -webkit-line-clamp: 2;

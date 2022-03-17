@@ -6,7 +6,7 @@ const { $state: state } = $(useStore())
 <template>
   <button
     :="$attrs"
-    class="group relative flex items-center gap-3 rounded-md border border-bi-300 bg-bi-300 px-5 py-3 text-lg font-bold backdrop-blur-sm hover:border-bi-400 hover:bg-bi-400 md:px-8 md:py-4 md:text-xl"
+    class="group relative flex items-center gap-3 rounded-md border border-bi-300 bg-bi-300 px-5 py-3 text-lg font-bold backdrop-blur-sm transition-colors hover:border-bi-400 hover:bg-bi-400 md:px-8 md:py-4 md:text-xl"
   >
     <slot />
     <span

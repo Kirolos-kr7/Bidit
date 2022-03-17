@@ -42,7 +42,7 @@ const loginUser = (value) => {
 
 <template>
   <div
-    class="mx-auto w-full max-w-[850px] rounded-md p-4 sm:border sm:border-bi-600 sm:p-6"
+    class="mx-auto w-full max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:p-6"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
@@ -68,12 +68,12 @@ const loginUser = (value) => {
         <div class="flex flex-col">
           <RouterLink
             :to="`/${state.lang}/register`"
-            class="text-indigo-400 transition-colors hover:text-indigo-600"
+            class="text-bi-300 transition-colors hover:text-bi-400/50"
             >{{ $t(text.newHere) }}</RouterLink
           >
           <RouterLink
             :to="`/${state.lang}/register`"
-            class="text-indigo-400 transition-colors hover:text-indigo-600"
+            class="text-bi-300 transition-colors hover:text-bi-400/50"
             >{{ $t(text.forgotPassword) }}</RouterLink
           >
         </div>

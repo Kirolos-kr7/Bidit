@@ -2,14 +2,17 @@
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import PWAPrompt from './components/PWAPrompt.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 </script>
 
 <template>
-  <!-- <Navbar /> -->
+  <Navbar v-if="router.currentRoute.value.name !== 'home'" />
   <main class="min-h-[70vh] px-4 pt-[5.5rem] md:px-8">
     <RouterView></RouterView>
   </main>
-  <!-- <Footer /> -->
+  <Footer />
 
   <PWAPrompt />
 </template>

@@ -126,8 +126,13 @@ const logout = () => {
 <template>
   <nav
     :="$attrs"
-    class="fixed top-4 z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 backdrop-blur-sm sm:px-2 md:px-8"
+    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
+    :class="
+      router.currentRoute.value.name !== 'home'
+        ? ' bg-white shadow-sm'
+        : ' top-4'
+    "
   >
     <div class="flex items-center gap-2">
       <button
@@ -307,7 +312,7 @@ const logout = () => {
         v-if="text.account.requiresUNAuth && !state.user"
       >
         <RouterLink
-          class="flex h-full cursor-pointer items-center justify-center bg-indigo-700/75 px-3 font-semibold transition-colors hover:bg-bi-200"
+          class="flex h-full cursor-pointer items-center justify-center bg-bi-300 px-3 font-semibold text-white transition-colors hover:bg-bi-400"
           :to="`/${state.lang}/${text.login.to}`"
         >
           {{ $t(text.login) }}

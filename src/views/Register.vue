@@ -67,7 +67,7 @@ const text = $ref({
 
 <template>
   <div
-    class="mx-auto w-full max-w-[850px] rounded-md p-4 sm:border sm:border-bi-600 sm:p-6"
+    class="mx-auto w-full max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:p-6"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
@@ -110,7 +110,9 @@ const text = $ref({
           @updateInput="(val) => (address = val)"
         />
         <div class="flex items-center gap-5">
-          <label for="gender">{{ $t(text.genderPlaceholder) }}</label>
+          <label for="gender" class="font-medium text-black">{{
+            $t(text.genderPlaceholder)
+          }}</label>
           <BaseSelect
             :value="gender"
             id="gender"
@@ -129,7 +131,7 @@ const text = $ref({
         <div class="flex flex-col">
           <RouterLink
             :to="`/${state.lang}/login`"
-            class="text-indigo-400 transition-colors hover:text-indigo-600"
+            class="text-bi-300 transition-colors hover:text-bi-400/50"
             >{{ $t(text.account) }}</RouterLink
           >
         </div>

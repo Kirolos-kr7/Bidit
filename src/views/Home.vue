@@ -68,46 +68,73 @@ const text = $ref({
     <div
       class="flex h-[51vh] w-screen gap-2.5 overflow-hidden bg-black p-2.5 md:h-screen md:w-auto"
     >
-      <div class="grid -translate-y-16 gap-2.5">
+      <div class="grid -translate-y-24 gap-2.5">
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/1.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/1.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/4.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/4.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/7.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/7.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
       </div>
       <div class="grid -translate-y-8 gap-2.5">
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/2.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/2.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/5.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/5.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/8.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/8.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
       </div>
       <div class="grid -translate-y-40 gap-2.5">
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/3.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/3.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/6.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/6.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
         <div class="img-wrapper relative">
           <span class="z-1 0 absolute top-0 left-0 w-full bg-white"></span>
-          <img src="/images/home/9.png" class="min-w-[200px] opacity-0" />
+          <img
+            src="/images/home/9.png"
+            class="h-[320px] w-[180px] min-w-[180px] object-cover opacity-0"
+          />
         </div>
       </div>
     </div>

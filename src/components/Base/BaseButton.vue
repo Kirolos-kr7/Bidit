@@ -3,7 +3,7 @@
 <template>
   <button
     :="$attrs"
-    class="group relative rounded-md border border-bi-700 bg-bi-800 px-5 py-2 backdrop-blur-sm transition-colors hover:bg-bi-600"
+    class="group relative rounded-md bg-bi-300 to-black px-5 py-2 font-medium backdrop-blur-sm transition-colors hover:bg-bi-400"
   >
     <slot />
   </button>
