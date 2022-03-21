@@ -43,7 +43,7 @@ const text = $ref({
           <input
             type="email"
             :placeholder="$t(text.emailplaceholder)"
-            class="px-3 font-medium text-black focus:outline-none"
+            class="px-3 py-2 font-medium text-black focus:outline-none"
           />
           <BaseButton
             class="w-[max-content] justify-self-end rounded-none border-none px-3 py-2"

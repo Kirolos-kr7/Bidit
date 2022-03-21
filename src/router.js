@@ -4,6 +4,13 @@ import { useStore } from './store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
   routes: [
     {
       path: '/',
@@ -23,9 +30,14 @@ const router = createRouter({
       component: () => import('./views/NothingButARouterView.vue'),
       children: [
         {
-          path: '',
+          path: 'alt',
           name: 'home',
           component: () => import('./views/Home.vue'),
+        },
+        {
+          path: '',
+          name: 'AltHome',
+          component: () => import('./views/AltHome.vue'),
         },
         {
           path: 'bid',

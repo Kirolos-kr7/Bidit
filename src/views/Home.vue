@@ -141,17 +141,38 @@ const text = $ref({
   </header>
 
   <section class="my-8 grid grid-cols-4 gap-5">
-    <RouterLink :to="`/${state.lang}/bids/technology`">
-      <img src="/images/home/Frame 5.png" class="cursor-pointer" />
+    <RouterLink
+      :to="`/${state.lang}/bids/technology`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`/images/home/${state.lang}/technology.png`"
+        class="cursor-pointer"
+      />
     </RouterLink>
-    <RouterLink :to="`/${state.lang}/bids/art`">
-      <img src="/images/home/Frame 9.png" class="cursor-pointer" />
+    <RouterLink
+      :to="`/${state.lang}/bids/art`"
+      class="transition-all hover:brightness-90"
+    >
+      <img :src="`/images/home/${state.lang}/art.png`" class="cursor-pointer" />
     </RouterLink>
-    <RouterLink :to="`/${state.lang}/bids/antiques`">
-      <img src="/images/home/Frame 10.png" class="cursor-pointer" />
+    <RouterLink
+      :to="`/${state.lang}/bids/antiques`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`/images/home/${state.lang}/antiques.png`"
+        class="cursor-pointer"
+      />
     </RouterLink>
-    <RouterLink :to="`/${state.lang}/bids/categories`">
-      <img src="/images/home/Frame 7.png" class="cursor-pointer" />
+    <RouterLink
+      :to="`/${state.lang}/bids/categories`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`/images/home/${state.lang}/cats.png`"
+        class="cursor-pointer"
+      />
     </RouterLink>
   </section>
 </template>

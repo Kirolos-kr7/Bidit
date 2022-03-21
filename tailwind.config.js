@@ -15,9 +15,12 @@ module.exports = {
       },
       minWidth: {
         prose: '65ch',
+        kratos: '1600px',
+        atreus: '1200px',
       },
       maxWidth: {
         kratos: '1600px',
+        atreus: '1200px',
       },
     },
     screens: {
