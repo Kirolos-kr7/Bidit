@@ -38,6 +38,7 @@ const text = $ref({
       class="w-[calc(100vw-1rem)] gap-3 py-3"
       :autoplay="4000"
       :wrap-around="true"
+      dir="ltr"
     >
       <Slide class="p-2" key="1">
         <img :src="`/images/home/${state.lang}/shipping.png`" />
