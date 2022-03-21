@@ -2,7 +2,6 @@
 import { useStore } from '../store'
 import { list } from '../lang/navigation.json'
 import { categories } from '../lang/categories.json'
-import BaseInput from './Base/BaseInput.vue'
 import BaseTitle from './Base/BaseTitle.vue'
 import BaseButton from './Base/BaseButton.vue'
 

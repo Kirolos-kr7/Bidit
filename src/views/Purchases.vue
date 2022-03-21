@@ -1,10 +1,7 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
-import BaseButton from '../components/Base/BaseButton.vue'
 import SalesItem from '../components/SalesItem.vue'
-import { useStore } from '../store'
 import moment from 'moment'
-const { $state: state } = $(useStore())
 
 const text = $ref({
   title: {

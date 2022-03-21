@@ -5,9 +5,6 @@ export default {
 </script>
 
 <script setup>
-import { useStore } from '../../store'
-const { $state: state } = useStore()
-
 defineProps(['placeholder'])
 </script>
 

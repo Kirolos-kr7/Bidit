@@ -1,7 +1,6 @@
 <script setup>
 import moment from 'moment'
 import BaseButton from '../components/Base/BaseButton.vue'
-import BaseInput from '../components/Base/BaseInput.vue'
 import { useStore } from '../store'
 import { getType, getPricePerLang } from '../functions'
 

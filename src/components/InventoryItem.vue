@@ -1,6 +1,5 @@
 <script setup>
 import { useStore } from '../store'
-import { categories } from '../lang/categories.json'
 import BaseButton from './Base/BaseButton.vue'
 import { getType } from '../functions'
 import BaseType from './Base/BaseType.vue'

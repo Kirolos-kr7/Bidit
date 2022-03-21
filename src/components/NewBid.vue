@@ -2,10 +2,6 @@
 import BaseTitle from './Base/BaseTitle.vue'
 import BaseInput from './Base/BaseInput.vue'
 import BaseButton from './Base/BaseButton.vue'
-import { useStore } from '../store'
-import { getType } from '../functions'
-
-const { $state: state } = useStore()
 
 defineEmits(['resetDialog'])
 defineProps(['item'])

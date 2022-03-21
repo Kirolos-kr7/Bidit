@@ -40,6 +40,7 @@ export const routerLang = (state, to, next) => {
 }
 
 export const getPreferedLanguage = () => {
+  const { $state: state } = useStore()
   let preferdLang = navigator.language.split('-')[0]
 
   if (preferdLang === 'en') {

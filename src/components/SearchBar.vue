@@ -2,10 +2,8 @@
 import { useStore } from '../store'
 import moment from 'moment'
 import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 
 const { $state: state } = $(useStore())
-const router = useRouter()
 const emits = defineEmits(['exitSearch'])
 let currRes = $ref(0)
 let searchText = $ref('')

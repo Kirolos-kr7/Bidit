@@ -1,6 +1,5 @@
 <script setup>
 import { useStore } from '../store'
-import BaseButton from './Base/BaseButton.vue'
 import { getType, getStatus } from '../functions'
 import BaseType from './Base/BaseType.vue'
 
@@ -39,7 +38,7 @@ defineProps({
     required: true,
   },
 })
-const emits = defineEmits(['editItem', 'deleteItem'])
+defineEmits(['editItem', 'deleteItem'])
 </script>
 
 <template>
