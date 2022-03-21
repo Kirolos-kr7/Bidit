@@ -1,26 +1,23 @@
 <script setup>
-import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { useStore } from '../store'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
+import 'vue3-carousel/dist/carousel.css'
 
 const { $state: state } = $(useStore())
 
 const brp = $ref({
   900: {
     itemsToShow: 2.2,
-    snapAlign: 'center',
   },
 
   600: {
     itemsToShow: 1.5,
-    snapAlign: 'center',
   },
 
   0: {
     itemsToShow: 1.2,
-    snapAlign: 'start',
   },
 })
 
@@ -41,25 +38,24 @@ const text = $ref({
       class="w-[calc(100vw-1rem)] gap-3 py-3"
       :autoplay="4000"
       :wrap-around="true"
-      dir="ltr"
     >
-      <Slide key="1">
-        <img :src="`/public/images/home/${state.lang}/shipping.png`" />
+      <Slide class="p-2" key="1">
+        <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide key="2">
-        <img :src="`/public/images/home/${state.lang}/easyToUse.png`" />
+      <Slide class="p-2" key="2">
+        <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide key="3">
-        <img :src="`/public/images/home/${state.lang}/participate.png`" />
+      <Slide class="p-2" key="3">
+        <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
-      <Slide key="4">
-        <img :src="`/public/images/home/${state.lang}/shipping.png`" />
+      <Slide class="p-2" key="4">
+        <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide key="5">
-        <img :src="`/public/images/home/${state.lang}/easyToUse.png`" />
+      <Slide class="p-2" key="5">
+        <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide key="6">
-        <img :src="`/public/images/home/${state.lang}/participate.png`" />
+      <Slide class="p-2" key="6">
+        <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
 
       <template #addons>
@@ -109,9 +105,3 @@ const text = $ref({
     <Bids />
   </section>
 </template>
-
-<style>
-.carousel__track {
-  gap: 1rem;
-}
-</style>
