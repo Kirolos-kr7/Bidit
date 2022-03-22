@@ -17,7 +17,7 @@ const brp = $ref({
   },
 
   0: {
-    itemsToShow: 1.2,
+    itemsToShow: 1.05,
   },
 })
 
@@ -31,7 +31,7 @@ const text = $ref({
 
 <template>
   <header
-    class="relative -mx-4 -mt-[5.5rem] grid justify-end gap-5 pt-16 md:-mx-8 md:grid-cols-3 md:gap-0"
+    class="relative -mx-4 -mt-2 grid justify-end gap-5 bg-white pt-2 md:-mx-8 md:grid-cols-3 md:gap-0"
   >
     <Carousel
       :breakpoints="brp"
@@ -40,22 +40,22 @@ const text = $ref({
       :wrap-around="true"
       dir="ltr"
     >
-      <Slide class="p-2" key="1">
+      <Slide class="p-1 md:p-2" key="1">
         <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide class="p-2" key="2">
+      <Slide class="p-1 md:p-2" key="2">
         <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide class="p-2" key="3">
+      <Slide class="p-1 md:p-2" key="3">
         <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
-      <Slide class="p-2" key="4">
+      <Slide class="p-1 md:p-2" key="4">
         <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide class="p-2" key="5">
+      <Slide class="p-1 md:p-2" key="5">
         <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide class="p-2" key="6">
+      <Slide class="p-1 md:p-2" key="6">
         <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
 
@@ -65,7 +65,9 @@ const text = $ref({
     </Carousel>
   </header>
 
-  <section class="my-12 grid grid-cols-2 gap-5 md:grid-cols-4">
+  <section
+    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:grid-cols-4 md:gap-5"
+  >
     <RouterLink
       :to="`/${state.lang}/bids/technology`"
       class="transition-all hover:brightness-90"
