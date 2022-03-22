@@ -126,7 +126,7 @@ const logout = () => {
 <template>
   <nav
     :="$attrs"
-    class="fixed z-20 flex h-16 max-h-screen w-full items-stretch justify-between gap-5 backdrop-blur-sm sm:px-2 md:px-8"
+    class="fixed z-20 max-h-screen w-full backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
     :class="
       router.currentRoute.value.name !== 'home'
@@ -134,39 +134,13 @@ const logout = () => {
         : ' top-4'
     "
   >
-    <div class="flex items-center gap-2">
-      <button
-        class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold text-black transition-colors hover:bg-bi-200 md:hidden"
-        @click="hamburgerMenu = !hamburgerMenu"
-      >
-        <svg
-          class="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          data-v-d2eb525e=""
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2.8"
-            d="M4 8h16M4 16h16"
-            data-v-d2eb525e=""
-          ></path>
-        </svg>
-      </button>
-      <RouterLink
-        :to="`/${state.lang}`"
-        class="font-bioRhyme text-3xl font-extrabold text-black"
-        >BID!T</RouterLink
-      >
-    </div>
-    <ul class="flex h-full items-center font-semibold text-black">
-      <li class="relative h-full">
+    <div
+      class="mx-auto flex h-16 max-w-kratos items-stretch justify-between gap-5"
+    >
+      <div class="flex items-center gap-2">
         <button
-          class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-bi-200"
-          @click="searchDialog = true"
+          class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold text-black transition-colors hover:bg-bi-200 md:hidden"
+          @click="hamburgerMenu = !hamburgerMenu"
         >
           <svg
             class="h-5 w-5"
@@ -174,151 +148,183 @@ const logout = () => {
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
+            data-v-d2eb525e=""
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2.8"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              d="M4 8h16M4 16h16"
+              data-v-d2eb525e=""
             ></path>
           </svg>
         </button>
-      </li>
-      <li class="relative hidden h-full md:block">
-        <button
-          class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
-          :data-cat="true"
-          @click="toggleDDL('cat')"
+        <RouterLink
+          :to="`/${state.lang}`"
+          class="font-bioRhyme text-3xl font-extrabold text-black"
+          >BID!T</RouterLink
         >
-          {{ $t(text.navDDLButton) }}
-          <span class="pointer-events-none ml-1">&darr;</span>
-        </button>
-        <transition name="curtain">
-          <BaseDDL
-            class="absolute right-0"
-            v-if="activeMenu === 'cat'"
-            dir="auto"
+      </div>
+      <ul class="flex h-full items-center font-semibold text-black">
+        <li class="relative h-full">
+          <button
+            class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-bi-200"
+            @click="searchDialog = true"
           >
-            <li
-              class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <RouterLink
-                class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
-                :to="`/${state.lang}/bids`"
-              >
-                {{ $t({ ar: 'الكل', en: 'all' }) }}
-              </RouterLink>
-            </li>
-            <li
-              v-for="(item, index) in categories.items"
-              :key="index"
-              class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
-            >
-              <RouterLink
-                class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
-                :to="`/${state.lang}/bids/${item.to}`"
-              >
-                {{ $t(item) }}
-              </RouterLink>
-            </li>
-          </BaseDDL>
-        </transition>
-      </li>
-      <li class="relative hidden h-full md:block">
-        <button
-          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
-          :data-lang="true"
-          @click="toggleDDL('lang')"
-        >
-          <div class="pointer-events-none flex items-center">
-            <img
-              class="mr-2 w-6"
-              :src="
-                state.lang === 'ar'
-                  ? `/images/flags/eg.svg`
-                  : `/images/flags/us.svg`
-              "
-              :alt="state.lang"
-            />
-            <span class="uppercase" :class="{ '-mt-1': state.lang === 'ar' }">{{
-              state.lang === 'ar' ? 'ع' : 'en'
-            }}</span>
-            <span class="ml-1">&darr;</span>
-          </div>
-        </button>
-        <transition name="curtain">
-          <BaseDDL class="absolute !w-full" v-if="activeMenu === 'lang'">
-            <li
-              v-for="(item, index) in text.langDDLItems"
-              :key="index"
-              class="border-b last-of-type:border-none hover:bg-bi-200"
-            >
-              <button
-                class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-bi-200"
-                @click="changeLang(item.lang)"
-              >
-                <img
-                  :src="item.flag"
-                  :alt="item.lang"
-                  class="pointer-events-none w-6"
-                />
-                <span
-                  class="font-semibold uppercase"
-                  :class="{ '-mt-2': item.lang === 'ar' }"
-                >
-                  {{ item.lang }}</span
-                >
-              </button>
-            </li>
-          </BaseDDL>
-        </transition>
-      </li>
-      <li class="relative block h-full" v-if="state.user">
-        <button
-          class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
-          :data-user="true"
-          @click="toggleDDL('user')"
-        >
-          <img class="pointer-events-none w-10" src="/images/avatar.png" />
-        </button>
-        <transition name="curtain">
-          <BaseDDL class="absolute right-0" v-if="activeMenu === 'user'">
-            <li
-              v-for="(item, index) in text.userItems"
-              :key="index"
-              class="border-b last-of-type:border-none hover:bg-bi-200"
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.8"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </button>
+        </li>
+        <li class="relative hidden h-full md:block">
+          <button
+            class="py-auto block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
+            :data-cat="true"
+            @click="toggleDDL('cat')"
+          >
+            {{ $t(text.navDDLButton) }}
+            <span class="pointer-events-none ml-1">&darr;</span>
+          </button>
+          <transition name="curtain">
+            <BaseDDL
+              class="absolute right-0"
+              v-if="activeMenu === 'cat'"
               dir="auto"
             >
-              <button
-                v-if="item.to === 'logout'"
-                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
-                @mousedown="logout()"
+              <li
+                class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
               >
-                {{ $t(item) }}
-              </button>
-              <RouterLink
-                v-else
-                :to="`/${state.lang}/${item.to}`"
-                class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
+                <RouterLink
+                  class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
+                  :to="`/${state.lang}/bids`"
+                >
+                  {{ $t({ ar: 'الكل', en: 'all' }) }}
+                </RouterLink>
+              </li>
+              <li
+                v-for="(item, index) in categories.items"
+                :key="index"
+                class="border-b capitalize last-of-type:border-none hover:bg-bi-200"
               >
-                {{ $t(item) }}</RouterLink
+                <RouterLink
+                  class="flex w-full px-3 py-2 transition-colors hover:bg-bi-200"
+                  :to="`/${state.lang}/bids/${item.to}`"
+                >
+                  {{ $t(item) }}
+                </RouterLink>
+              </li>
+            </BaseDDL>
+          </transition>
+        </li>
+        <li class="relative hidden h-full md:block">
+          <button
+            class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
+            :data-lang="true"
+            @click="toggleDDL('lang')"
+          >
+            <div class="pointer-events-none flex items-center">
+              <img
+                class="mr-2 w-6"
+                :src="
+                  state.lang === 'ar'
+                    ? `/images/flags/eg.svg`
+                    : `/images/flags/us.svg`
+                "
+                :alt="state.lang"
+              />
+              <span
+                class="uppercase"
+                :class="{ '-mt-1': state.lang === 'ar' }"
+                >{{ state.lang === 'ar' ? 'ع' : 'en' }}</span
               >
-            </li>
-          </BaseDDL>
-        </transition>
-      </li>
-      <li
-        class="relative h-full"
-        v-if="text.account.requiresUNAuth && !state.user"
-      >
-        <RouterLink
-          class="flex h-full cursor-pointer items-center justify-center bg-bi-300 px-3 font-semibold text-white transition-colors hover:bg-bi-400"
-          :to="`/${state.lang}/${text.login.to}`"
+              <span class="ml-1">&darr;</span>
+            </div>
+          </button>
+          <transition name="curtain">
+            <BaseDDL class="absolute !w-full" v-if="activeMenu === 'lang'">
+              <li
+                v-for="(item, index) in text.langDDLItems"
+                :key="index"
+                class="border-b last-of-type:border-none hover:bg-bi-200"
+              >
+                <button
+                  class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-bi-200"
+                  @click="changeLang(item.lang)"
+                >
+                  <img
+                    :src="item.flag"
+                    :alt="item.lang"
+                    class="pointer-events-none w-6"
+                  />
+                  <span
+                    class="font-semibold uppercase"
+                    :class="{ '-mt-2': item.lang === 'ar' }"
+                  >
+                    {{ item.lang }}</span
+                  >
+                </button>
+              </li>
+            </BaseDDL>
+          </transition>
+        </li>
+        <li class="relative block h-full" v-if="state.user">
+          <button
+            class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
+            :data-user="true"
+            @click="toggleDDL('user')"
+          >
+            <img class="pointer-events-none w-10" src="/images/avatar.png" />
+          </button>
+          <transition name="curtain">
+            <BaseDDL class="absolute right-0" v-if="activeMenu === 'user'">
+              <li
+                v-for="(item, index) in text.userItems"
+                :key="index"
+                class="border-b last-of-type:border-none hover:bg-bi-200"
+                dir="auto"
+              >
+                <button
+                  v-if="item.to === 'logout'"
+                  class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
+                  @mousedown="logout()"
+                >
+                  {{ $t(item) }}
+                </button>
+                <RouterLink
+                  v-else
+                  :to="`/${state.lang}/${item.to}`"
+                  class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
+                >
+                  {{ $t(item) }}</RouterLink
+                >
+              </li>
+            </BaseDDL>
+          </transition>
+        </li>
+        <li
+          class="relative h-full"
+          v-if="text.account.requiresUNAuth && !state.user"
         >
-          {{ $t(text.login) }}
-        </RouterLink>
-      </li>
-    </ul>
+          <RouterLink
+            class="flex h-full cursor-pointer items-center justify-center bg-bi-300 px-3 font-semibold text-white transition-colors hover:bg-bi-400"
+            :to="`/${state.lang}/${text.login.to}`"
+          >
+            {{ $t(text.login) }}
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <transition :name="state.lang === 'ar' ? 'slideRight' : 'slideLeft'">

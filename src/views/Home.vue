@@ -4,6 +4,8 @@ import { useStore } from '../store'
 import Navbar from '../components/Navbar.vue'
 import { gsap } from 'gsap'
 import { onMounted } from 'vue'
+import BaseTitle from '../components/Base/BaseTitle.vue'
+import Bids from '../components/Bids.vue'
 
 const { $state: state } = $(useStore())
 
@@ -26,6 +28,12 @@ onMounted(() => {
       duration: 0.9,
       stagger: 0.1,
     })
+
+  gsap.from('[data-cat-animate]', {
+    opacity: 0,
+    duration: 0.4,
+    stagger: 0.2,
+  })
 })
 
 const text = $ref({
@@ -41,6 +49,10 @@ const text = $ref({
   cta: {
     ar: `اكتشف المزادات`,
     en: `Discover Bids `,
+  },
+  forYou: {
+    ar: `أفضل الاختيارات لك`,
+    en: `Top Bids For You`,
   },
 })
 </script>
@@ -66,7 +78,7 @@ const text = $ref({
       </div>
     </div>
     <div
-      class="flex h-[51vh] w-screen gap-2.5 overflow-hidden bg-black p-2.5 md:h-screen md:w-auto"
+      class="flex h-[51vh] w-screen gap-2.5 overflow-hidden bg-black p-2.5 md:h-[800px] md:w-auto"
     >
       <div class="grid -translate-y-24 gap-2.5">
         <div class="img-wrapper relative">
@@ -140,7 +152,9 @@ const text = $ref({
     </div>
   </header>
 
-  <section class="my-8 grid grid-cols-4 gap-5">
+  <section
+    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:-mx-8 md:grid-cols-4 md:gap-5 md:p-6"
+  >
     <RouterLink
       :to="`/${state.lang}/bids/technology`"
       class="transition-all hover:brightness-90"
@@ -148,6 +162,7 @@ const text = $ref({
       <img
         :src="`/images/home/${state.lang}/technology.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
     <RouterLink
@@ -157,12 +172,14 @@ const text = $ref({
       <img :src="`/images/home/${state.lang}/art.png`" class="cursor-pointer" />
     </RouterLink>
     <RouterLink
+      data-cat-animate
       :to="`/${state.lang}/bids/antiques`"
       class="transition-all hover:brightness-90"
     >
       <img
         :src="`/images/home/${state.lang}/antiques.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
     <RouterLink
@@ -172,7 +189,13 @@ const text = $ref({
       <img
         :src="`/images/home/${state.lang}/cats.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
+  </section>
+
+  <section>
+    <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
+    <Bids />
   </section>
 </template>

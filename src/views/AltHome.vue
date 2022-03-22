@@ -4,8 +4,18 @@ import { useStore } from '../store'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import 'vue3-carousel/dist/carousel.css'
+import { onMounted } from 'vue'
+import gsap from 'gsap'
 
 const { $state: state } = $(useStore())
+
+onMounted(() => {
+  gsap.from('[data-cat-animate]', {
+    opacity: 0,
+    duration: 0.4,
+    stagger: 0.2,
+  })
+})
 
 const brp = $ref({
   900: {
@@ -31,7 +41,7 @@ const text = $ref({
 
 <template>
   <header
-    class="relative -mx-4 -mt-2 grid justify-end gap-5 bg-white pt-2 md:-mx-8 md:grid-cols-3 md:gap-0"
+    class="relative -mx-4 -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 md:-mx-8 md:grid-cols-3 md:gap-0"
   >
     <Carousel
       :breakpoints="brp"
@@ -66,7 +76,7 @@ const text = $ref({
   </header>
 
   <section
-    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:grid-cols-4 md:gap-5"
+    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:-mx-8 md:grid-cols-4 md:gap-5 md:p-6"
   >
     <RouterLink
       :to="`/${state.lang}/bids/technology`"
@@ -75,6 +85,7 @@ const text = $ref({
       <img
         :src="`/images/home/${state.lang}/technology.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
     <RouterLink
@@ -84,12 +95,14 @@ const text = $ref({
       <img :src="`/images/home/${state.lang}/art.png`" class="cursor-pointer" />
     </RouterLink>
     <RouterLink
+      data-cat-animate
       :to="`/${state.lang}/bids/antiques`"
       class="transition-all hover:brightness-90"
     >
       <img
         :src="`/images/home/${state.lang}/antiques.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
     <RouterLink
@@ -99,6 +112,7 @@ const text = $ref({
       <img
         :src="`/images/home/${state.lang}/cats.png`"
         class="cursor-pointer"
+        data-cat-animate
       />
     </RouterLink>
   </section>

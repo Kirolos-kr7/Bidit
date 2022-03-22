@@ -50,47 +50,27 @@ let results = $ref([
   {
     item: {
       name: 'item #1',
-      type: 'colthes',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
   },
   {
     item: {
-      name: 'item #1',
-      type: 'colthes',
+      name: 'item #2',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
   },
   {
     item: {
-      name: 'item #1',
-      type: 'colthes',
+      name: 'item #3',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
   },
   {
     item: {
-      name: 'item #1',
-      type: 'colthes',
+      name: 'item #4',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
   },
   {
     item: {
-      name: 'item #1',
-      type: 'colthes',
+      name: 'item #5',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
   },
 ])
 
