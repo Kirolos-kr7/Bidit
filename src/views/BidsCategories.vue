@@ -33,7 +33,9 @@ watch(route, cats)
 </script>
 
 <template>
-  <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
+  <div class="px-4">
+    <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
 
-  <Bids />
+    <Bids />
+  </div>
 </template>

@@ -59,7 +59,7 @@ const text = $ref({
 
 <template>
   <header
-    class="relative -mx-4 -mt-[5.5rem] grid justify-end gap-5 md:-mx-8 md:grid-cols-3 md:gap-0"
+    class="relative -mt-[5.5rem] grid justify-end gap-5 md:-mx-8 md:grid-cols-3 md:gap-0"
   >
     <div class="relative md:col-span-2">
       <Navbar class="absolute top-0 left-0" />
@@ -67,7 +67,7 @@ const text = $ref({
       <div class="flex flex-col gap-3 px-4 pt-24 md:px-8 md:pt-48">
         <h1
           id="mainTitle"
-          class="mx-auto w-3/4 overflow-hidden py-2 text-center font-bioRhyme text-5xl font-bold text-black md:text-6xl"
+          class="mx-auto w-3/4 overflow-hidden py-2 text-center font-merriweather text-5xl font-bold text-black md:text-6xl"
         >
           {{ $t(text.mainTitle) }}
         </h1>
@@ -153,7 +153,7 @@ const text = $ref({
   </header>
 
   <section
-    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:-mx-8 md:grid-cols-4 md:gap-5 md:p-6"
+    class="my-6 grid grid-cols-2 gap-2 bg-white p-3 md:-mx-8 md:grid-cols-4 md:gap-5 md:p-6"
   >
     <RouterLink
       :to="`/${state.lang}/bids/technology`"

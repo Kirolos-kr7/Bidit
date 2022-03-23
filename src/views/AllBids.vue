@@ -11,7 +11,9 @@ const text = $ref({
 </script>
 
 <template>
-  <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
+  <div class="px-4">
+    <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
 
-  <Bids />
+    <Bids />
+  </div>
 </template>

@@ -138,21 +138,25 @@ const deleteItem = () => {
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
-    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-    <BaseButton @click="itemsDialog = true">{{ $t(text.addItem) }}</BaseButton>
-  </div>
-  <div
-    class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-  >
-    <InventoryItem
-      v-for="(item, index) in items"
-      :key="index"
-      :item="item"
-      @editItem="editItem"
-      @newBid="bidDialog = true"
-      @deleteItem="deleteDialog = true"
-    />
+  <div class="px-4">
+    <div class="flex items-start justify-between gap-3">
+      <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+      <BaseButton @click="itemsDialog = true">{{
+        $t(text.addItem)
+      }}</BaseButton>
+    </div>
+    <div
+      class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+    >
+      <InventoryItem
+        v-for="(item, index) in items"
+        :key="index"
+        :item="item"
+        @editItem="editItem"
+        @newBid="bidDialog = true"
+        @deleteItem="deleteDialog = true"
+      />
+    </div>
   </div>
 
   <transition name="fade">

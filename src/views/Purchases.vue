@@ -51,10 +51,11 @@ let bids = $ref([
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
+  <div class="px-4">
     <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-  </div>
-  <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
-    <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+
+    <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
+      <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+    </div>
   </div>
 </template>

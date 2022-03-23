@@ -135,7 +135,7 @@ const logout = () => {
     "
   >
     <div
-      class="mx-auto flex h-16 max-w-kratos items-stretch justify-between gap-5"
+      class="container mx-auto flex h-16 items-stretch justify-between gap-5"
     >
       <div class="flex items-center gap-2">
         <button
@@ -161,7 +161,7 @@ const logout = () => {
         </button>
         <RouterLink
           :to="`/${state.lang}`"
-          class="font-bioRhyme text-3xl font-extrabold text-black"
+          class="font-merriweather text-3xl font-extrabold text-black"
           >BID!T</RouterLink
         >
       </div>

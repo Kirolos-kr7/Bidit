@@ -58,15 +58,17 @@ let bids = $ref([
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
-    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-    <BaseButton @click="itemsDialog = true">
-      <RouterLink :to="`/${state.lang}/account/inventory`">
-        {{ $t(text.startBid) }}
-      </RouterLink>
-    </BaseButton>
-  </div>
-  <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
-    <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+  <div class="px-4">
+    <div class="flex items-start justify-between gap-3">
+      <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+      <BaseButton @click="itemsDialog = true">
+        <RouterLink :to="`/${state.lang}/account/inventory`">
+          {{ $t(text.startBid) }}
+        </RouterLink>
+      </BaseButton>
+    </div>
+    <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
+      <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+    </div>
   </div>
 </template>

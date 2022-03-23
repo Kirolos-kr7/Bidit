@@ -34,7 +34,7 @@ const text = $ref({
 
 <template>
   <footer class="mt-6 bg-bi-200 p-5 pt-6">
-    <div class="mx-auto flex max-w-kratos flex-col gap-5 bg-bi-200">
+    <div class="container mx-auto flex flex-col gap-5 bg-bi-200">
       <div class="grid gap-x-20 gap-y-10 md:grid-cols-[50%,1fr]">
         <div class="!w-full">
           <BaseTitle class="mb-3 !text-2xl">{{ $t(text.title) }}</BaseTitle>
@@ -91,7 +91,9 @@ const text = $ref({
           class="mt-6 mb-2 inline-block bg-clip-text font-semibold text-black"
         >
           {{ $t(text.by) }}
-          <span class="font-bioRhyme font-extrabold">{{ text.by.logo }}</span>
+          <span class="font-merriweather font-extrabold">{{
+            text.by.logo
+          }}</span>
         </h4>
       </div>
     </div>

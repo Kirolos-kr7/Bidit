@@ -4,7 +4,7 @@ const { $state: state } = $(useStore())
 </script>
 
 <template>
-  <div class="relative mt-20 rounded-md bg-white pt-20 shadow-sm">
+  <div class="relative mt-20 rounded-md bg-white px-4 pt-20 shadow-sm">
     <div
       class="absolute -top-20 left-4 rounded-full border-8 border-bi-100"
       :class="state.lang === 'ar' ? 'right-4 left-auto' : 'left-4 right-auto'"

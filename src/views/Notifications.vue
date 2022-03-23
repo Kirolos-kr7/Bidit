@@ -45,8 +45,14 @@ const text = $ref({
 </script>
 
 <template>
-  <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-  <div class="my-5 flex flex-col gap-5">
-    <Notification v-for="(nt, index) in nts" :key="index" :notification="nt" />
+  <div class="px-4">
+    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+    <div class="my-5 flex flex-col gap-5">
+      <Notification
+        v-for="(nt, index) in nts"
+        :key="index"
+        :notification="nt"
+      />
+    </div>
   </div>
 </template>

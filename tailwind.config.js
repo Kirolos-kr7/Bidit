@@ -11,7 +11,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        bioRhyme: '"BioRhyme" ,"Noto Sans Arabic"',
+        merriweather: "'Merriweather' , 'Noto Sans Arabic'",
       },
       minWidth: {
         prose: '65ch',

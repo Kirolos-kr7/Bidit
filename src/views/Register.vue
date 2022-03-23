@@ -67,7 +67,7 @@ const text = $ref({
 
 <template>
   <div
-    class="mx-auto w-full max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:p-6"
+    class="mx-4 max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 

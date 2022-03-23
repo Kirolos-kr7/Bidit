@@ -39,7 +39,7 @@ let bid = $ref({
 </script>
 
 <template>
-  <div class="-mx-4 -mt-6 grid bg-white shadow-sm sm:-mx-8 sm:grid-cols-3">
+  <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3">
     <div class="grid place-content-center bg-bi-200">
       <img
         src="/images/monalisa-art.jpg"

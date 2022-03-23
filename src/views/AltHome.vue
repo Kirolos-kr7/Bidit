@@ -19,15 +19,11 @@ onMounted(() => {
 
 const brp = $ref({
   900: {
-    itemsToShow: 2.2,
-  },
-
-  600: {
     itemsToShow: 1.5,
   },
 
   0: {
-    itemsToShow: 1.05,
+    itemsToShow: 1.04,
   },
 })
 
@@ -36,12 +32,16 @@ const text = $ref({
     ar: `أفضل الاختيارات لك`,
     en: `Top Bids For You`,
   },
+  youRecentlyViewed: {
+    ar: `شاهدت مؤخراً`,
+    en: `You Recently Viewed`,
+  },
 })
 </script>
 
 <template>
   <header
-    class="relative -mx-4 -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 md:-mx-8 md:grid-cols-3 md:gap-0"
+    class="relative -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 md:grid-cols-3 md:gap-0"
   >
     <Carousel
       :breakpoints="brp"
@@ -50,22 +50,22 @@ const text = $ref({
       :wrap-around="true"
       dir="ltr"
     >
-      <Slide class="p-1 md:p-2" key="1">
+      <Slide class="p-0.5 md:p-2" key="1">
         <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide class="p-1 md:p-2" key="2">
+      <Slide class="p-0.5 md:p-2" key="2">
         <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide class="p-1 md:p-2" key="3">
+      <Slide class="p-0.5 md:p-2" key="3">
         <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
-      <Slide class="p-1 md:p-2" key="4">
+      <Slide class="p-0.5 md:p-2" key="4">
         <img :src="`/images/home/${state.lang}/shipping.png`" />
       </Slide>
-      <Slide class="p-1 md:p-2" key="5">
+      <Slide class="p-0.5 md:p-2" key="5">
         <img :src="`/images/home/${state.lang}/easyToUse.png`" />
       </Slide>
-      <Slide class="p-1 md:p-2" key="6">
+      <Slide class="p-0.5 md:p-2" key="6">
         <img :src="`/images/home/${state.lang}/participate.png`" />
       </Slide>
 
@@ -75,8 +75,13 @@ const text = $ref({
     </Carousel>
   </header>
 
+  <section class="my-4 p-4 md:my-6">
+    <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
+    <Bids />
+  </section>
+
   <section
-    class="my-6 -mx-4 grid grid-cols-2 gap-2 bg-white p-3 md:-mx-8 md:grid-cols-4 md:gap-5 md:p-6"
+    class="my-4 grid grid-cols-2 gap-2 bg-white p-3 md:my-6 md:grid-cols-4 md:gap-5 md:p-6"
   >
     <RouterLink
       :to="`/${state.lang}/bids/technology`"
@@ -117,8 +122,8 @@ const text = $ref({
     </RouterLink>
   </section>
 
-  <section>
-    <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
+  <section class="my-4 p-4 md:my-6">
+    <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
     <Bids />
   </section>
 </template>
