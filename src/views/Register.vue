@@ -1,24 +1,31 @@
 <script setup>
+import MazInput from 'maz-ui/components/MazInput'
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import 'maz-ui/css/main.css'
+
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
 import BaseSelect from '../components/Base/BaseSelect.vue'
+import { useAxios } from '../functions'
 const { $state: state } = $(useStore())
 
-let fullName = $ref('')
+let name = $ref('')
 let email = $ref('')
 let address = $ref('')
 let password = $ref('')
 let confirmPassword = $ref('')
+let phone = $ref('')
 let gender = $ref('male')
+let error = $ref(null)
 
 const text = $ref({
   myAccount: {
     ar: 'حساب جديد',
     en: 'New Account',
   },
-  fullNamePlaceholder: {
+  namePlaceholder: {
     ar: 'الاسم كامل',
     en: 'Full Name',
   },
@@ -63,6 +70,22 @@ const text = $ref({
     en: `Already Have an Account?`,
   },
 })
+
+const registerUser = async () => {
+  let body = {
+    name,
+    email,
+    address,
+    password,
+    confirmPassword,
+    phone,
+    gender,
+  }
+
+  let { isLoading, data, err } = await useAxios('post', '/auth/register', body)
+  error = err
+  console.log({ isLoading, data, err })
+}
 </script>
 
 <template>
@@ -71,14 +94,14 @@ const text = $ref({
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
-    <form @submit.prevent="">
+    <form @submit.prevent="registerUser">
       <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
         <BaseInput
           type="text"
           class="!w-full"
-          :placeholder="$t(text.fullNamePlaceholder)"
-          v-model="fullName"
-          @updateInput="(val) => (fullName = val)"
+          :placeholder="$t(text.namePlaceholder)"
+          v-model="name"
+          @updateInput="(val) => (name = val)"
         />
         <BaseInput
           type="text"
@@ -124,8 +147,22 @@ const text = $ref({
             </option>
           </BaseSelect>
         </div>
+        <MazPhoneNumberInput
+          class="sm:col-span-2"
+          v-model="phone"
+          show-code-on-list
+          default-country-code="EG"
+          id="phone"
+          :preferred-countries="['EG', 'US', 'GB']"
+        />
       </div>
-
+      <transition name="fade">
+        <span
+          v-if="error"
+          class="mb-3 block rounded-md bg-red-300 px-3 py-2 capitalize text-black transition-all"
+          >{{ error }}</span
+        >
+      </transition>
       <div class="flex flex-col items-start gap-4">
         <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
         <div class="flex flex-col">

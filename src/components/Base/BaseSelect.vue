@@ -11,7 +11,7 @@ defineProps(['placeholder'])
 <template>
   <select
     ref="selectBox"
-    class="peer w-full rounded-sm border border-neutral-400 bg-white px-3 py-1 font-medium text-black focus:outline-none sm:w-full"
+    class="w-full rounded-md border-2 border-neutral-200 bg-transparent px-3 py-0.5 font-medium text-black placeholder:text-transparent focus:outline-none"
     :="$attrs"
   >
     <slot />

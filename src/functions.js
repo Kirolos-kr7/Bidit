@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useStore } from './store'
 import { categories } from './lang/categories.json'
 import { status } from './lang/bidstatus.json'
@@ -90,4 +91,39 @@ export const getPricePerLang = (val) => {
       maximumFractionDigits: 0,
     }).format(val)
   }
+}
+
+export const useAxios = async (req, path, body) => {
+  const { $state: state } = useStore()
+  const BASE_URL = 'https://bidit-app.herokuapp.com'
+
+  let isLoading = $ref(true)
+  let data = $ref(null)
+  let err = $ref(null)
+
+  try {
+    let res = await axios({
+      method: req,
+      url: BASE_URL + path,
+      data: body,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Accept-Language': state.lang,
+      },
+    })
+    data = await res.data
+
+    if (data.ok) {
+      data = await res.data
+      err = null
+    } else {
+      err = await res.data.message
+    }
+
+    isLoading = false
+  } catch (e) {
+    err = e
+  }
+
+  return { isLoading, data, err }
 }

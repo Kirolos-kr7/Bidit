@@ -15,7 +15,7 @@ const { $state: state } = $(useStore())
   <div class="relative">
     <textarea
       :="$attrs"
-      class="peer w-full rounded-sm border border-neutral-400 bg-transparent px-3 pb-1.5 pt-3 font-medium placeholder:text-transparent focus:outline-none sm:w-[350px]"
+      class="peer w-full rounded-md border-2 border-neutral-200 bg-transparent px-3 pb-1.5 pt-3 font-medium placeholder:text-transparent focus:outline-none sm:w-[350px]"
       :id="placeholder"
       :placeholder="placeholder"
       :value="modelValue"
