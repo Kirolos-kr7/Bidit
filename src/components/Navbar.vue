@@ -119,6 +119,7 @@ const changeLang = (lang) => {
 
 const logout = () => {
   state.user = null
+  localStorage.removeItem('user')
   router.replace(`/${state.lang}/`)
 }
 </script>
@@ -126,13 +127,8 @@ const logout = () => {
 <template>
   <nav
     :="$attrs"
-    class="fixed z-20 max-h-screen w-full backdrop-blur-sm sm:px-2 md:px-8"
+    class="fixed z-20 max-h-screen w-full bg-white shadow-sm backdrop-blur-sm sm:px-2 md:px-8"
     dir="ltr"
-    :class="
-      router.currentRoute.value.name !== 'home'
-        ? ' bg-white shadow-sm'
-        : ' top-4'
-    "
   >
     <div
       class="container mx-auto flex h-16 items-stretch justify-between gap-5"

@@ -8,7 +8,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <Navbar v-if="router.currentRoute.value.name !== 'home'" />
+  <Navbar />
   <main class="container mx-auto min-h-[70vh] pt-[5.5rem]">
     <RouterView></RouterView>
   </main>

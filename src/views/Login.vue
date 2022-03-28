@@ -5,8 +5,11 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
+import { tSTypePredicate } from '@babel/types'
+import { useRouter } from 'vue-router'
 const { $state: state } = $(useStore())
 
+const router = useRouter()
 let email = $ref('mario@gmail.com')
 let password = $ref('m123456')
 let error = $ref('')
@@ -45,10 +48,9 @@ const loginUser = async () => {
   error = err
 
   if (!err) {
-    state.user = {
-      email,
-      password,
-    }
+    localStorage.setItem('user', JSON.stringify(data))
+    router.replace(`/${state.lang}/`)
+    state.user = data
   }
 }
 </script>

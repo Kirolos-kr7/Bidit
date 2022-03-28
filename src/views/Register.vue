@@ -9,8 +9,10 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { useAxios } from '../functions'
+import { useRouter } from 'vue-router'
 const { $state: state } = $(useStore())
 
+const router = useRouter()
 let name = $ref('')
 let email = $ref('')
 let address = $ref('')
@@ -84,7 +86,12 @@ const registerUser = async () => {
 
   let { isLoading, data, err } = await useAxios('post', '/auth/register', body)
   error = err
-  console.log({ isLoading, data, err })
+
+  if (!err) {
+    localStorage.setItem('user', JSON.stringify(data))
+    router.replace(`/${state.lang}/`)
+    state.user = data
+  }
 }
 </script>
 

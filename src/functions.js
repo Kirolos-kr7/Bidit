@@ -102,7 +102,7 @@ export const useAxios = async (req, path, body) => {
   let err = $ref(null)
 
   try {
-    let res = await axios({
+    let response = await axios({
       method: req,
       url: BASE_URL + path,
       data: body,
@@ -111,13 +111,14 @@ export const useAxios = async (req, path, body) => {
         'Accept-Language': state.lang,
       },
     })
-    data = await res.data
 
-    if (data.ok) {
-      data = await res.data
+    let result = await response.data
+
+    if (await result.ok) {
+      data = await result.data
       err = null
     } else {
-      err = await res.data.message
+      err = await result.message
     }
 
     isLoading = false

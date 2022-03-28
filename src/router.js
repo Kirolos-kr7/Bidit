@@ -30,14 +30,9 @@ const router = createRouter({
       component: () => import('./views/NothingButARouterView.vue'),
       children: [
         {
-          path: 'alt',
+          path: '',
           name: 'home',
           component: () => import('./views/Home.vue'),
-        },
-        {
-          path: '',
-          name: 'AltHome',
-          component: () => import('./views/AltHome.vue'),
         },
         {
           path: 'bid',
@@ -122,6 +117,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { $state: state } = useStore()
+
+  let user = JSON.parse(localStorage.getItem('user'))
+
+  if (user) {
+    state.user = user
+  }
 
   routerLang(state, to, next)
 
