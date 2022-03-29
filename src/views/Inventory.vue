@@ -302,9 +302,10 @@ const deleteItem = async () => {
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem"
-          >{{ isEditing ? $t(text.edit) : $t(text.newItem) }}
+        <BaseButton @click="addItem" v-if="isEditing"
+          >{{ $t(text.edit) }}
         </BaseButton>
+        <BaseButton @click="addItem" v-else>{{ $t(text.newItem) }} </BaseButton>
       </form>
     </div>
   </transition>

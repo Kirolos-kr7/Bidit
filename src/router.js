@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getPreferedLanguage, routerLang } from './functions'
+import { getPreferedLanguage, routerLang, useAxios } from './functions'
 import { useStore } from './store'
 
 const router = createRouter({
@@ -115,13 +115,18 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const { $state: state } = useStore()
 
   let user = JSON.parse(localStorage.getItem('user'))
 
   if (user) {
     state.user = user
+    let { ok } = await useAxios('get', '/auth/token')
+    if (!ok) {
+      state.user = null
+      localStorage.setItem('user', JSON.stringify(null))
+    }
   }
 
   routerLang(state, to, next)

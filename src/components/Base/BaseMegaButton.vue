@@ -11,12 +11,12 @@ const { $state: state } = $(useStore())
     <slot />
     <span
       v-if="state.lang === 'en'"
-      class="font-black transition-all group-hover:translate-x-2"
+      class="font-extrabold transition-all group-hover:translate-x-2"
       >&rarr;</span
     >
     <span
       v-if="state.lang === 'ar'"
-      class="font-black transition-all group-hover:-translate-x-2"
+      class="font-extrabold transition-all group-hover:-translate-x-2"
       >&larr;</span
     >
   </button>

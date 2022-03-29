@@ -93,13 +93,14 @@ export const getPricePerLang = (val) => {
   }
 }
 
-export const useAxios = async (req, path, body, auth = true) => {
+export const useAxios = async (req, path, body) => {
   const { $state: state } = useStore()
   const BASE_URL = 'https://bidit-app.herokuapp.com'
 
   let isLoading = $ref(true)
   let data = $ref(null)
   let err = $ref(null)
+  let ok = $ref(null)
 
   let headers = {
     'Access-Control-Allow-Origin': '*',
@@ -116,6 +117,7 @@ export const useAxios = async (req, path, body, auth = true) => {
     })
 
     let result = await response.data
+    ok = await result.ok
 
     if (await result.ok) {
       data = await result.data
@@ -129,5 +131,5 @@ export const useAxios = async (req, path, body, auth = true) => {
     err = e
   }
 
-  return { isLoading, data, err }
+  return { isLoading, data, err, ok }
 }

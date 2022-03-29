@@ -97,7 +97,7 @@ const registerUser = async () => {
 
 <template>
   <div
-    class="mx-4 max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 

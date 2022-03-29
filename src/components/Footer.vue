@@ -54,7 +54,7 @@ const text = $ref({
         </div>
         <div class="flex flex-wrap items-start gap-x-20 gap-y-5 capitalize">
           <ul>
-            <li class="mb-2 text-lg font-bold text-bi-300">
+            <li class="mb-2 text-lg font-extrabold text-bi-300">
               {{ $t(categories.name) }}
             </li>
             <li>
@@ -73,7 +73,7 @@ const text = $ref({
             </li>
           </ul>
           <ul>
-            <li class="mb-2 text-lg font-bold text-bi-300">
+            <li class="mb-2 text-lg font-extrabold text-bi-300">
               {{ $t(list.name) }}
             </li>
             <li v-for="(item, index) in list.items" :key="index">

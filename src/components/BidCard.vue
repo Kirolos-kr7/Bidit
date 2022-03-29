@@ -54,7 +54,7 @@ defineEmits(['editItem', 'deleteItem'])
         {{ getType(bid.item.type) }}
       </BaseType>
       <h2
-        class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
+        class="overflow-hidden break-all text-lg font-semibold capitalize text-black"
         style="
           display: -webkit-box;
           -webkit-line-clamp: 2;
