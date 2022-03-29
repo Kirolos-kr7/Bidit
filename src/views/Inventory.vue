@@ -9,6 +9,7 @@ import BaseSelect from '../components/Base/BaseSelect.vue'
 import { categories } from '../lang/categories.json'
 import { onMounted } from 'vue'
 import NewBid from '../components/NewBid.vue'
+import { useAxios } from '../functions'
 
 let itemsDialog = $ref(false),
   deleteDialog = $ref(false),
@@ -73,41 +74,21 @@ const text = $ref({
   },
 })
 
-let items = $ref([
-  {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'Art',
-    decription:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
-  },
-  {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'Art',
-    decription:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
-  },
-  {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'Art',
-    decription:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
-  },
-  {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'Art',
-    decription:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
-  },
-  {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'Art',
-    decription:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis unde assumenda, voluptas minus omnis voluptates consectetur quidem! Similique at ipsum delectus eum. Nam nostrum similique ipsum quam doloremque veniam ratione.',
-  },
-])
+let items = $ref([])
+let isLoading = $ref(false)
 
-onMounted(() => {
+const getAllItems = async () => {
+  isLoading = true
+  items = []
+  let { isLoading: il, data, err } = await useAxios('get', '/item/all', null)
+  items = data
+  isLoading = il
+}
+
+onMounted(async () => {
   itemType = categories.items[0].en
+
+  getAllItems()
 })
 
 const resetDialog = () => {
@@ -120,20 +101,48 @@ const resetDialog = () => {
   itemDesc = ''
 }
 
-const addItem = () => {
-  console.log({ itemName, itemType, itemDesc })
+const addItem = async () => {
+  await useAxios('post', '/item/add', {
+    name: itemName,
+    type: itemType,
+    description: itemDesc,
+  })
+    .then(() => {
+      itemsDialog = false
+      getAllItems()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
-const editItem = (val) => {
+const editItem = (item) => {
   itemsDialog = true
   isEditing = true
-  itemName = val.name
-  itemType = val.type
-  itemDesc = val.decription
+  console.log(item)
+  itemName = item.name
+  itemType = item.type
+  itemDesc = item.description
 }
 
-const deleteItem = () => {
-  deleteDialog = false
+let selectedItem = $ref({})
+
+const showDeleteDialog = async (item) => {
+  deleteDialog = true
+  selectedItem = item
+}
+
+const deleteItem = async () => {
+  await useAxios('delete', '/item/delete', {
+    id: selectedItem.id,
+  })
+    .then(() => {
+      deleteDialog = false
+      getAllItems()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 </script>
 
@@ -145,17 +154,104 @@ const deleteItem = () => {
         $t(text.addItem)
       }}</BaseButton>
     </div>
-    <div
-      class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-    >
-      <InventoryItem
-        v-for="(item, index) in items"
-        :key="index"
-        :item="item"
-        @editItem="editItem"
-        @newBid="bidDialog = true"
-        @deleteItem="deleteDialog = true"
-      />
+    <div v-if="!isLoading">
+      <div
+        class="mx-auto mt-24 flex flex-col items-center gap-3"
+        v-if="items.length === 0"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svgjs="http://svgjs.com/svgjs"
+          version="1.1"
+          width="150"
+          height="150"
+          x="0"
+          y="0"
+          viewBox="0 0 512 512"
+          xml:space="preserve"
+          class=""
+          data-v-928b0044=""
+        >
+          <g data-v-928b0044="">
+            <linearGradient
+              xmlns="http://www.w3.org/2000/svg"
+              id="SVGID_1_"
+              gradientUnits="userSpaceOnUse"
+              x1="256"
+              x2="256"
+              y1="406"
+              y2="31"
+              data-v-928b0044=""
+            >
+              <stop
+                stop-opacity="1"
+                stop-color="#1f1b5d"
+                offset="0"
+                data-v-928b0044=""
+              ></stop>
+              <stop
+                stop-opacity="1"
+                stop-color="#4f46e5"
+                offset="1"
+                data-v-928b0044=""
+              ></stop>
+            </linearGradient>
+            <linearGradient
+              xmlns="http://www.w3.org/2000/svg"
+              id="SVGID_2_"
+              gradientUnits="userSpaceOnUse"
+              x1="256"
+              x2="256"
+              y1="481"
+              y2="316"
+              data-v-928b0044=""
+            >
+              <stop offset="0" stop-color="#c3ffe8" data-v-928b0044=""></stop>
+              <stop
+                offset=".9973"
+                stop-color="#f0fff4"
+                data-v-928b0044=""
+              ></stop>
+            </linearGradient>
+            <g xmlns="http://www.w3.org/2000/svg" data-v-928b0044="">
+              <g data-v-928b0044="">
+                <g data-v-928b0044="">
+                  <path
+                    d="m511.7 312.7-60-270c-1.5-6.901-7.8-11.7-14.7-11.7h-362c-6.899 0-13.2 4.799-14.7 11.7l-60 270c-.3 1.2-.3 2.099-.3 3.3l166 90h180l166-90c0-1.201 0-2.1-.3-3.3z"
+                    fill="url(#SVGID_1_)"
+                    data-original="url(#SVGID_1_)"
+                    data-v-928b0044=""
+                  ></path>
+                </g>
+              </g>
+              <g data-v-928b0044="">
+                <g data-v-928b0044="">
+                  <path
+                    d="m394.6 316c-11.521 0-22.049 6.526-27.173 16.846l-17.292 34.825c-2.533 5.102-7.739 8.329-13.435 8.329h-161.401c-5.697 0-10.902-3.227-13.435-8.329l-17.292-34.825c-5.123-10.32-15.65-16.846-27.172-16.846h-117.4v150c0 8.284 6.716 15 15 15h482c8.284 0 15-6.716 15-15v-150z"
+                    fill="#f0ffff"
+                    data-v-928b0044=""
+                  ></path>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <span class="font-semibold">You Don't have any items yet!</span>
+      </div>
+      <div
+        v-else
+        class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      >
+        <InventoryItem
+          v-for="(item, index) in items"
+          :key="index"
+          :item="item"
+          @editItem="editItem"
+          @newBid="bidDialog = true"
+          @deleteItem="showDeleteDialog(item)"
+        />
+      </div>
     </div>
   </div>
 
@@ -206,7 +302,7 @@ const deleteItem = () => {
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
-        <BaseButton @click="addItem" class="text-white"
+        <BaseButton @click="addItem"
           >{{ isEditing ? $t(text.edit) : $t(text.newItem) }}
         </BaseButton>
       </form>
@@ -220,14 +316,10 @@ const deleteItem = () => {
       <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
       <p class="my-3">{{ $t(text.doneProcess) }}</p>
       <div class="flex justify-end gap-2">
-        <BaseButton
-          class="!bg-red-600 text-white hover:!bg-red-700"
-          @click="deleteItem"
-          >{{ $t(text.yes) }}</BaseButton
-        >
-        <BaseButton @click="resetDialog" class="text-white">{{
-          $t(text.no)
+        <BaseButton class="!bg-red-600 hover:!bg-red-700" @click="deleteItem">{{
+          $t(text.yes)
         }}</BaseButton>
+        <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
     </div>
   </transition>

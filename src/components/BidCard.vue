@@ -1,6 +1,7 @@
 <script setup>
 import { useStore } from '../store'
 import { getType, getStatus } from '../functions'
+import BaseType from './Base/BaseType.vue'
 
 const { $state: state } = useStore()
 
@@ -49,12 +50,9 @@ defineEmits(['editItem', 'deleteItem'])
       class="h-[260px] object-cover sm:h-auto sm:w-1/3"
     />
     <div class="p-3">
-      <RouterLink
-        :to="`/${state.lang}/bids/${bid.item.type}`"
-        class="my-1 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
-      >
+      <BaseType :to="`/${state.lang}/bids/${bid.item.type}`">
         {{ getType(bid.item.type) }}
-      </RouterLink>
+      </BaseType>
       <h2
         class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
         style="

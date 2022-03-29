@@ -24,7 +24,7 @@ const text = $ref({
     <h1 class="text-8xl font-extrabold">{{ $t(text.title) }}</h1>
     <p class="font-medium">{{ $t(text.NF) }}</p>
     <RouterLink :to="`/${state.lang}`">
-      <BaseButton class="text-white">{{ $t(text.cta) }}</BaseButton>
+      <BaseButton>{{ $t(text.cta) }}</BaseButton>
     </RouterLink>
   </div>
 </template>

@@ -38,24 +38,29 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
   <div
     class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm"
   >
-    <img src="/images/monalisa-art.jpg" class="h-[260px] object-cover" />
-    <div class="p-3">
-      <div class="my-2 flex max-w-full items-start justify-between gap-3">
-        <h2
-          class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
-          style="
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-          "
-        >
-          {{ item.name }}
-        </h2>
+    <img
+      v-if="item.images"
+      :src="item.images[0]"
+      class="h-[260px] object-cover"
+    />
+    <div v-else class="flex h-[260px] items-center justify-center bg-slate-300">
+      <span class="w-1/2 text-center font-semibold">No Image Avalible</span>
+    </div>
+    <div class="p-3 pt-1.5">
+      <BaseType :to="`/${state.lang}/bids/${item.type}`">
+        {{ getType(item.type) }}
+      </BaseType>
+      <h2
+        class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
+        style="
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        "
+      >
+        {{ item.name }}
+      </h2>
 
-        <BaseType :to="`/${state.lang}/bids/${item.type}`">
-          {{ getType(item.type) }}
-        </BaseType>
-      </div>
       <p
         class="my-1 overflow-hidden text-neutral-600"
         style="
@@ -64,10 +69,10 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
           -webkit-box-orient: vertical;
         "
       >
-        {{ item.decription }}
+        {{ item.description }}
       </p>
       <div
-        class="absolute top-0 mt-3 flex flex-col gap-2"
+        class="absolute top-0 mt-3 flex flex-col gap-2 text-white"
         :class="state.lang === 'ar' ? 'right-3' : 'left-3'"
       >
         <button

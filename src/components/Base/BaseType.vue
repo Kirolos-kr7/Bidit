@@ -2,7 +2,7 @@
 
 <template>
   <RouterLink
-    class="my-1 inline-block rounded-2xl bg-bi-300 px-3 font-medium capitalize transition-colors hover:bg-bi-400"
+    class="my-1 inline-block rounded-2xl bg-bi-300 px-3 font-medium capitalize text-white transition-colors hover:bg-bi-400"
   >
     <slot />
   </RouterLink>
