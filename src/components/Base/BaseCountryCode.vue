@@ -15,7 +15,7 @@ const { $state: state } = $(useStore())
   <div class="relative">
     <select
       :="$attrs"
-      class="peer w-full rounded-md border-2 border-neutral-200 bg-transparent px-3 pt-1 font-medium text-black placeholder:text-transparent focus:outline-none sm:w-[350px]"
+      class="peer w-[140px] rounded-md border-2 border-neutral-200 bg-transparent px-3 pt-1 font-medium text-black placeholder:text-transparent focus:outline-none"
       :id="placeholder"
       :placeholder="placeholder"
       :value="modelValue"

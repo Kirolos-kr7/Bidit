@@ -132,7 +132,7 @@ const logout = () => {
     dir="ltr"
   >
     <div
-      class="container mx-auto flex h-16 items-stretch justify-between gap-5"
+      class="mx-auto flex h-16 items-stretch justify-between gap-5 lg:container"
     >
       <div class="flex items-center gap-2">
         <button

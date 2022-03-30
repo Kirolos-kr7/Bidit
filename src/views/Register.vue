@@ -11,6 +11,8 @@ import BaseSelect from '../components/Base/BaseSelect.vue'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
+import BasePhone from '../components/Base/BasePhone.vue'
+import BaseCountryCode from '../components/Base/BaseCountryCode.vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
@@ -19,6 +21,7 @@ let email = $ref('')
 let address = $ref('')
 let password = $ref('')
 let confirmPassword = $ref('')
+let cc = $ref('+20')
 let phone = $ref('')
 let gender = $ref('male')
 let error = $ref(null)
@@ -44,13 +47,21 @@ const text = $ref({
     ar: 'كلمه السر',
     en: 'Password',
   },
-  newPasswordPlaceholder: {
+  confirmPasswordPlaceholder: {
     ar: 'تأكيد كلمه السر',
     en: 'Confirm Password',
   },
   birthdatePlaceholder: {
     ar: 'تاريخ الميلاد',
     en: 'Birthdate',
+  },
+  ccPlaceholder: {
+    ar: 'كود البلد',
+    en: 'Country Code',
+  },
+  phonePlaceholder: {
+    ar: 'رقم التليفون',
+    en: 'Phone Number',
   },
   genderPlaceholder: {
     ar: 'الجنس',
@@ -131,7 +142,7 @@ const registerUser = async () => {
         <BaseInput
           type="password"
           class="!w-full"
-          :placeholder="$t(text.newPasswordPlaceholder)"
+          :placeholder="$t(text.confirmPasswordPlaceholder)"
           v-model="confirmPassword"
           @updateInput="(val) => (confirmPassword = val)"
         />
@@ -142,29 +153,37 @@ const registerUser = async () => {
           v-model="address"
           @updateInput="(val) => (address = val)"
         />
-        <div class="flex items-center gap-5">
-          <label for="gender" class="font-medium text-black">{{
-            $t(text.genderPlaceholder)
-          }}</label>
-          <BaseSelect
-            :value="gender"
-            id="gender"
-            @change="(e) => (gender = e.target.value)"
+
+        <BaseSelect
+          v-model="gender"
+          class="!w-full"
+          @updateInput="(val) => (gender = val)"
+          :placeholder="$t(text.genderPlaceholder)"
+        >
+          <option class="capitalize" value="male">{{ $t(text.male) }}</option>
+          <option class="capitalize" value="female">
+            {{ $t(text.female) }}
+          </option>
+        </BaseSelect>
+
+        <div class="flex items-center gap-3 md:col-span-2">
+          <BaseCountryCode
+            v-model="cc"
+            @updateInput="(val) => (cc = val)"
+            :placeholder="$t(text.ccPlaceholder)"
           >
-            <option class="capitalize" value="male">{{ $t(text.male) }}</option>
-            <option class="capitalize" value="female">
-              {{ $t(text.female) }}
-            </option>
-          </BaseSelect>
+            <option class="capitalize" value="+20">+20</option>
+            <option class="capitalize" value="+1">+1</option>
+          </BaseCountryCode>
+
+          <BasePhone
+            type="tel"
+            class="!w-full sm:col-span-2"
+            :placeholder="$t(text.phonePlaceholder)"
+            v-model="phone"
+            @updateInput="(val) => (phone = val)"
+          />
         </div>
-        <MazPhoneNumberInput
-          class="sm:col-span-2"
-          v-model="phone"
-          show-code-on-list
-          default-country-code="EG"
-          id="phone"
-          :preferred-countries="['EG', 'US', 'GB']"
-        />
       </div>
       <transition name="fade">
         <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>

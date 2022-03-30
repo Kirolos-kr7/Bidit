@@ -9,7 +9,7 @@ const router = useRouter()
 
 <template>
   <Navbar />
-  <main class="container mx-auto min-h-[70vh] pt-[5.5rem]">
+  <main class="mx-auto min-h-[70vh] pt-[5.5rem] lg:container">
     <RouterView></RouterView>
   </main>
   <Footer />

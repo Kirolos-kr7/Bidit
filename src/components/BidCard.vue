@@ -2,6 +2,7 @@
 import { useStore } from '../store'
 import { getType, getStatus } from '../functions'
 import BaseType from './Base/BaseType.vue'
+import BaseImg from './Base/BaseImg.vue'
 
 const { $state: state } = useStore()
 
@@ -42,13 +43,15 @@ defineEmits(['editItem', 'deleteItem'])
 </script>
 
 <template>
-  <div
-    class="bg-bi-700 relative flex cursor-pointer flex-col overflow-hidden rounded-md bg-white shadow-sm sm:flex-row"
+  <Router-Link
+    :to="`/${state.lang}/bid`"
+    class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm sm:flex-row"
   >
-    <img
-      src="/images/monalisa-art.jpg"
-      class="h-[260px] object-cover sm:h-auto sm:w-1/3"
+    <BaseImg
+      src="https://media.btech.com/media/catalog/product/cache/22b1bed05f04d71c4a848d770186c3c4/0/0/0022549_apple-iphone-13-pro-max-256-gb-5g-sierra-blue_3umnabtijaqwmjdf.jpeg"
+      class="h-[250px] object-cover sm:h-auto sm:w-1/3"
     />
+
     <div class="p-3">
       <BaseType :to="`/${state.lang}/bids/${bid.item.type}`">
         {{ getType(bid.item.type) }}
@@ -73,5 +76,5 @@ defineEmits(['editItem', 'deleteItem'])
         <span class="font-medium">{{ bid.endDate }}</span>
       </div>
     </div>
-  </div>
+  </Router-Link>
 </template>

@@ -18,7 +18,6 @@ const router = createRouter({
       redirect: () => {
         let lang = localStorage.getItem('lang')
 
-        console.log(lang)
         if (lang) {
           return lang
         } else {
