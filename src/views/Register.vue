@@ -10,6 +10,7 @@ import { useStore } from '../store'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
+import BaseError from '../components/Base/BaseError.vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
@@ -84,13 +85,15 @@ const registerUser = async () => {
     gender,
   }
 
-  let { isLoading, data, err } = await useAxios('post', '/auth/register', body)
-  error = err
+  let { response, isLoading } = await useAxios('post', '/auth/register', body)
 
-  if (!err) {
-    localStorage.setItem('user', JSON.stringify(data))
+  if (response.data.ok) {
+    let data = response.data.data
+    state.user = data.user
+    cookies.set('authToken', data.token, '3d')
     router.replace(`/${state.lang}/`)
-    state.user = data
+  } else {
+    error = response.data.message
   }
 }
 </script>
@@ -164,11 +167,7 @@ const registerUser = async () => {
         />
       </div>
       <transition name="fade">
-        <span
-          v-if="error"
-          class="mb-3 block rounded-md bg-red-300 px-3 py-2 capitalize text-black transition-all"
-          >{{ error }}</span
-        >
+        <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
       </transition>
       <div class="flex flex-col items-start gap-4">
         <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>

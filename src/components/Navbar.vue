@@ -13,6 +13,7 @@ import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
 import DropDownNav from './DropDownNav.vue'
 import { ref, watch } from 'vue'
+import { useCookies } from 'vue3-cookies'
 
 const { $state: state } = $(useStore())
 const router = useRouter()
@@ -118,9 +119,9 @@ const changeLang = (lang) => {
 }
 
 const logout = () => {
+  let { cookies } = useCookies()
+  cookies.remove('authToken')
   state.user = null
-  localStorage.removeItem('user')
-  router.replace(`/${state.lang}/`)
 }
 </script>
 

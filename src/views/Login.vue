@@ -3,13 +3,14 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
-import { onMounted } from 'vue'
 import { useAxios } from '../functions'
-import { tSTypePredicate } from '@babel/types'
 import { useRouter } from 'vue-router'
+import { useCookies } from 'vue3-cookies'
+import BaseError from '../components/Base/BaseError.vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
+const { cookies } = useCookies()
 let email = $ref('mario@gmail.com')
 let password = $ref('m123456')
 let error = $ref('')
@@ -44,13 +45,15 @@ const text = $ref({
 const loginUser = async () => {
   let body = { email, password }
 
-  let { isLoading, data, err } = await useAxios('post', '/auth/login', body)
-  error = err
+  let { response, isLoading } = await useAxios('post', '/auth/login', body)
 
-  if (!err) {
-    localStorage.setItem('user', JSON.stringify(data))
+  if (response.data.ok) {
+    let data = response.data.data
+    state.user = data.user
+    cookies.set('authToken', data.token, '3d')
     router.replace(`/${state.lang}/`)
-    state.user = data
+  } else {
+    error = response.data.message
   }
 }
 </script>
@@ -81,11 +84,7 @@ const loginUser = async () => {
         />
       </div>
       <transition name="fade">
-        <span
-          v-if="error"
-          class="mb-3 block rounded-md bg-red-300 px-3 py-2 capitalize text-black transition-all"
-          >{{ error }}</span
-        >
+        <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
       </transition>
       <div class="flex flex-col items-start gap-4">
         <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useStore } from './store'
 import { categories } from './lang/categories.json'
 import { status } from './lang/bidstatus.json'
+import { useCookies } from 'vue3-cookies'
 
 export const $t = (x) => {
   const { $state: state } = useStore()
@@ -97,39 +98,26 @@ export const useAxios = async (req, path, body) => {
   const { $state: state } = useStore()
   const BASE_URL = 'https://bidit-app.herokuapp.com'
 
+  const { cookies } = useCookies()
+  let authToken = cookies.get('authToken')
+
   let isLoading = $ref(true)
-  let data = $ref(null)
-  let err = $ref(null)
-  let ok = $ref(null)
+  let response = $ref(null)
 
   let headers = {
     'Access-Control-Allow-Origin': '*',
     'Accept-Language': state.lang,
-    Authorization: state.user ? `Bearer ${state.user.token}` : null,
+    Authorization: authToken ? `Bearer ${authToken}` : null,
   }
 
-  try {
-    let response = await axios({
-      method: req,
-      url: BASE_URL + path,
-      data: body,
-      headers,
-    })
+  response = await axios({
+    method: req,
+    url: BASE_URL + path,
+    data: body,
+    headers,
+  })
 
-    let result = await response.data
-    ok = await result.ok
+  isLoading = false
 
-    if (await result.ok) {
-      data = await result.data
-      err = null
-    } else {
-      err = await result.message
-    }
-
-    isLoading = false
-  } catch (e) {
-    err = e
-  }
-
-  return { isLoading, data, err, ok }
+  return { response, isLoading }
 }

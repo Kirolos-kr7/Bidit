@@ -10,11 +10,13 @@ import { categories } from '../lang/categories.json'
 import { onMounted } from 'vue'
 import NewBid from '../components/NewBid.vue'
 import { useAxios } from '../functions'
+import BaseError from '../components/Base/BaseError.vue'
 
 let itemsDialog = $ref(false),
   deleteDialog = $ref(false),
   bidDialog = $ref(false),
   isEditing = $ref(false),
+  error = $ref(null),
   itemName = $ref(''),
   itemType = $ref(''),
   itemDesc = $ref('')
@@ -80,9 +82,12 @@ let isLoading = $ref(false)
 const getAllItems = async () => {
   isLoading = true
   items = []
-  let { isLoading: il, data, err } = await useAxios('get', '/item/all', null)
-  items = data
-  isLoading = il
+  let { response, isLoading: il } = await useAxios('get', '/item/all', null)
+
+  if (response.data.ok) {
+    items = response.data.data
+    isLoading = il
+  }
 }
 
 onMounted(async () => {
@@ -102,18 +107,18 @@ const resetDialog = () => {
 }
 
 const addItem = async () => {
-  await useAxios('post', '/item/add', {
+  let { response } = await useAxios('post', '/item/add', {
     name: itemName,
     type: itemType,
     description: itemDesc,
   })
-    .then(() => {
-      itemsDialog = false
-      getAllItems()
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+
+  items.push(response.data.data)
+
+  if (!response.data.ok) error = response.data.message
+  else {
+    itemsDialog = false
+  }
 }
 
 const editItem = (item) => {
@@ -125,7 +130,7 @@ const editItem = (item) => {
   itemDesc = item.description
 }
 
-let selectedItem = $ref({})
+let selectedItem = $ref(null)
 
 const showDeleteDialog = async (item) => {
   deleteDialog = true
@@ -133,16 +138,20 @@ const showDeleteDialog = async (item) => {
 }
 
 const deleteItem = async () => {
-  await useAxios('delete', '/item/delete', {
+  let { response } = await useAxios('delete', '/item/delete', {
     id: selectedItem.id,
   })
-    .then(() => {
-      deleteDialog = false
-      getAllItems()
+
+  if (!response.data.ok) console.log(response.data.message)
+  else {
+    deleteDialog = false
+
+    items.forEach((item, i) => {
+      if (item.id === selectedItem.id) {
+        items.splice(i, 1)
+      }
     })
-    .catch((err) => {
-      console.log(err)
-    })
+  }
 }
 </script>
 
@@ -302,6 +311,9 @@ const deleteItem = async () => {
           v-model="itemDesc"
           @updateInput="(val) => (itemDesc = val)"
         />
+        <transition name="fade">
+          <BaseError v-if="error">{{ error }}</BaseError>
+        </transition>
         <BaseButton @click="addItem" v-if="isEditing"
           >{{ $t(text.edit) }}
         </BaseButton>

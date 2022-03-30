@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useCookies } from 'vue3-cookies'
 import { getPreferedLanguage, routerLang, useAxios } from './functions'
 import { useStore } from './store'
 
@@ -117,15 +118,15 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const { $state: state } = useStore()
+  const { cookies } = useCookies()
 
-  let user = JSON.parse(localStorage.getItem('user'))
+  let authToken = cookies.get('authToken')
 
-  if (user) {
-    state.user = user
-    let { ok } = await useAxios('get', '/auth/token')
-    if (!ok) {
-      state.user = null
-      localStorage.setItem('user', JSON.stringify(null))
+  if (authToken) {
+    let { response } = await useAxios('get', '/auth/user')
+
+    if (response.data.ok) {
+      state.user = response.data.data
     }
   }
 
