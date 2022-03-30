@@ -9,7 +9,9 @@ import { useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import BaseCountryCode from '../components/Base/BaseCountryCode.vue'
+import { useCookies } from 'vue3-cookies'
 const { $state: state } = $(useStore())
+const { cookies } = useCookies()
 
 const router = useRouter()
 let name = $ref('')
@@ -88,7 +90,7 @@ const registerUser = async () => {
     address,
     password,
     confirmPassword,
-    phone,
+    phone: `${cc} ${phone.replaceAll(' ', '')}`,
     gender,
   }
 
@@ -162,7 +164,7 @@ const registerUser = async () => {
           </option>
         </BaseSelect>
 
-        <div class="flex items-center gap-3 md:col-span-2">
+        <div class="flex items-center gap-3 sm:col-span-2">
           <BaseCountryCode
             v-model="cc"
             @updateInput="(val) => (cc = val)"
