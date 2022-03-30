@@ -1,8 +1,4 @@
 <script setup>
-import MazInput from 'maz-ui/components/MazInput'
-import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-import 'maz-ui/css/main.css'
-
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
