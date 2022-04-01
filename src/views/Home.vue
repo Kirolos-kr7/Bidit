@@ -1,10 +1,10 @@
 <script setup>
-import { Carousel, Slide, Pagination } from 'vue3-carousel'
+import { onMounted } from 'vue'
 import { useStore } from '../store'
+import { Carousel, Slide, Pagination } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
-import 'vue3-carousel/dist/carousel.css'
-import { onMounted } from 'vue'
 import gsap from 'gsap'
 
 const { $state: state } = $(useStore())

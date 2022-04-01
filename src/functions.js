@@ -101,7 +101,6 @@ export const useAxios = async (req, path, body) => {
   const { cookies } = useCookies()
   let authToken = cookies.get('authToken')
 
-  let isLoading = $ref(true)
   let response = $ref(null)
 
   let headers = {
@@ -117,11 +116,9 @@ export const useAxios = async (req, path, body) => {
       data: body,
       headers,
     })
-
-    setInterval(() => (isLoading = false), 3000)
   } catch (err) {
     console.log(err)
   }
 
-  return { response, isLoading }
+  return { response }
 }

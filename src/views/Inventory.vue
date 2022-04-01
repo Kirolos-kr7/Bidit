@@ -1,24 +1,29 @@
 <script setup>
+import { useAxios } from '../functions'
+import { categories } from '../lang/categories.json'
+import { onMounted } from 'vue'
+import { useStore } from '../store'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseDialog from '../components/Base/BaseDialog.vue'
 import InventoryItem from '../components/InventoryItem.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
-import BaseSelect from '../components/Base/BaseSelect.vue'
-import { categories } from '../lang/categories.json'
-import { onMounted } from 'vue'
 import NewBid from '../components/NewBid.vue'
-import { useAxios } from '../functions'
 import BaseError from '../components/Base/BaseError.vue'
+import BaseType from '../components/Base/BaseType.vue'
+import BaseSelect from '../components/Base/BaseSelect.vue'
+import ImgSelector from '../components/ImgSelector.vue'
 
+const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),
+  itemViewDialog = $ref(false),
   deleteDialog = $ref(false),
   bidDialog = $ref(false),
   isEditing = $ref(false),
   error = $ref(null),
   itemName = $ref(''),
-  itemType = $ref(''),
+  itemType = $ref(),
   itemDesc = $ref('')
 
 const text = $ref({
@@ -78,16 +83,17 @@ const text = $ref({
 
 let items = $ref([])
 let isLoading = $ref(false)
+let selectedItem = $ref(null)
 
 const getAllItems = async () => {
   isLoading = true
   items = []
-  let { response, isLoading: il } = await useAxios('get', '/item/all', null)
+  let { response } = await useAxios('get', '/item/all', null)
 
   if (response.data.ok) {
     items = response.data.data
-    isLoading = il
   }
+  isLoading = false
 }
 
 onMounted(async () => {
@@ -98,11 +104,13 @@ onMounted(async () => {
 
 const resetDialog = () => {
   itemsDialog = false
+  itemViewDialog = false
   isEditing = false
   deleteDialog = false
   bidDialog = false
+  selectedItem = null
   itemName = ''
-  itemType = ''
+  itemType = categories.items[0].en
   itemDesc = ''
 }
 
@@ -121,36 +129,64 @@ const addItem = async () => {
   }
 }
 
-const editItem = (item) => {
+const showEditItem = (item) => {
   itemsDialog = true
   isEditing = true
-  console.log(item)
   itemName = item.name
   itemType = item.type
   itemDesc = item.description
+  selectedItem = item
 }
 
-let selectedItem = $ref(null)
+const editItem = async () => {
+  let newItem = {
+    name: itemName,
+    type: itemType,
+    description: itemDesc,
+    images: null,
+    id: selectedItem.id,
+  }
+
+  let { response } = await useAxios('patch', '/item/edit', newItem)
+
+  if (!response.data.ok) return console.log(response.data.message)
+  else {
+    items.forEach((item, i) => {
+      if (item.id === selectedItem.id) {
+        items[i] = response.data.data
+      }
+    })
+
+    resetDialog()
+  }
+}
 
 const showDeleteDialog = async (item) => {
   deleteDialog = true
   selectedItem = item
 }
 
+const showItemViewDialog = async (item) => {
+  itemViewDialog = true
+  selectedItem = item
+}
+
 const deleteItem = async () => {
+  console.log('RUN')
+
   let { response } = await useAxios('delete', '/item/delete', {
     id: selectedItem.id,
   })
 
-  if (!response.data.ok) console.log(response.data.message)
+  if (!response.data.ok) return console.log(response.data.message)
   else {
-    deleteDialog = false
-
     items.forEach((item, i) => {
       if (item.id === selectedItem.id) {
         items.splice(i, 1)
       }
     })
+
+    resetDialog()
   }
 }
 </script>
@@ -256,9 +292,10 @@ const deleteItem = async () => {
           v-for="(item, index) in items"
           :key="index"
           :item="item"
-          @editItem="editItem"
+          @editItem="showEditItem"
           @newBid="bidDialog = true"
           @deleteItem="showDeleteDialog(item)"
+          @showItemView="showItemViewDialog(item)"
         />
       </div>
     </div>
@@ -266,7 +303,7 @@ const deleteItem = async () => {
 
   <transition name="fade">
     <BaseDialog
-      v-if="itemsDialog || bidDialog || deleteDialog"
+      v-if="itemsDialog || bidDialog || deleteDialog || itemViewDialog"
       @click="resetDialog"
     >
     </BaseDialog>
@@ -289,9 +326,10 @@ const deleteItem = async () => {
         />
         <div class="relative">
           <BaseSelect
+            v-model="itemType"
             class="!w-full capitalize"
+            @updateInput="(val) => (itemType = val)"
             :placeholder="$t(text.typePlaceholder)"
-            @change="(e) => (itemType = e.target.value)"
           >
             <option
               v-for="(category, index) in categories.items"
@@ -314,11 +352,50 @@ const deleteItem = async () => {
         <transition name="fade">
           <BaseError v-if="error">{{ error }}</BaseError>
         </transition>
-        <BaseButton @click="addItem" v-if="isEditing"
+        <BaseButton @click="editItem" v-if="isEditing"
           >{{ $t(text.edit) }}
         </BaseButton>
         <BaseButton @click="addItem" v-else>{{ $t(text.newItem) }} </BaseButton>
       </form>
+    </div>
+  </transition>
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="itemViewDialog"
+    >
+      <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
+      <ImgSelector
+        :imgs="[
+          '../../public/images/home/ar/antiques.png',
+          '../../public/images/home/ar/art.png',
+          '../../public/images/home/ar/technology.png',
+          '../../public/images/home/ar/cats.png',
+          '../../public/images/home/ar/antiques.png',
+          '../../public/images/home/ar/art.png',
+          '../../public/images/home/ar/technology.png',
+          '../../public/images/home/ar/cats.png',
+          '../../public/images/home/ar/antiques.png',
+          '../../public/images/home/ar/art.png',
+          '../../public/images/home/ar/technology.png',
+          '../../public/images/home/ar/cats.png',
+          '../../public/images/home/ar/antiques.png',
+          '../../public/images/home/ar/art.png',
+          '../../public/images/home/ar/technology.png',
+          '../../public/images/home/ar/cats.png',
+        ]"
+      />
+      <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
+        selectedItem.type
+      }}</BaseType>
+      <h2
+        class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
+      >
+        {{ selectedItem.name }}
+      </h2>
+      <p class="my-1 overflow-hidden text-neutral-600">
+        {{ selectedItem.description }}
+      </p>
     </div>
   </transition>
   <transition name="zoom">

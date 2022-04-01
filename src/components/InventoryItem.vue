@@ -31,7 +31,7 @@ defineProps({
     required: true,
   },
 })
-const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
+const emits = defineEmits(['editItem', 'deleteItem', 'newBid', 'showItemView'])
 </script>
 
 <template>
@@ -78,6 +78,7 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid'])
         <button
           class="flex items-center justify-center rounded-full bg-neutral-900 p-2 hover:!bg-neutral-800"
           :title="$t(text.openTitle)"
+          @click="emits('showItemView', item)"
         >
           <svg
             class="h-5 w-5"

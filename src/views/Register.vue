@@ -94,7 +94,7 @@ const registerUser = async () => {
     gender,
   }
 
-  let { response, isLoading } = await useAxios('post', '/auth/register', body)
+  let { response } = await useAxios('post', '/auth/register', body)
 
   if (response.data.ok) {
     let data = response.data.data
