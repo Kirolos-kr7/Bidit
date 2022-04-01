@@ -120,8 +120,10 @@ const changeLang = (lang) => {
 
 const logout = () => {
   let { cookies } = useCookies()
+
   cookies.remove('authToken')
   state.user = null
+  router.go()
 }
 </script>
 

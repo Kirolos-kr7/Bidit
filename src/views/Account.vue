@@ -14,7 +14,7 @@ const { $state: state } = $(useStore())
     <div class="flex justify-between p-5 pt-0">
       <div>
         <h1 class="text-3xl font-semibold text-black">
-          {{ state.user.name }}
+          {{ state.user?.name }}
         </h1>
         <div class="mt-3 grid grid-cols-[20px,1fr] gap-x-2 gap-y-1">
           <svg
@@ -32,7 +32,7 @@ const { $state: state } = $(useStore())
             ></path>
           </svg>
           <h2 class="font-medium text-neutral-600">
-            {{ state.user.email }}
+            {{ state.user?.email }}
           </h2>
           <svg
             class="h-5 w-5 text-neutral-500"
@@ -49,7 +49,7 @@ const { $state: state } = $(useStore())
             ></path>
           </svg>
           <span class="font-medium text-neutral-600">{{
-            state.user.phone
+            state.user?.phone
           }}</span>
           <svg
             class="h-5 w-5 text-neutral-500"
@@ -72,7 +72,7 @@ const { $state: state } = $(useStore())
             ></path>
           </svg>
           <span class="font-medium text-neutral-600">{{
-            state.user.address
+            state.user?.address
           }}</span>
           <svg
             class="h-5 w-5 text-neutral-500"
@@ -89,7 +89,7 @@ const { $state: state } = $(useStore())
             ></path>
           </svg>
           <span class="font-medium capitalize text-neutral-600">
-            {{ state.user.gender }}</span
+            {{ state.user?.gender }}</span
           >
         </div>
       </div>

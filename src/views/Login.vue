@@ -13,6 +13,7 @@ const router = useRouter()
 const { cookies } = useCookies()
 let email = $ref('mario@gmail.com')
 let password = $ref('m123456')
+let isLoading = $ref(false)
 let error = $ref('')
 
 const text = $ref({
@@ -43,9 +44,10 @@ const text = $ref({
 })
 
 const loginUser = async () => {
+  isLoading = true
   let body = { email, password }
 
-  let { response, isLoading } = await useAxios('post', '/auth/login', body)
+  let { response } = await useAxios('post', '/auth/login', body)
 
   if (response.data.ok) {
     let data = response.data.data
@@ -87,7 +89,11 @@ const loginUser = async () => {
         <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
       </transition>
       <div class="flex flex-col items-start gap-4">
-        <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
+        <BaseButton
+          class="disabled:bg-blue-300"
+          :disabled="isLoading && 'disabled'"
+          >{{ $t(text.loginPlaceholder) }}</BaseButton
+        >
         <div class="flex flex-col">
           <RouterLink
             :to="`/${state.lang}/register`"

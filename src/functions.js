@@ -110,14 +110,18 @@ export const useAxios = async (req, path, body) => {
     Authorization: authToken ? `Bearer ${authToken}` : null,
   }
 
-  response = await axios({
-    method: req,
-    url: BASE_URL + path,
-    data: body,
-    headers,
-  })
+  try {
+    response = await axios({
+      method: req,
+      url: BASE_URL + path,
+      data: body,
+      headers,
+    })
 
-  isLoading = false
+    setInterval(() => (isLoading = false), 3000)
+  } catch (err) {
+    console.log(err)
+  }
 
   return { response, isLoading }
 }
