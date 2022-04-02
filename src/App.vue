@@ -18,7 +18,6 @@ const router = useRouter()
       <img src="/images/Loader.gif" class="-mt-12 w-[300px]" alt="loader" />
     </div>
   </transition> -->
-
   <Navbar />
   <main class="mx-auto min-h-[70vh] pt-[5.5rem] lg:container">
     <RouterView></RouterView>

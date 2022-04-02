@@ -367,22 +367,22 @@ const deleteItem = async () => {
       <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
       <ImgSelector
         :imgs="[
-          '../../public/images/home/ar/antiques.png',
-          '../../public/images/home/ar/art.png',
-          '../../public/images/home/ar/technology.png',
-          '../../public/images/home/ar/cats.png',
-          '../../public/images/home/ar/antiques.png',
-          '../../public/images/home/ar/art.png',
-          '../../public/images/home/ar/technology.png',
-          '../../public/images/home/ar/cats.png',
-          '../../public/images/home/ar/antiques.png',
-          '../../public/images/home/ar/art.png',
-          '../../public/images/home/ar/technology.png',
-          '../../public/images/home/ar/cats.png',
-          '../../public/images/home/ar/antiques.png',
-          '../../public/images/home/ar/art.png',
-          '../../public/images/home/ar/technology.png',
-          '../../public/images/home/ar/cats.png',
+          '/images/home/ar/antiques.png',
+          '/images/home/ar/art.png',
+          '/images/home/ar/technology.png',
+          '/images/home/ar/cats.png',
+          '/images/home/ar/antiques.png',
+          '/images/home/ar/art.png',
+          '/images/home/ar/technology.png',
+          '/images/home/ar/cats.png',
+          '/images/home/ar/antiques.png',
+          '/images/home/ar/art.png',
+          '/images/home/ar/technology.png',
+          '/images/home/ar/cats.png',
+          '/images/home/ar/antiques.png',
+          '/images/home/ar/art.png',
+          '/images/home/ar/technology.png',
+          '/images/home/ar/cats.png',
         ]"
       />
       <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
