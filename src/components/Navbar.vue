@@ -122,6 +122,8 @@ const logout = () => {
   let { cookies } = useCookies()
 
   cookies.remove('authToken')
+  cookies.remove('isLoggedIn')
+  state.isLoggedIn = false
   state.user = null
   router.go()
 }
@@ -277,7 +279,7 @@ const logout = () => {
             </BaseDDL>
           </transition>
         </li>
-        <li class="relative block h-full" v-if="state.user">
+        <li class="relative block h-full" v-if="state.isLoggedIn">
           <button
             class="block h-full cursor-pointer px-3 font-semibold transition-colors hover:bg-bi-200"
             :data-user="true"
@@ -313,7 +315,7 @@ const logout = () => {
         </li>
         <li
           class="relative h-full"
-          v-if="text.account.requiresUNAuth && !state.user"
+          v-if="text.account.requiresUNAuth && !state.isLoggedIn"
         >
           <RouterLink
             class="flex h-full cursor-pointer items-center justify-center bg-bi-300 px-3 font-semibold text-white transition-colors hover:bg-bi-400"

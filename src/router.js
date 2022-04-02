@@ -120,22 +120,25 @@ router.beforeEach(async (to, from, next) => {
   const { cookies } = useCookies()
 
   let authToken = cookies.get('authToken')
+  let isLoggedIn = cookies.get('isLoggedIn')
+  if (isLoggedIn) state.isLoggedIn = isLoggedIn
 
   if (authToken) {
     let { response } = await useAxios('get', '/auth/user')
 
     if (response.data.ok) {
       state.user = response.data.data
+      state.isLoggedIn = true
     }
   }
 
   routerLang(state, to, next)
 
-  if (state.user && to.meta.requiresUnAuth) {
+  if (state.isLoggedIn && to.meta.requiresUnAuth) {
     next({ name: 'home', params: { lang: state.lang } })
     return
   }
-  if (!state.user && to.meta.requiresAuth) {
+  if (!state.isLoggedIn && to.meta.requiresAuth) {
     next({ name: 'home', params: { lang: state.lang } })
     return
   }

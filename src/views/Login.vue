@@ -53,6 +53,7 @@ const loginUser = async () => {
     let data = response.data.data
     state.user = data.user
     cookies.set('authToken', data.token, '3d')
+    cookies.set('isLoggedIn', true, '3d')
     router.replace(`/${state.lang}/`)
   } else {
     error = response.data.message

@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('main', () => {
-  let lang = $ref()
-  let user = $ref(null)
-
-  return { lang, user }
+export const useStore = defineStore('main', {
+  state: () => {
+    return {
+      lang: null,
+      user: null,
+      isLoggedIn: false,
+    }
+  },
 })
