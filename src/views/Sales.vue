@@ -4,6 +4,7 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import SalesItem from '../components/SalesItem.vue'
 import { useStore } from '../store'
 import moment from 'moment'
+import BaseInfo from '../components/Base/BaseInfo.vue'
 const { $state: state } = $(useStore())
 
 const text = $ref({
@@ -14,6 +15,10 @@ const text = $ref({
   startBid: {
     ar: 'بدء مزاد جديد',
     en: 'Start New Bid',
+  },
+  info: {
+    ar: 'المزادات الموجودة هنا انت قمت بإنشاءها.',
+    en: 'Bids here are ones you created.',
   },
 })
 
@@ -59,8 +64,11 @@ let bids = $ref([
 
 <template>
   <div class="px-4">
-    <div class="flex items-start justify-between gap-3">
-      <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+      <BaseTitle
+        >{{ $t(text.title) }}
+        <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
+      >
       <BaseButton @click="itemsDialog = true">
         <RouterLink :to="`/${state.lang}/account/inventory`">
           {{ $t(text.startBid) }}

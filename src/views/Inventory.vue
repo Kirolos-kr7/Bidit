@@ -14,6 +14,7 @@ import BaseError from '../components/Base/BaseError.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import ImgSelector from '../components/ImgSelector.vue'
+import BaseInfo from '../components/Base/BaseInfo.vue'
 
 const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),
@@ -78,6 +79,10 @@ const text = $ref({
   no: {
     ar: 'لا',
     en: 'No',
+  },
+  info: {
+    ar: 'العناصر الموجودة هنا يمكنك وحدك رؤيتها.',
+    en: 'Only you can see the items here.',
   },
 })
 
@@ -193,8 +198,11 @@ const deleteItem = async () => {
 
 <template>
   <div class="px-4">
-    <div class="flex items-start justify-between gap-3">
-      <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+      <BaseTitle
+        >{{ $t(text.title) }}
+        <BaseInfo>{{ $t(text.info) }} </BaseInfo>
+      </BaseTitle>
       <BaseButton @click="itemsDialog = true">{{
         $t(text.addItem)
       }}</BaseButton>
