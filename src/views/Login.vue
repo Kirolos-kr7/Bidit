@@ -2,11 +2,12 @@
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
+import BaseError from '../components/Base/BaseError.vue'
+import BaseWarn from '../components/Base/BaseWarn.vue'
 import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
-import BaseError from '../components/Base/BaseError.vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
@@ -58,6 +59,7 @@ const loginUser = async () => {
   } else {
     error = response.data.message
   }
+  isLoading = false
 }
 </script>
 
@@ -69,6 +71,11 @@ const loginUser = async () => {
 
     <form @submit.prevent="loginUser">
       <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
+        <BaseWarn
+          v-if="router.currentRoute.value.query.ref === `token_expired`"
+          class="sm:col-span-2"
+          >Your token has expired, please login again.</BaseWarn
+        >
         <BaseInput
           type="email"
           class="!w-full"

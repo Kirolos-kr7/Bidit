@@ -119,6 +119,7 @@ router.beforeEach(async (to, from, next) => {
   const { $state: state } = useStore()
   const { cookies } = useCookies()
 
+  let tokenExpired = false
   let authToken = cookies.get('authToken')
   let isLoggedIn = cookies.get('isLoggedIn')
   if (isLoggedIn) state.isLoggedIn = isLoggedIn
@@ -129,11 +130,25 @@ router.beforeEach(async (to, from, next) => {
     if (response.data.ok) {
       state.user = response.data.data
       state.isLoggedIn = true
+    } else {
+      state.user = null
+      state.isLoggedIn = false
+      cookies.remove('authToken')
+      cookies.remove('isLoggedIn')
+      tokenExpired = true
     }
   }
 
   routerLang(state, to, next)
 
+  if (tokenExpired) {
+    next({
+      name: 'login',
+      params: { lang: state.lang },
+      query: { ref: 'token_expired' },
+    })
+    return
+  }
   if (state.isLoggedIn && to.meta.requiresUnAuth) {
     next({ name: 'home', params: { lang: state.lang } })
     return
