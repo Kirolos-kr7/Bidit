@@ -13,10 +13,9 @@ registerSW({})
 
 const gAuthOptions = {
   clientId:
-    '93523739734-r8av9s9e4595ecticu63tg3gqu3jiags.apps.googleusercontent.com',
+    '93523739734-gm8s6ba175gn6ad2h7ioapcvrnbq7k6p.apps.googleusercontent.com',
   scope: 'email',
   prompt: 'consent',
-  // fetch_basic_profile: false,
 }
 
 const app = createApp(App)

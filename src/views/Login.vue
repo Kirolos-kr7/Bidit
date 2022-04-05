@@ -8,10 +8,13 @@ import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
+import { inject, onMounted } from 'vue'
+import GAuth from 'vue3-google-oauth2'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
 const { cookies } = useCookies()
+let Vue3GoogleOauth
 let email = $ref('mario@gmail.com')
 let password = $ref('m123456')
 let isLoading = $ref(false)
@@ -44,6 +47,8 @@ const text = $ref({
   },
 })
 
+Vue3GoogleOauth = inject('Vue3GoogleOauth')
+
 const loginUser = async () => {
   isLoading = true
   let body = { email, password }
@@ -61,6 +66,12 @@ const loginUser = async () => {
   }
   isLoading = false
 }
+
+const loginWGoogle = async () => {
+  let oAuth = Vue3GoogleOauth.instance
+  let user = await oAuth.signIn()
+  console.log(user)
+}
 </script>
 
 <template>
@@ -68,6 +79,23 @@ const loginUser = async () => {
     class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
+
+    <button
+      class="!mt-6 flex items-center gap-2 rounded-md bg-slate-200 py-3 px-6 font-semibold shadow-sm transition-colors hover:bg-slate-300 disabled:!bg-red-100"
+      @click="loginWGoogle"
+      :disabled="Vue3GoogleOauth.isAthorized && !Vue3GoogleOauth.isInit"
+    >
+      <img src="/images/gIcon.svg" class="h-6 w-6" alt="" />
+
+      <span class="mt-0.5"> Continue with Google</span>
+    </button>
+
+    <div class="relative mt-6 h-px w-full bg-bi-200">
+      <span
+        class="absolute left-1/2 -top-2.5 block -translate-x-1/2 bg-white px-2"
+        >OR</span
+      >
+    </div>
 
     <form @submit.prevent="loginUser">
       <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
