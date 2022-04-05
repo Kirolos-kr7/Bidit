@@ -1,6 +1,5 @@
 <script setup>
 import { useStore } from '../store'
-import moment from 'moment'
 import { onMounted, onUnmounted } from 'vue'
 
 const { $state: state } = $(useStore())

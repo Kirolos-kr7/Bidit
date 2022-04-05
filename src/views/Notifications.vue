@@ -1,38 +1,37 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Notification from '../components/Notification.vue'
-import moment from 'moment'
 
 let nts = $ref([
   {
     title: 'abc',
     message:
       'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: moment().format('LLLL'),
+    createdAt: new Date(),
   },
   {
     title: 'abc',
     message:
       'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: moment().format('LLLL'),
+    createdAt: new Date(),
   },
   {
     title: 'abc',
     message:
       'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: moment().format('LLLL'),
+    createdAt: new Date(),
   },
   {
     title: 'abc',
     message:
       'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: moment().format('LLLL'),
+    createdAt: new Date(),
   },
   {
     title: 'abc',
     message:
       'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: moment().format('LLLL'),
+    createdAt: new Date(),
   },
 ])
 

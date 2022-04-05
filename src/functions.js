@@ -56,7 +56,7 @@ export const getType = (val) => {
   let itemType = val
 
   categories.items.forEach((item) => {
-    if (item.en.toLowerCase() === val.toLowerCase()) {
+    if (item.en.toLowerCase() === val?.toLowerCase()) {
       itemType = $t(item)
     }
   })
@@ -91,6 +91,16 @@ export const getPricePerLang = (val) => {
       currency: 'EGP',
       maximumFractionDigits: 0,
     }).format(val)
+  }
+}
+
+export const getNumPerLang = (val) => {
+  const { $state: state } = useStore()
+
+  if (state.lang === 'ar') {
+    return new Intl.NumberFormat('ar-EG').format(val)
+  } else {
+    return new Intl.NumberFormat('en-EG').format(val)
   }
 }
 

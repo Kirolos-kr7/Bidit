@@ -1,8 +1,17 @@
 <script setup>
-import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
-import { getType, getPricePerLang, useAxios } from '../functions'
-import { onMounted } from 'vue'
+import { getType, getPricePerLang, getNumPerLang, useAxios } from '../functions'
+import { onMounted, watchEffect } from 'vue'
+import BaseButton from '../components/Base/BaseButton.vue'
+import BaseType from '../components/Base/BaseType.vue'
+
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+import 'dayjs/locale/ar'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(advancedFormat)
+dayjs.extend(localizedFormat)
 
 const { $state: state } = useStore()
 
@@ -11,9 +20,17 @@ const text = $ref({
     ar: 'السعر المبدئي',
     en: 'Start Price',
   },
-  startBid: {
-    ar: 'بدء المزاد',
-    en: 'Bid Now',
+  joinBid: {
+    ar: 'انضم للمزاد',
+    en: 'Join Bid',
+  },
+  bidsMade: {
+    ar: 'عدد المزايدات',
+    en: 'Bids Made',
+  },
+  currBid: {
+    ar: 'السعر الحالي',
+    en: 'Current Bid',
   },
   report: {
     ar: 'الابلاغ عن المزاد!',
@@ -22,28 +39,41 @@ const text = $ref({
 })
 
 let isLoading = $ref(false)
-let bid = $ref({})
+let bid = $ref()
+let currBid = $ref(0)
+
+watchEffect(() => {
+  if (bid) {
+    bid?.bidsHistory.forEach((aBid) => {
+      if (currBid < aBid.price) currBid = aBid.price
+    })
+  }
+})
 
 onMounted(async () => {
   isLoading = true
 
-  let { response } = await useAxios('get', '/bid/view', {
-    bidID: '6249d7078f3db98ae5267e6d',
-  })
+  let bidID = '6249d7078f3db98ae5267e6d'
 
-  console.log(response.data)
+  let { response } = await useAxios('get', `/bid/view/${bidID}`)
 
   if (response.data.ok) {
     bid = response.data.data
+    console.log(bid)
   }
   isLoading = false
 })
+
+const formatDate = (d) => {
+  return dayjs(d).locale(state.lang).format('LLLL')
+}
 </script>
 
 <template>
-  <!-- <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
+  <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
     <div class="grid place-content-center bg-bi-200">
       <img
+        v-if="bid?.item.images !== null"
         src="/images/monalisa-art.jpg"
         class="mx-auto my-auto h-[230px] w-[240px] object-cover"
       />
@@ -51,37 +81,35 @@ onMounted(async () => {
 
     <div class="bg-bi-800 sm:col-span-2 sm:mt-8">
       <div class="p-4 pt-6 sm:pt-8">
-        <RouterLink
-          :to="`/${state.lang}/bids/${bid.item.type}`"
+        <BaseType
+          :to="`/${state.lang}/bids/${bid?.item.type}`"
           class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
         >
-          {{ getType(bid.item.type) }}
-        </RouterLink>
+          {{ getType(bid?.item.type) }}
+        </BaseType>
 
         <h2
           class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
         >
-          {{ bid.item.name }}
+          {{ bid?.item.name }}
         </h2>
 
         <div class="my-2 flex flex-wrap items-center gap-2">
           <div class="flex items-center gap-2">
             <img src="/images/avatar.png" class="w-7 cursor-pointer" />
-            <div
+            <Router-Link
+              to="#"
               class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
             >
-              {{ bid.user.fullName }}
-            </div>
+              {{ bid?.user?.name }}
+            </Router-Link>
           </div>
           <span
             class="relative mx-0.5 hidden h-1.5 w-1.5 rounded-full bg-gray-400 sm:inline-block"
           ></span>
-          <p class="text-slate-500">Saturday 12 may 2021</p>
+          <p class="text-slate-500">{{ formatDate(bid?.createdAt) }}</p>
         </div>
 
-        <h3 class="my-3 text-lg font-semibold text-black">
-          {{ $t(text.price) }} : {{ getPricePerLang(bid.minPrice) }}
-        </h3>
         <p class="mb-2 font-medium text-neutral-500">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam hic
           corporis, doloribus debitis maxime harum placeat itaque fugit culpa
@@ -89,11 +117,32 @@ onMounted(async () => {
           exercitationem eveniet?
         </p>
 
+        <div class="grid grid-cols-3 gap-5 pt-3">
+          <div class="overflow-hidden rounded-md border-2 p-3">
+            <h4>{{ $t(text.bidsMade) }}</h4>
+            <span class="text-3xl font-semibold">{{
+              getNumPerLang(bid?.bidsHistory.length)
+            }}</span>
+          </div>
+          <div class="overflow-hidden rounded-md border-2 p-3">
+            <h4>{{ $t(text.price) }}</h4>
+            <span class="text-3xl font-semibold">{{
+              getPricePerLang(bid?.minPrice)
+            }}</span>
+          </div>
+          <div class="overflow-hidden rounded-md border-2 p-3">
+            <h4>{{ $t(text.currBid) }}</h4>
+            <span class="text-3xl font-semibold">{{
+              currBid !== 0 ? getPricePerLang(currBid) : '---'
+            }}</span>
+          </div>
+        </div>
+
         <div
           class="my-3 flex flex-col overflow-hidden rounded-md border border-gray-800"
         >
           <div
-            class="flex w-full items-center justify-between bg-gray-800 px-3 py-2"
+            class="flex w-full items-center justify-between bg-gray-800 px-3 py-2 text-white"
           >
             <h4 class="text-lg font-semibold">
               Live
@@ -109,24 +158,19 @@ onMounted(async () => {
               <span class="text-lg font-semibold">left</span>
             </div>
           </div>
-          <div class="grid gap-x-5 md:grid-cols-2">
-            <div class="flex items-center gap-2 p-4 text-black">
-              <h5>
-                <b class="text-xl">(12)</b> Bids Latest is
-                <b class="text-xl">{{ getPricePerLang(1800) }}</b>
-              </h5>
-            </div>
-            <div class="flex flex-col border border-gray-800">
-              <input
-                type="number"
-                placeholder="Your Price"
-                class="bg-transparent p-3 font-semibold text-black focus:outline-none"
-              />
-              <BaseButton class="!w-full rounded-none border-none">
-                {{ $t(text.startBid) }}
-              </BaseButton>
-            </div>
-          </div>
+          <form
+            @submit.prevent=""
+            class="grid border border-gray-800 md:grid-cols-4"
+          >
+            <input
+              type="number"
+              placeholder="Your Price"
+              class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"
+            />
+            <BaseButton class="!w-full rounded-none border-none">
+              {{ $t(text.joinBid) }}
+            </BaseButton>
+          </form>
         </div>
 
         <a
@@ -136,5 +180,5 @@ onMounted(async () => {
         >
       </div>
     </div>
-  </div> -->
+  </div>
 </template>

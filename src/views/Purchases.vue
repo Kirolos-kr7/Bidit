@@ -1,7 +1,6 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import SalesItem from '../components/SalesItem.vue'
-import moment from 'moment'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 
 const text = $ref({
@@ -21,8 +20,8 @@ let bids = $ref([
       name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
       type: 'colthes',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
+    startDate: new Date(),
+    endDate: new Date(),
     status: 'canceled',
   },
   {
@@ -30,8 +29,8 @@ let bids = $ref([
       name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
       type: 'antiques',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
+    startDate: new Date(),
+    endDate: new Date(),
     status: 'ended',
   },
   {
@@ -39,8 +38,8 @@ let bids = $ref([
       name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
       type: 'cars',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
+    startDate: new Date(),
+    endDate: new Date(),
     status: 'active',
   },
   {
@@ -48,8 +47,8 @@ let bids = $ref([
       name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
       type: 'art',
     },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
+    startDate: new Date(),
+    endDate: new Date(),
     status: 'active',
   },
 ])
