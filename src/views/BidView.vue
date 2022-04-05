@@ -1,8 +1,8 @@
 <script setup>
-import moment from 'moment'
 import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
-import { getType, getPricePerLang } from '../functions'
+import { getType, getPricePerLang, useAxios } from '../functions'
+import { onMounted } from 'vue'
 
 const { $state: state } = useStore()
 
@@ -21,25 +21,27 @@ const text = $ref({
   },
 })
 
-let bid = $ref({
-  item: {
-    name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-    type: 'colthes',
-  },
-  user: {
-    fullName: 'Kirolos Rafaat',
-    image: null,
-    uid: '123dsfd',
-  },
-  startDate: moment().subtract(3, 'days').calendar(),
-  endDate: moment().add(3, 'days').calendar(),
-  status: 'canceled',
-  minPrice: 1400,
+let isLoading = $ref(false)
+let bid = $ref({})
+
+onMounted(async () => {
+  isLoading = true
+
+  let { response } = await useAxios('get', '/bid/view', {
+    bidID: '6249d7078f3db98ae5267e6d',
+  })
+
+  console.log(response.data)
+
+  if (response.data.ok) {
+    bid = response.data.data
+  }
+  isLoading = false
 })
 </script>
 
 <template>
-  <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3">
+  <!-- <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
     <div class="grid place-content-center bg-bi-200">
       <img
         src="/images/monalisa-art.jpg"
@@ -134,5 +136,5 @@ let bid = $ref({
         >
       </div>
     </div>
-  </div>
+  </div> -->
 </template>

@@ -1,10 +1,11 @@
 <script setup>
+import { useStore } from '../store'
+import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import SalesItem from '../components/SalesItem.vue'
-import { useStore } from '../store'
-import moment from 'moment'
 import BaseInfo from '../components/Base/BaseInfo.vue'
+import { useAxios } from '../functions'
 const { $state: state } = $(useStore())
 
 const text = $ref({
@@ -22,44 +23,20 @@ const text = $ref({
   },
 })
 
-let bids = $ref([
-  {
-    item: {
-      name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-      type: 'colthes',
-    },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'canceled',
-  },
-  {
-    item: {
-      name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-      type: 'antiques',
-    },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'ended',
-  },
-  {
-    item: {
-      name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-      type: 'cars',
-    },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'active',
-  },
-  {
-    item: {
-      name: 'Activ Sharks Patterned Zipped Backpack With outer Pocket - Steal Blue',
-      type: 'art',
-    },
-    startDate: moment().subtract(3, 'days').calendar(),
-    endDate: moment().add(3, 'days').calendar(),
-    status: 'active',
-  },
-])
+let isLoading = $ref(false)
+let bids = $ref()
+
+onMounted(async () => {
+  isLoading = true
+  bids = []
+
+  let { response } = await useAxios('get', '/bid/sales', null)
+
+  if (response.data.ok) {
+    bids = response.data.data
+  }
+  isLoading = false
+})
 </script>
 
 <template>
@@ -75,7 +52,10 @@ let bids = $ref([
         </RouterLink>
       </BaseButton>
     </div>
-    <div class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2">
+    <div
+      class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2"
+      v-if="!isLoading"
+    >
       <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
     </div>
   </div>

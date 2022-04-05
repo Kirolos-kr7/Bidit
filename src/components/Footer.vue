@@ -26,8 +26,8 @@ const text = $ref({
     logo: 'Bid!T',
   },
   cta: {
-    ar: 'ابقني على اطلاع',
-    en: 'Keep Me Updated',
+    ar: 'اشترك',
+    en: 'Subscribe',
   },
 })
 </script>

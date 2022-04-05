@@ -126,10 +126,11 @@ const addItem = async () => {
     description: itemDesc,
   })
 
-  items.push(response.data.data)
+  console.log(response)
 
   if (!response.data.ok) error = response.data.message
   else {
+    items.push(response.data.data)
     itemsDialog = false
   }
 }
@@ -173,6 +174,11 @@ const showDeleteDialog = async (item) => {
 
 const showItemViewDialog = async (item) => {
   itemViewDialog = true
+  selectedItem = item
+}
+
+const showNewBidDialog = async (item) => {
+  bidDialog = true
   selectedItem = item
 }
 
@@ -301,7 +307,7 @@ const deleteItem = async () => {
           :key="index"
           :item="item"
           @editItem="showEditItem"
-          @newBid="bidDialog = true"
+          @newBid="showNewBidDialog(item)"
           @deleteItem="showDeleteDialog(item)"
           @showItemView="showItemViewDialog(item)"
         />
@@ -423,6 +429,6 @@ const deleteItem = async () => {
   </transition>
 
   <transition name="zoom">
-    <NewBid v-if="bidDialog" @resetDialog="resetDialog" :item="items[0]" />
+    <NewBid v-if="bidDialog" @resetDialog="resetDialog" :item="selectedItem" />
   </transition>
 </template>
