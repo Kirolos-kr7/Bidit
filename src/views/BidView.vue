@@ -1,6 +1,12 @@
 <script setup>
 import { useStore } from '../store'
-import { getType, getPricePerLang, getNumPerLang, useAxios } from '../functions'
+import {
+  getType,
+  getPricePerLang,
+  getNumPerLang,
+  useAxios,
+  $t,
+} from '../functions'
 import { onMounted, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
@@ -14,6 +20,101 @@ dayjs.extend(advancedFormat)
 dayjs.extend(localizedFormat)
 
 const { $state: state } = useStore()
+
+let isLoading = $ref(false)
+let bid = $ref()
+let currBid = $ref(0)
+let TOE = $ref('')
+let status = $ref('')
+let clock = $ref('')
+
+watchEffect(() => {
+  if (bid) {
+    bid?.bidsHistory.forEach((aBid) => {
+      if (currBid < aBid.price) currBid = aBid.price
+    })
+  }
+})
+
+onMounted(async () => {
+  isLoading = true
+
+  let bidID = '6249d7078f3db98ae5267e6d'
+
+  let { response } = await useAxios('get', `/bid/view/${bidID}`)
+
+  if (response.data.ok) {
+    bid = response.data.data
+
+    calcDiff()
+    setInterval(calcDiff, 1000)
+  }
+  isLoading = false
+})
+
+// const formatDate = (d) => {
+//   return dayjs(d).locale(state.lang).format('LLLL')
+// }
+
+const calcDiff = () => {
+  let startDate = dayjs('4-18-2022')
+  let endDate = dayjs('4-31-2022')
+  let now = dayjs()
+  let diff = ''
+  let days
+  let hours
+  let mins
+  let secs
+
+  // FROM START
+
+  days = startDate.diff(now, 'd', true)
+  hours = (days % 1) * 24
+  mins = (hours % 1) * 60
+  secs = (mins % 1) * 60
+
+  if (Math.floor(days) > 0)
+    diff += Math.floor(days) + (state.lang === 'ar' ? 'ي ' : 'd ')
+  if (Math.floor(hours) >= 0)
+    diff += Math.floor(hours) + (state.lang === 'ar' ? 'س ' : 'h ')
+  if (Math.floor(mins) >= 0)
+    diff += Math.floor(mins) + (state.lang === 'ar' ? 'د ' : 'm ')
+  if (Math.floor(secs) >= 0) {
+    diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
+
+    TOE = diff
+    status = $t(text.waiting)
+    clock = $t(text.toLive)
+    return
+  }
+
+  // TO END
+
+  days = endDate.diff(now, 'd', true)
+  hours = (days % 1) * 24
+  mins = (hours % 1) * 60
+  secs = (mins % 1) * 60
+
+  diff = ''
+
+  if (Math.floor(days) > 0)
+    diff += Math.floor(days) + (state.lang === 'ar' ? 'ي ' : 'd ')
+  if (Math.floor(hours) >= 0)
+    diff += Math.floor(hours) + (state.lang === 'ar' ? 'س ' : 'h ')
+  if (Math.floor(mins) >= 0)
+    diff += Math.floor(mins) + (state.lang === 'ar' ? 'د ' : 'm ')
+  if (Math.floor(secs) >= 0) {
+    diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
+
+    TOE = diff
+    status = $t(text.live)
+    clock = $t(text.left)
+  } else {
+    TOE = ''
+    status = $t(text.expired)
+    clock = ''
+  }
+}
 
 const text = $ref({
   price: {
@@ -36,37 +137,27 @@ const text = $ref({
     ar: 'الابلاغ عن المزاد!',
     en: 'Report This Bid!',
   },
+  live: {
+    ar: 'نشط',
+    en: 'Live',
+  },
+  expired: {
+    ar: 'انتهى',
+    en: 'Expired',
+  },
+  left: {
+    ar: 'متبقي',
+    en: 'Left',
+  },
+  toLive: {
+    ar: 'على النشاط',
+    en: 'To Live',
+  },
+  waiting: {
+    ar: 'انتظار',
+    en: 'Waiting',
+  },
 })
-
-let isLoading = $ref(false)
-let bid = $ref()
-let currBid = $ref(0)
-
-watchEffect(() => {
-  if (bid) {
-    bid?.bidsHistory.forEach((aBid) => {
-      if (currBid < aBid.price) currBid = aBid.price
-    })
-  }
-})
-
-onMounted(async () => {
-  isLoading = true
-
-  let bidID = '6249d7078f3db98ae5267e6d'
-
-  let { response } = await useAxios('get', `/bid/view/${bidID}`)
-
-  if (response.data.ok) {
-    bid = response.data.data
-    console.log(bid)
-  }
-  isLoading = false
-})
-
-const formatDate = (d) => {
-  return dayjs(d).locale(state.lang).format('LLLL')
-}
 </script>
 
 <template>
@@ -101,13 +192,9 @@ const formatDate = (d) => {
               to="#"
               class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
             >
-              {{ bid?.user?.name }}
+              {{ bid?.user?.name || 'mario' }}
             </Router-Link>
           </div>
-          <span
-            class="relative mx-0.5 hidden h-1.5 w-1.5 rounded-full bg-gray-400 sm:inline-block"
-          ></span>
-          <p class="text-slate-500">{{ formatDate(bid?.createdAt) }}</p>
         </div>
 
         <p class="mb-2 font-medium text-neutral-500">
@@ -145,20 +232,20 @@ const formatDate = (d) => {
             class="flex w-full items-center justify-between bg-gray-800 px-3 py-2 text-white"
           >
             <h4 class="text-lg font-semibold">
-              Live
+              {{ status }}
               <span
                 class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
+                v-if="status === 'Live' || status === 'نشط'"
               />
             </h4>
             <div>
-              <span>{{ new Date().getHours() + 'h' }}</span> :
-              <span>{{ new Date().getMinutes() + 'm' }}</span> :
-              <span>{{ new Date().getSeconds() + 's' }}</span
-              >&nbsp;
-              <span class="text-lg font-semibold">left</span>
+              {{ TOE }}
+              &nbsp;
+              <span class="text-lg font-semibold">{{ clock }}</span>
             </div>
           </div>
           <form
+            v-if="status === 'Live' || status === 'نشط'"
             @submit.prevent=""
             class="grid border border-gray-800 md:grid-cols-4"
           >
@@ -166,6 +253,7 @@ const formatDate = (d) => {
               type="number"
               placeholder="Your Price"
               class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"
+              :min="parseFloat(currBid) + 1"
             />
             <BaseButton class="!w-full rounded-none border-none">
               {{ $t(text.joinBid) }}
