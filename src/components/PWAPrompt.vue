@@ -74,7 +74,7 @@ const text = $ref({
         <BaseButton
           class="!w-full"
           @click="updateServiceWorker()"
-          v-if="needRefresh"
+          v-if="needRefresh || 1"
         >
           {{ $t(text.reload) }}</BaseButton
         >
