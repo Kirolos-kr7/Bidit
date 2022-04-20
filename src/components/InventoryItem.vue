@@ -3,6 +3,7 @@ import { useStore } from '../store'
 import BaseButton from './Base/BaseButton.vue'
 import { getType } from '../functions'
 import BaseType from './Base/BaseType.vue'
+import BaseImg from './Base/BaseImg.vue'
 
 const { $state: state } = useStore()
 
@@ -38,14 +39,8 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid', 'showItemView'])
   <div
     class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm"
   >
-    <img
-      v-if="item.images"
-      :src="item.images[0]"
-      class="h-[260px] object-cover"
-    />
-    <div v-else class="flex h-[260px] items-center justify-center bg-slate-300">
-      <span class="w-1/2 text-center font-semibold">No Image Avalible</span>
-    </div>
+    <BaseImg :src="item.images[0]" class="h-[260px] object-cover" />
+
     <div class="p-3 pt-1.5">
       <BaseType :to="`/${state.lang}/bids/${item.type}`">
         {{ getType(item.type) }}

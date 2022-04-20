@@ -45,7 +45,7 @@ defineEmits(['editItem', 'deleteItem'])
 <template>
   <Router-Link
     :to="`/${state.lang}/bid`"
-    class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm sm:flex-row"
+    class="relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm sm:flex-row"
   >
     <BaseImg
       src="https://media.btech.com/media/catalog/product/cache/22b1bed05f04d71c4a848d770186c3c4/0/0/0022549_apple-iphone-13-pro-max-256-gb-5g-sierra-blue_3umnabtijaqwmjdf.jpeg"

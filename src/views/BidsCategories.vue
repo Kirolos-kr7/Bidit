@@ -2,7 +2,7 @@
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { $t } from '../functions'
+import { $t, useAxios } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 import Bids from '../components/Bids.vue'
@@ -11,6 +11,29 @@ const route = useRoute()
 const router = useRouter()
 const { $state: state } = useStore()
 let title = $ref()
+
+let bids = $ref([])
+
+const getBids = async () => {
+  let { response } = await useAxios(
+    'get',
+    `/bid/${route.params.cat.toLowerCase()}`,
+  )
+
+  if (response.data.ok) {
+    bids = response.data.data
+  }
+}
+
+onMounted(() => {
+  getBids()
+})
+
+watch(route, () => {
+  if (route.params.cat) {
+    getBids()
+  }
+})
 
 const cats = () => {
   if (route.name === 'bids categories') {
@@ -36,6 +59,6 @@ watch(route, cats)
   <div class="px-4">
     <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
 
-    <Bids />
+    <Bids :bids="bids" />
   </div>
 </template>

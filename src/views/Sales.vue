@@ -3,9 +3,10 @@ import { useStore } from '../store'
 import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
-import SalesItem from '../components/SalesItem.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import { useAxios } from '../functions'
+import BaseEmpty from '../components/Base/BaseEmpty.vue'
+import Bids from '../components/Bids.vue'
 const { $state: state } = $(useStore())
 
 const text = $ref({
@@ -24,13 +25,12 @@ const text = $ref({
 })
 
 let isLoading = $ref(false)
-let bids = $ref()
+let bids = $ref([])
 
 onMounted(async () => {
   isLoading = true
-  bids = []
 
-  let { response } = await useAxios('get', '/bid/sales', null)
+  let { response } = await useAxios('get', '/bid/sales')
 
   if (response.data.ok) {
     bids = response.data.data
@@ -52,11 +52,11 @@ onMounted(async () => {
         </RouterLink>
       </BaseButton>
     </div>
-    <div
-      class="mt-6 grid grid-cols-1 items-start gap-5 md:grid-cols-2"
-      v-if="!isLoading"
-    >
-      <SalesItem v-for="(bid, index) in bids" :key="index" :bid="bid" />
+
+    <div v-if="!isLoading">
+      <BaseEmpty v-if="bids.length === 0" msg="You Don't have any bids yet!" />
+
+      <Bids :bids="bids" v-else />
     </div>
   </div>
 </template>

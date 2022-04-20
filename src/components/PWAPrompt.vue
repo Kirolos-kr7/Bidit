@@ -1,9 +1,9 @@
 <script setup>
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import BaseButton from './Base/BaseButton.vue'
 import { useStore } from '../store'
-const { $state: state } = $(useStore())
+import BaseButton from './Base/BaseButton.vue'
 
+const { $state: state } = $(useStore())
 const { needRefresh, updateServiceWorker } = useRegisterSW()
 
 const close = async () => {
@@ -46,26 +46,18 @@ const text = $ref({
         class="flex items-center justify-between border border-transparent border-b-slate-200 bg-gray-50 font-semibold text-black"
       >
         <span class="px-3 font-medium">{{ $t(text.updateAv) }}</span>
-        <div
-          id="close"
+        <button
           class="p-3 hover:bg-black/10"
-          role="button"
           aria-label="Close"
-          tabindex="0"
           @click="close()"
         >
-          <svg
-            class="Bz112c Bz112c-r9oPif"
-            xmlns="https://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="#5f6368"
-          >
+          <svg class="Bz112c Bz112c-r9oPif" viewBox="0 0 24 24" fill="#5f6368">
             <path
               d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
             ></path>
             <path fill="none" d="M0 0h24v24H0z"></path>
           </svg>
-        </div>
+        </button>
       </div>
       <div class="p-3">
         <p class="mb-3">

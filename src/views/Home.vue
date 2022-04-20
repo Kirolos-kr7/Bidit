@@ -6,10 +6,19 @@ import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import gsap from 'gsap'
+import { useAxios } from '../functions'
 
 const { $state: state } = $(useStore())
 
-onMounted(() => {
+let bids = $ref([])
+
+onMounted(async () => {
+  let { response } = await useAxios('get', '/bid/all')
+
+  if (response.data.ok) {
+    bids = response.data.data
+  }
+
   gsap.from('[data-cat-animate]', {
     opacity: 0,
     duration: 0.4,
@@ -75,9 +84,9 @@ const text = $ref({
     </Carousel>
   </header>
 
-  <section class="my-4 p-4 md:my-6">
+  <section class="my-4 p-4 md:my-6" v-if="bids">
     <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
-    <Bids />
+    <Bids :bids="bids" />
   </section>
 
   <section
@@ -122,8 +131,8 @@ const text = $ref({
     </RouterLink>
   </section>
 
-  <section class="my-4 p-4 md:my-6">
+  <section class="my-4 p-4 md:my-6" v-if="bids">
     <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
-    <Bids />
+    <Bids :bids="bids" />
   </section>
 </template>

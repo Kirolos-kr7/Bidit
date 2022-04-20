@@ -1,6 +1,18 @@
 <script setup>
+import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
+import { useAxios } from '../functions'
+
+let bids = $ref([])
+
+onMounted(async () => {
+  let { response } = await useAxios('get', '/bid/all')
+
+  if (response.data.ok) {
+    bids = response.data.data
+  }
+})
 
 const text = $ref({
   allBids: {
@@ -14,6 +26,6 @@ const text = $ref({
   <div class="px-4">
     <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
 
-    <Bids />
+    <Bids :bids="bids" />
   </div>
 </template>

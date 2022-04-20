@@ -17,6 +17,7 @@ module.exports = {
   globals: {
     $: 'readonly',
     $ref: 'readonly',
+    google: 'readonly',
   },
   rules: {
     'vue/multi-word-component-names': 0,
