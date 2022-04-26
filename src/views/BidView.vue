@@ -16,6 +16,7 @@ import 'dayjs/locale/es'
 import 'dayjs/locale/ar'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import UserLayout from '../Layouts/UserLayout.vue'
 dayjs.extend(advancedFormat)
 dayjs.extend(localizedFormat)
 
@@ -161,112 +162,114 @@ const text = $ref({
 </script>
 
 <template>
-  <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
-    <div class="grid place-content-center bg-bi-200">
-      <img
-        v-if="bid?.item.images !== null"
-        src="/images/monalisa-art.jpg"
-        class="mx-auto my-auto h-[230px] w-[240px] object-cover"
-      />
-    </div>
+  <UserLayout>
+    <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
+      <div class="grid place-content-center bg-bi-200">
+        <img
+          v-if="bid?.item.images !== null"
+          src="/images/monalisa-art.jpg"
+          class="mx-auto my-auto h-[230px] w-[240px] object-cover"
+        />
+      </div>
 
-    <div class="bg-bi-800 sm:col-span-2 sm:mt-8">
-      <div class="p-4 pt-6 sm:pt-8">
-        <BaseType
-          :to="`/${state.lang}/bids/${bid?.item.type}`"
-          class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
-        >
-          {{ getType(bid?.item.type) }}
-        </BaseType>
-
-        <h2
-          class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
-        >
-          {{ bid?.item.name }}
-        </h2>
-
-        <div class="my-2 flex flex-wrap items-center gap-2">
-          <div class="flex items-center gap-2">
-            <img src="/images/avatar.png" class="w-7 cursor-pointer" />
-            <Router-Link
-              to="#"
-              class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
-            >
-              {{ bid?.user?.name || 'mario' }}
-            </Router-Link>
-          </div>
-        </div>
-
-        <p class="mb-2 font-medium text-neutral-500">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam hic
-          corporis, doloribus debitis maxime harum placeat itaque fugit culpa
-          nihil sit est rerum molestias asperiores quam alias! Odit,
-          exercitationem eveniet?
-        </p>
-
-        <div class="grid grid-cols-3 gap-5 pt-3">
-          <div class="overflow-hidden rounded-md border-2 p-3">
-            <h4>{{ $t(text.bidsMade) }}</h4>
-            <span class="text-3xl font-semibold">{{
-              getNumPerLang(bid?.bidsHistory.length)
-            }}</span>
-          </div>
-          <div class="overflow-hidden rounded-md border-2 p-3">
-            <h4>{{ $t(text.price) }}</h4>
-            <span class="text-3xl font-semibold">{{
-              getPricePerLang(bid?.minPrice)
-            }}</span>
-          </div>
-          <div class="overflow-hidden rounded-md border-2 p-3">
-            <h4>{{ $t(text.currBid) }}</h4>
-            <span class="text-3xl font-semibold">{{
-              currBid !== 0 ? getPricePerLang(currBid) : '---'
-            }}</span>
-          </div>
-        </div>
-
-        <div
-          class="my-3 flex flex-col overflow-hidden rounded-md border border-gray-800"
-        >
-          <div
-            class="flex w-full items-center justify-between bg-gray-800 px-3 py-2 text-white"
+      <div class="bg-bi-800 sm:col-span-2 sm:mt-8">
+        <div class="p-4 pt-6 sm:pt-8">
+          <BaseType
+            :to="`/${state.lang}/bids/${bid?.item.type}`"
+            class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
           >
-            <h4 class="text-lg font-semibold">
-              {{ status }}
-              <span
-                class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
-                v-if="status === 'Live' || status === 'نشط'"
-              />
-            </h4>
-            <div>
-              {{ TOE }}
-              &nbsp;
-              <span class="text-lg font-semibold">{{ clock }}</span>
+            {{ getType(bid?.item.type) }}
+          </BaseType>
+
+          <h2
+            class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
+          >
+            {{ bid?.item.name }}
+          </h2>
+
+          <div class="my-2 flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-2">
+              <img src="/images/avatar.png" class="w-7 cursor-pointer" />
+              <Router-Link
+                to="#"
+                class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
+              >
+                {{ bid?.user?.name || 'mario' }}
+              </Router-Link>
             </div>
           </div>
-          <form
-            v-if="status === 'Live' || status === 'نشط'"
-            @submit.prevent=""
-            class="grid border border-gray-800 md:grid-cols-4"
-          >
-            <input
-              type="number"
-              placeholder="Your Price"
-              class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"
-              :min="parseFloat(currBid) + 1"
-            />
-            <BaseButton class="!w-full rounded-none border-none">
-              {{ $t(text.joinBid) }}
-            </BaseButton>
-          </form>
-        </div>
 
-        <a
-          href="#"
-          class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
-          >{{ $t(text.report) }}</a
-        >
+          <p class="mb-2 font-medium text-neutral-500">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam hic
+            corporis, doloribus debitis maxime harum placeat itaque fugit culpa
+            nihil sit est rerum molestias asperiores quam alias! Odit,
+            exercitationem eveniet?
+          </p>
+
+          <div class="grid grid-cols-3 gap-5 pt-3">
+            <div class="overflow-hidden rounded-md border-2 p-3">
+              <h4>{{ $t(text.bidsMade) }}</h4>
+              <span class="text-3xl font-semibold">{{
+                getNumPerLang(bid?.bidsHistory.length)
+              }}</span>
+            </div>
+            <div class="overflow-hidden rounded-md border-2 p-3">
+              <h4>{{ $t(text.price) }}</h4>
+              <span class="text-3xl font-semibold">{{
+                getPricePerLang(bid?.minPrice)
+              }}</span>
+            </div>
+            <div class="overflow-hidden rounded-md border-2 p-3">
+              <h4>{{ $t(text.currBid) }}</h4>
+              <span class="text-3xl font-semibold">{{
+                currBid !== 0 ? getPricePerLang(currBid) : '---'
+              }}</span>
+            </div>
+          </div>
+
+          <div
+            class="my-3 flex flex-col overflow-hidden rounded-md border border-gray-800"
+          >
+            <div
+              class="flex w-full items-center justify-between bg-gray-800 px-3 py-2 text-white"
+            >
+              <h4 class="text-lg font-semibold">
+                {{ status }}
+                <span
+                  class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
+                  v-if="status === 'Live' || status === 'نشط'"
+                />
+              </h4>
+              <div>
+                {{ TOE }}
+                &nbsp;
+                <span class="text-lg font-semibold">{{ clock }}</span>
+              </div>
+            </div>
+            <form
+              v-if="status === 'Live' || status === 'نشط'"
+              @submit.prevent=""
+              class="grid border border-gray-800 md:grid-cols-4"
+            >
+              <input
+                type="number"
+                placeholder="Your Price"
+                class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"
+                :min="parseFloat(currBid) + 1"
+              />
+              <BaseButton class="!w-full rounded-none border-none">
+                {{ $t(text.joinBid) }}
+              </BaseButton>
+            </form>
+          </div>
+
+          <a
+            href="#"
+            class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
+            >{{ $t(text.report) }}</a
+          >
+        </div>
       </div>
     </div>
-  </div>
+  </UserLayout>
 </template>

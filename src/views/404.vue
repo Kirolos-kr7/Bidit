@@ -20,7 +20,7 @@ const text = $ref({
 </script>
 
 <template>
-  <div class="mt-6 flex flex-col items-center gap-5 text-black">
+  <div class="mt-28 flex flex-col items-center gap-5 text-black">
     <h1 class="text-8xl font-extrabold">{{ $t(text.title) }}</h1>
     <p class="font-medium">{{ $t(text.NF) }}</p>
     <RouterLink :to="`/${state.lang}`">

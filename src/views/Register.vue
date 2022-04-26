@@ -10,6 +10,7 @@ import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import BaseCountryCode from '../components/Base/BaseCountryCode.vue'
 import { useCookies } from 'vue3-cookies'
+import UserLayout from '../Layouts/UserLayout.vue'
 const { $state: state } = $(useStore())
 const { cookies } = useCookies()
 
@@ -109,94 +110,96 @@ const registerUser = async () => {
 </script>
 
 <template>
-  <div
-    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
-  >
-    <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
+  <UserLayout>
+    <div
+      class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+    >
+      <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
-    <form @submit.prevent="registerUser">
-      <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.namePlaceholder)"
-          v-model="name"
-          @updateInput="(val) => (name = val)"
-        />
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.emailPlaceholder)"
-          v-model="email"
-          @updateInput="(val) => (email = val)"
-        />
-
-        <BaseInput
-          type="password"
-          class="!w-full"
-          :placeholder="$t(text.passwordPlaceholder)"
-          v-model="password"
-          @updateInput="(val) => (password = val)"
-        />
-        <BaseInput
-          type="password"
-          class="!w-full"
-          :placeholder="$t(text.confirmPasswordPlaceholder)"
-          v-model="confirmPassword"
-          @updateInput="(val) => (confirmPassword = val)"
-        />
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.addressPlaceholder)"
-          v-model="address"
-          @updateInput="(val) => (address = val)"
-        />
-
-        <BaseSelect
-          v-model="gender"
-          class="!w-full"
-          @updateInput="(val) => (gender = val)"
-          :placeholder="$t(text.genderPlaceholder)"
-        >
-          <option class="capitalize" value="male">{{ $t(text.male) }}</option>
-          <option class="capitalize" value="female">
-            {{ $t(text.female) }}
-          </option>
-        </BaseSelect>
-
-        <div class="flex items-center gap-3 sm:col-span-2">
-          <BaseCountryCode
-            v-model="cc"
-            @updateInput="(val) => (cc = val)"
-            :placeholder="$t(text.ccPlaceholder)"
-          >
-            <option class="capitalize" value="+20">+20</option>
-            <option class="capitalize" value="+1">+1</option>
-          </BaseCountryCode>
-
-          <BasePhone
-            type="tel"
-            class="!w-full sm:col-span-2"
-            :placeholder="$t(text.phonePlaceholder)"
-            v-model="phone"
-            @updateInput="(val) => (phone = val)"
+      <form @submit.prevent="registerUser">
+        <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.namePlaceholder)"
+            v-model="name"
+            @updateInput="(val) => (name = val)"
           />
-        </div>
-      </div>
-      <transition name="fade">
-        <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
-      </transition>
-      <div class="flex flex-col items-start gap-4">
-        <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
-        <div class="flex flex-col">
-          <RouterLink
-            :to="`/${state.lang}/login`"
-            class="text-bi-300 transition-colors hover:text-bi-400/50"
-            >{{ $t(text.account) }}</RouterLink
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.emailPlaceholder)"
+            v-model="email"
+            @updateInput="(val) => (email = val)"
+          />
+
+          <BaseInput
+            type="password"
+            class="!w-full"
+            :placeholder="$t(text.passwordPlaceholder)"
+            v-model="password"
+            @updateInput="(val) => (password = val)"
+          />
+          <BaseInput
+            type="password"
+            class="!w-full"
+            :placeholder="$t(text.confirmPasswordPlaceholder)"
+            v-model="confirmPassword"
+            @updateInput="(val) => (confirmPassword = val)"
+          />
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.addressPlaceholder)"
+            v-model="address"
+            @updateInput="(val) => (address = val)"
+          />
+
+          <BaseSelect
+            v-model="gender"
+            class="!w-full"
+            @updateInput="(val) => (gender = val)"
+            :placeholder="$t(text.genderPlaceholder)"
           >
+            <option class="capitalize" value="male">{{ $t(text.male) }}</option>
+            <option class="capitalize" value="female">
+              {{ $t(text.female) }}
+            </option>
+          </BaseSelect>
+
+          <div class="flex items-center gap-3 sm:col-span-2">
+            <BaseCountryCode
+              v-model="cc"
+              @updateInput="(val) => (cc = val)"
+              :placeholder="$t(text.ccPlaceholder)"
+            >
+              <option class="capitalize" value="+20">+20</option>
+              <option class="capitalize" value="+1">+1</option>
+            </BaseCountryCode>
+
+            <BasePhone
+              type="tel"
+              class="!w-full sm:col-span-2"
+              :placeholder="$t(text.phonePlaceholder)"
+              v-model="phone"
+              @updateInput="(val) => (phone = val)"
+            />
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
+        <transition name="fade">
+          <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
+        </transition>
+        <div class="flex flex-col items-start gap-4">
+          <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
+          <div class="flex flex-col">
+            <RouterLink
+              :to="`/${state.lang}/login`"
+              class="text-bi-300 transition-colors hover:text-bi-400/50"
+              >{{ $t(text.account) }}</RouterLink
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </UserLayout>
 </template>

@@ -24,11 +24,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <Navbar />
-  <main class="mx-auto min-h-[70vh] pt-[5.5rem] lg:container">
+  <main>
     <RouterView></RouterView>
   </main>
-  <Footer />
 
   <PWAPrompt />
 </template>

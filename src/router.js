@@ -106,6 +106,31 @@ const router = createRouter({
           },
         },
         {
+          path: 'admin',
+          name: 'admin',
+          component: () => import('./views/Admin/Admin.vue'),
+        },
+        {
+          path: 'admin/users',
+          name: 'usersAdmin',
+          component: () => import('./views/Admin/Users.vue'),
+        },
+        {
+          path: 'admin/bids',
+          name: 'bidsAdmin',
+          component: () => import('./views/Admin/Bids.vue'),
+        },
+        {
+          path: 'admin/orders',
+          name: 'ordersAdmin',
+          component: () => import('./views/Admin/Orders.vue'),
+        },
+        {
+          path: 'admin/reports',
+          name: 'reportsAdmin',
+          component: () => import('./views/Admin/Reports.vue'),
+        },
+        {
           path: '404',
           name: '404',
           component: () => import('./views/404.vue'),

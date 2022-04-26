@@ -7,6 +7,7 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import { useAxios } from '../functions'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import Bids from '../components/Bids.vue'
+import UserLayout from '../Layouts/UserLayout.vue'
 const { $state: state } = $(useStore())
 
 const text = $ref({
@@ -40,23 +41,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="px-4">
-    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
-      <BaseTitle
-        >{{ $t(text.title) }}
-        <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
-      >
-      <BaseButton @click="itemsDialog = true">
-        <RouterLink :to="`/${state.lang}/account/inventory`">
-          {{ $t(text.startBid) }}
-        </RouterLink>
-      </BaseButton>
-    </div>
+  <UserLayout>
+    <div class="px-4">
+      <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+        <BaseTitle
+          >{{ $t(text.title) }}
+          <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
+        >
+        <BaseButton @click="itemsDialog = true">
+          <RouterLink :to="`/${state.lang}/account/inventory`">
+            {{ $t(text.startBid) }}
+          </RouterLink>
+        </BaseButton>
+      </div>
 
-    <div v-if="!isLoading">
-      <BaseEmpty v-if="bids.length === 0" msg="You Don't have any bids yet!" />
+      <div v-if="!isLoading">
+        <BaseEmpty
+          v-if="bids.length === 0"
+          msg="You Don't have any bids yet!"
+        />
 
-      <Bids :bids="bids" v-else />
+        <Bids :bids="bids" v-else />
+      </div>
     </div>
-  </div>
+  </UserLayout>
 </template>

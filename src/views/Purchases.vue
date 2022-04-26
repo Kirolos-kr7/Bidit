@@ -4,6 +4,7 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
+import UserLayout from '../Layouts/UserLayout.vue'
 import Bids from '../components/Bids.vue'
 
 const text = $ref({
@@ -33,15 +34,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="px-4">
-    <BaseTitle
-      >{{ $t(text.title) }} <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
-    >
-
-    <div v-if="!isLoading">
-      <BaseEmpty v-if="bids.length === 0" msg="You Don't have any bids yet!" />
-
-      <Bids :bids="bids" v-else />
+  <UserLayout>
+    <div class="px-4">
+      <BaseTitle
+        >{{ $t(text.title) }}
+        <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
+      >
+      <div v-if="!isLoading">
+        <BaseEmpty
+          v-if="bids.length === 0"
+          msg="You Don't have any bids yet!"
+        />
+        <Bids :bids="bids" v-else />
+      </div>
     </div>
-  </div>
+  </UserLayout>
 </template>

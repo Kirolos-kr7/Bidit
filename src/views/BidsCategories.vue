@@ -6,6 +6,7 @@ import { $t, useAxios } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 import Bids from '../components/Bids.vue'
+import UserLayout from '../Layouts/UserLayout.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,9 +57,10 @@ watch(route, cats)
 </script>
 
 <template>
-  <div class="px-4">
-    <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
-
-    <Bids :bids="bids" />
-  </div>
+  <UserLayout>
+    <div class="px-4">
+      <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
+      <Bids :bids="bids" />
+    </div>
+  </UserLayout>
 </template>

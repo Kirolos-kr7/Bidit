@@ -16,6 +16,7 @@ import BaseSelect from '../components/Base/BaseSelect.vue'
 import ImgSelector from '../components/ImgSelector.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
+import UserLayout from '../Layouts/UserLayout.vue'
 
 const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),
@@ -204,152 +205,162 @@ const deleteItem = async () => {
 </script>
 
 <template>
-  <div class="px-4">
-    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
-      <BaseTitle
-        >{{ $t(text.title) }}
-        <BaseInfo>{{ $t(text.info) }} </BaseInfo>
-      </BaseTitle>
-      <BaseButton @click="itemsDialog = true">{{
-        $t(text.addItem)
-      }}</BaseButton>
-    </div>
-    <div v-if="!isLoading">
-      <BaseEmpty
-        v-if="items.length === 0"
-        msg="You Don't have any items yet!"
-      />
-      <div
-        v-else
-        class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        <InventoryItem
-          v-for="(item, index) in items"
-          :key="index"
-          :item="item"
-          @editItem="showEditItem"
-          @newBid="showNewBidDialog(item)"
-          @deleteItem="showDeleteDialog(item)"
-          @showItemView="showItemViewDialog(item)"
-        />
-      </div>
-    </div>
-  </div>
-
-  <transition name="fade">
-    <BaseDialog
-      v-if="itemsDialog || bidDialog || deleteDialog || itemViewDialog"
-      @click="resetDialog"
-    >
-    </BaseDialog>
-  </transition>
-  <transition name="zoom">
-    <div
-      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-      v-if="itemsDialog"
-    >
-      <BaseTitle>
-        {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
-      >
-      <form @submit.prevent="" class="mt-5 grid gap-5">
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.namePlaceholder)"
-          v-model="itemName"
-          @updateInput="(val) => (itemName = val)"
-        />
-        <div class="relative">
-          <BaseSelect
-            v-model="itemType"
-            class="!w-full capitalize"
-            @updateInput="(val) => (itemType = val)"
-            :placeholder="$t(text.typePlaceholder)"
-          >
-            <option
-              v-for="(category, index) in categories.items"
-              :key="index"
-              :value="category.en"
-              :selected="index === 0"
-            >
-              {{ $t(category) }}
-            </option>
-          </BaseSelect>
-        </div>
-        <BaseTextArea
-          rows="8"
-          type="text"
-          class="col-span-2 !w-full"
-          :placeholder="$t(text.descriptionPlaceholder)"
-          v-model="itemDesc"
-          @updateInput="(val) => (itemDesc = val)"
-        />
-        <transition name="fade">
-          <BaseError v-if="error">{{ error }}</BaseError>
-        </transition>
-        <BaseButton @click="editItem" v-if="isEditing"
-          >{{ $t(text.edit) }}
-        </BaseButton>
-        <BaseButton @click="addItem" v-else>{{ $t(text.newItem) }} </BaseButton>
-      </form>
-    </div>
-  </transition>
-  <transition name="zoom">
-    <div
-      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-      v-if="itemViewDialog"
-    >
-      <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
-      <ImgSelector
-        :imgs="[
-          '/images/home/ar/antiques.png',
-          '/images/home/ar/art.png',
-          '/images/home/ar/technology.png',
-          '/images/home/ar/cats.png',
-          '/images/home/ar/antiques.png',
-          '/images/home/ar/art.png',
-          '/images/home/ar/technology.png',
-          '/images/home/ar/cats.png',
-          '/images/home/ar/antiques.png',
-          '/images/home/ar/art.png',
-          '/images/home/ar/technology.png',
-          '/images/home/ar/cats.png',
-          '/images/home/ar/antiques.png',
-          '/images/home/ar/art.png',
-          '/images/home/ar/technology.png',
-          '/images/home/ar/cats.png',
-        ]"
-      />
-      <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
-        selectedItem.type
-      }}</BaseType>
-      <h2
-        class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
-      >
-        {{ selectedItem.name }}
-      </h2>
-      <p class="my-1 overflow-hidden text-neutral-600">
-        {{ selectedItem.description }}
-      </p>
-    </div>
-  </transition>
-  <transition name="zoom">
-    <div
-      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-      v-if="deleteDialog"
-    >
-      <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
-      <p class="my-3">{{ $t(text.doneProcess) }}</p>
-      <div class="flex justify-end gap-2">
-        <BaseButton class="!bg-red-600 hover:!bg-red-700" @click="deleteItem">{{
-          $t(text.yes)
+  <UserLayout>
+    <div class="px-4">
+      <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+        <BaseTitle
+          >{{ $t(text.title) }}
+          <BaseInfo>{{ $t(text.info) }} </BaseInfo>
+        </BaseTitle>
+        <BaseButton @click="itemsDialog = true">{{
+          $t(text.addItem)
         }}</BaseButton>
-        <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
+      </div>
+      <div v-if="!isLoading">
+        <BaseEmpty
+          v-if="items.length === 0"
+          msg="You Don't have any items yet!"
+        />
+        <div
+          v-else
+          class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <InventoryItem
+            v-for="(item, index) in items"
+            :key="index"
+            :item="item"
+            @editItem="showEditItem"
+            @newBid="showNewBidDialog(item)"
+            @deleteItem="showDeleteDialog(item)"
+            @showItemView="showItemViewDialog(item)"
+          />
+        </div>
       </div>
     </div>
-  </transition>
 
-  <transition name="zoom">
-    <NewBid v-if="bidDialog" @resetDialog="resetDialog" :item="selectedItem" />
-  </transition>
+    <transition name="fade">
+      <BaseDialog
+        v-if="itemsDialog || bidDialog || deleteDialog || itemViewDialog"
+        @click="resetDialog"
+      >
+      </BaseDialog>
+    </transition>
+    <transition name="zoom">
+      <div
+        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+        v-if="itemsDialog"
+      >
+        <BaseTitle>
+          {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
+        >
+        <form @submit.prevent="" class="mt-5 grid gap-5">
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.namePlaceholder)"
+            v-model="itemName"
+            @updateInput="(val) => (itemName = val)"
+          />
+          <div class="relative">
+            <BaseSelect
+              v-model="itemType"
+              class="!w-full capitalize"
+              @updateInput="(val) => (itemType = val)"
+              :placeholder="$t(text.typePlaceholder)"
+            >
+              <option
+                v-for="(category, index) in categories.items"
+                :key="index"
+                :value="category.en"
+                :selected="index === 0"
+              >
+                {{ $t(category) }}
+              </option>
+            </BaseSelect>
+          </div>
+          <BaseTextArea
+            rows="8"
+            type="text"
+            class="col-span-2 !w-full"
+            :placeholder="$t(text.descriptionPlaceholder)"
+            v-model="itemDesc"
+            @updateInput="(val) => (itemDesc = val)"
+          />
+          <transition name="fade">
+            <BaseError v-if="error">{{ error }}</BaseError>
+          </transition>
+          <BaseButton @click="editItem" v-if="isEditing"
+            >{{ $t(text.edit) }}
+          </BaseButton>
+          <BaseButton @click="addItem" v-else
+            >{{ $t(text.newItem) }}
+          </BaseButton>
+        </form>
+      </div>
+    </transition>
+    <transition name="zoom">
+      <div
+        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+        v-if="itemViewDialog"
+      >
+        <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
+        <ImgSelector
+          :imgs="[
+            '/images/home/ar/antiques.png',
+            '/images/home/ar/art.png',
+            '/images/home/ar/technology.png',
+            '/images/home/ar/cats.png',
+            '/images/home/ar/antiques.png',
+            '/images/home/ar/art.png',
+            '/images/home/ar/technology.png',
+            '/images/home/ar/cats.png',
+            '/images/home/ar/antiques.png',
+            '/images/home/ar/art.png',
+            '/images/home/ar/technology.png',
+            '/images/home/ar/cats.png',
+            '/images/home/ar/antiques.png',
+            '/images/home/ar/art.png',
+            '/images/home/ar/technology.png',
+            '/images/home/ar/cats.png',
+          ]"
+        />
+        <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
+          selectedItem.type
+        }}</BaseType>
+        <h2
+          class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
+        >
+          {{ selectedItem.name }}
+        </h2>
+        <p class="my-1 overflow-hidden text-neutral-600">
+          {{ selectedItem.description }}
+        </p>
+      </div>
+    </transition>
+    <transition name="zoom">
+      <div
+        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+        v-if="deleteDialog"
+      >
+        <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
+        <p class="my-3">{{ $t(text.doneProcess) }}</p>
+        <div class="flex justify-end gap-2">
+          <BaseButton
+            class="!bg-red-600 hover:!bg-red-700"
+            @click="deleteItem"
+            >{{ $t(text.yes) }}</BaseButton
+          >
+          <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="zoom">
+      <NewBid
+        v-if="bidDialog"
+        @resetDialog="resetDialog"
+        :item="selectedItem"
+      />
+    </transition>
+  </UserLayout>
 </template>

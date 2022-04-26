@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { useAxios } from '../functions'
+import UserLayout from '../Layouts/UserLayout.vue'
 
 let bids = $ref([])
 
@@ -23,9 +24,10 @@ const text = $ref({
 </script>
 
 <template>
-  <div class="px-4">
-    <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
-
-    <Bids :bids="bids" />
-  </div>
+  <UserLayout>
+    <div class="px-4">
+      <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
+      <Bids :bids="bids" />
+    </div>
+  </UserLayout>
 </template>
