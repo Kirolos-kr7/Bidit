@@ -9,6 +9,26 @@ let data = $ref([
     status: 'active',
   },
 ])
+
+let constraint = $ref('_id')
+let direction = $ref('asc')
+
+const sortBy = (value, dir) => {
+  constraint = value
+  direction = dir
+}
+
+const open = (value) => {
+  console.log(value)
+}
+
+const edit = (value) => {
+  console.log(value)
+}
+
+const remove = (value) => {
+  console.log(value)
+}
 </script>
 
 <template>
@@ -16,8 +36,13 @@ let data = $ref([
     <BaseTable
       :columns="['Report', 'Type', 'Status']"
       :values="['_id', 'type', 'status']"
-      layout="1fr 0.5fr 0.5fr"
       :data="data"
+      :constraint="constraint"
+      :direction="direction"
+      @sortBy="sortBy"
+      @open="open"
+      @edit="edit"
+      @remove="remove"
     />
   </AdminLayout>
 </template>

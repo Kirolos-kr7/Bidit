@@ -1,9 +1,7 @@
 <script setup>
-let mainConstraint = $ref('name')
-let mainDirection = $ref('desc')
-let users = $ref([{ name: 'kirolos' }])
+import { onMounted } from 'vue'
 
-const props = defineProps({
+defineProps({
   columns: {
     type: Array,
     required: true,
@@ -12,41 +10,145 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  layout: {
-    type: String,
-    required: true,
-  },
   data: {
     type: Array,
     required: true,
   },
+  constraint: {
+    type: String,
+    required: true,
+  },
+  direction: {
+    type: String,
+    required: true,
+  },
 })
+
+const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-md bg-white">
-    <div
-      v-for="(item, index) in data"
-      class="grid border-b last-of-type:border-b-0"
-      :style="{ 'grid-template-columns': layout }"
-    >
-      <div
-        v-for="column in columns"
-        v-if="index === 0"
-        class="mb-1 grid items-center bg-gray-300 p-3 font-semibold"
-      >
-        {{ column }}
-      </div>
+  <table class="w-full overflow-hidden rounded-md bg-white">
+    <tr class="bg-gray-300">
+      <th v-for="(column, i) in columns" class="p-3 text-left">
+        <button
+          @click="
+            constraint === values[i] && direction === 'asc'
+              ? emits('sortBy', values[i], 'desc')
+              : emits('sortBy', values[i], 'asc')
+          "
+          class="flex items-center gap-0.5 font-semibold"
+          :class="
+            constraint === values[i] &&
+            'font-bold text-indigo-500 hover:text-indigo-700'
+          "
+        >
+          <span>{{ column }}</span>
+          <svg
+            v-if="constraint === values[i]"
+            :class="direction === 'desc' && 'rotate-180'"
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 17l-4 4m0 0l-4-4m4 4V3"
+            ></path>
+          </svg>
+        </button>
+      </th>
+      <th class="p-3 text-right">Actions</th>
+    </tr>
 
-      <div
+    <tr v-for="(item, index) in data" class="border-b last-of-type:border-b-0">
+      <td
         v-for="value in values"
-        class="p-2"
+        class="px-3 py-2"
         :class="value === 'status' && 'capitalize'"
       >
         {{ item[value] }}
-      </div>
+      </td>
+      <td class="flex items-center justify-end p-2">
+        <button @click="emits('open', item)">
+          <svg
+            class="h-6 w-6 rounded-md p-1 text-green-600 hover:bg-black/5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            ></path>
+          </svg>
+        </button>
+        <button @click="emits('edit', item)">
+          <svg
+            class="h-6 w-6 rounded-md p-1 text-gray-600 hover:bg-black/5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            ></path>
+          </svg>
+        </button>
+        <button @click="emits('remove', item)">
+          <svg
+            class="h-6 w-6 rounded-md p-1 text-red-600 hover:bg-black/5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+        </button>
+      </td>
+    </tr>
+  </table>
+
+  <!-- <div class="overflow-hidden rounded-md bg-white">
+    <div
+      class="grid items-stretch"
+      :style="{ 'grid-template-columns': layout }"
+    >
+      <template v-for="(item, index) in data">
+        <div
+          v-for="column in columns"
+          v-if="index === 0"
+          class="flex bg-gray-300 p-2"
+        >
+          <button class="p-1 font-semibold">
+            {{ column }}
+          </button>
+        </div>
+
+        <div
+          v-for="value in values"
+          class="border-b px-3 py-2 last-of-type:border-b-0"
+          :class="value === 'status' && 'capitalize'"
+        >
+          {{ item[value] }}
+        </div>
+      </template>
     </div>
-  </div>
+  </div> -->
 
   <!-- <div class="mt-8 w-full overflow-x-auto rounded-xl rounded-b-none shadow-md">
     <div class="min-w-[600px]">

@@ -6,6 +6,26 @@ let data = $ref([
   { name: 'Kirolos Rafaat', email: 'k@k.co', isAdmin: false },
   { name: 'Mario George', email: 'mario@gmail.com', isAdmin: true },
 ])
+
+let constraint = $ref('name')
+let direction = $ref('asc')
+
+const sortBy = (value, dir) => {
+  constraint = value
+  direction = dir
+}
+
+const open = (value) => {
+  console.log(value)
+}
+
+const edit = (value) => {
+  console.log(value)
+}
+
+const remove = (value) => {
+  console.log(value)
+}
 </script>
 
 <template>
@@ -13,8 +33,13 @@ let data = $ref([
     <BaseTable
       :columns="['User', 'Email', 'Admin']"
       :values="['name', 'email', 'isAdmin']"
-      layout="1fr 2fr 1fr"
       :data="data"
+      :constraint="constraint"
+      :direction="direction"
+      @sortBy="sortBy"
+      @open="open"
+      @edit="edit"
+      @remove="remove"
     />
   </AdminLayout>
 </template>
