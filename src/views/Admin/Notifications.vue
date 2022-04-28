@@ -15,7 +15,7 @@ let data = $ref([
   },
 ])
 
-let constraint = $ref('name')
+let constraint = $ref('title')
 let direction = $ref('asc')
 
 const sortBy = (value, dir) => {
@@ -45,6 +45,7 @@ const remove = (value) => {
       :data="data"
       :constraint="constraint"
       :direction="direction"
+      :actions="{ open: true, edit: false, remove: false }"
       @sortBy="sortBy"
       @open="open"
       @edit="edit"

@@ -53,6 +53,7 @@ const remove = (value) => {
       :data="data"
       :constraint="constraint"
       :direction="direction"
+      :actions="{ open: true, edit: true, remove: true }"
       @sortBy="sortBy"
       @open="open"
       @edit="edit"

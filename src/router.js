@@ -109,31 +109,49 @@ const router = createRouter({
           path: 'admin',
           name: 'admin',
           component: () => import('./views/Admin/Admin.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: 'admin/users',
           name: 'usersAdmin',
           component: () => import('./views/Admin/Users.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: 'admin/bids',
           name: 'bidsAdmin',
           component: () => import('./views/Admin/Bids.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: 'admin/orders',
           name: 'ordersAdmin',
           component: () => import('./views/Admin/Orders.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: 'admin/notifications',
           name: 'notificationsAdmin',
           component: () => import('./views/Admin/Notifications.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: 'admin/reports',
           name: 'reportsAdmin',
           component: () => import('./views/Admin/Reports.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
         },
         {
           path: '404',
@@ -179,10 +197,17 @@ router.beforeEach(async (to, from, next) => {
     })
     return
   }
+
   if (state.isLoggedIn && to.meta.requiresUnAuth) {
     next({ name: 'home', params: { lang: state.lang } })
     return
   }
+
+  if (state.isLoggedIn && to.meta.requiresAdmin && !state.user.isAdmin) {
+    next({ name: 'home', params: { lang: state.lang } })
+    return
+  }
+
   if (!state.isLoggedIn && to.meta.requiresAuth) {
     next({ name: 'home', params: { lang: state.lang } })
     return
