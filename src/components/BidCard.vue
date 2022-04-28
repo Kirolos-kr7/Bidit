@@ -53,8 +53,11 @@ defineEmits(['editItem', 'deleteItem'])
     />
 
     <div class="p-3">
-      <BaseType :to="`/${state.lang}/bids/${bid.item.type}`">
-        {{ getType(bid.item.type) }}
+      <BaseType
+        :to="`/${state.lang}/bids/${bid.item.type}`"
+        v-if="bid.item.type"
+      >
+        {{ getType(bid.item?.type) }}
       </BaseType>
       <h2
         class="overflow-hidden break-all text-lg font-semibold capitalize text-black"
@@ -68,8 +71,12 @@ defineEmits(['editItem', 'deleteItem'])
       </h2>
 
       <div class="mt-3 grid grid-cols-[auto,1fr] gap-x-3 capitalize text-black">
-        <span class="font-medium text-neutral-600">{{ $t(text.status) }}</span>
-        <span class="font-medium">{{ getStatus(bid.status) }}</span>
+        <span class="font-medium text-neutral-600" v-if="bid.status">{{
+          $t(text.status)
+        }}</span>
+        <span class="font-medium" v-if="bid.status">{{
+          getStatus(bid.status)
+        }}</span>
         <span class="font-medium text-neutral-600">{{ $t(text.from) }}</span>
         <span class="font-medium">{{ bid.startDate }}</span>
         <span class="font-medium text-neutral-600">{{ $t(text.to) }}</span>

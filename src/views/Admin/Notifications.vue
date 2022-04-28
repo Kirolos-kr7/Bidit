@@ -3,8 +3,16 @@ import BaseTable from '../../components/Base/BaseTable.vue'
 import AdminLayout from '../../layouts/AdminLayout.vue'
 
 let data = $ref([
-  { name: 'Kirolos Rafaat', email: 'k@k.co', isAdmin: false },
-  { name: 'Mario George', email: 'mario@gmail.com', isAdmin: true },
+  {
+    title: 'Test 1',
+    date: new Date().toDateString(),
+    message: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa libero maiores hic tempore optio iure quos commodi rem? Nemo, explicabo?`,
+  },
+  {
+    title: 'Test 2',
+    date: new Date().toDateString(),
+    message: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa libero maiores hic tempore optio iure quos commodi rem? Nemo, explicabo?`,
+  },
 ])
 
 let constraint = $ref('name')
@@ -29,11 +37,11 @@ const remove = (value) => {
 </script>
 
 <template>
-  <AdminLayout title="Users">
+  <AdminLayout title="Notifications">
     <BaseTable
-      :columns="['User', 'Email', 'Admin']"
-      :values="['name', 'email', 'isAdmin']"
-      :layout="['auto', 'auto', 'auto']"
+      :columns="['Title', 'Date', 'Message']"
+      :values="['title', 'date', 'message']"
+      :layout="['auto', 'auto', '60%']"
       :data="data"
       :constraint="constraint"
       :direction="direction"

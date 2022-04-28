@@ -58,7 +58,7 @@ onMounted(async () => {
 // }
 
 const calcDiff = () => {
-  let startDate = dayjs('4-18-2022')
+  let startDate = dayjs('4-30-2022')
   let endDate = dayjs('4-31-2022')
   let now = dayjs()
   let diff = ''

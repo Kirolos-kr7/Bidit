@@ -49,6 +49,7 @@ const remove = (value) => {
     <BaseTable
       :columns="['Order', 'User', 'Status', 'Total Price']"
       :values="['_id', 'user', 'status', 'totalPrice']"
+      :layout="['auto', 'auto', 'auto', 'auto']"
       :data="data"
       :constraint="constraint"
       :direction="direction"

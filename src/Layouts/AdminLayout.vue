@@ -212,11 +212,11 @@ defineProps(['title'])
             </transition>
           </RouterLink>
         </li>
-        <!-- <li>
+        <li>
           <RouterLink
-            to="/notification"
-            class=" flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
-            title="Notification"
+            :to="`/${state.lang}/admin/notifications`"
+            class="flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
+            title="Notifications"
           >
             <svg
               class="pointer-events-none mx-[10px] w-5 flex-shrink-0 select-none"
@@ -239,11 +239,11 @@ defineProps(['title'])
               <span
                 v-show="!isCollapsed"
                 class="hidden translate-y-px font-normal transition-all md:block"
-                >Notification</span
+                >Notifications</span
               >
             </transition>
           </RouterLink>
-        </li> -->
+        </li>
         <!-- <li>
           <RouterLink
             to="/chat"

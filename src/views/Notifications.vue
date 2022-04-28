@@ -1,40 +1,17 @@
 <script setup>
+import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Notification from '../components/Notification.vue'
+import { useAxios } from '../functions'
 import UserLayout from '../Layouts/UserLayout.vue'
 
-let nts = $ref([
-  {
-    title: 'abc',
-    message:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: new Date(),
-  },
-  {
-    title: 'abc',
-    message:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: new Date(),
-  },
-  {
-    title: 'abc',
-    message:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: new Date(),
-  },
-  {
-    title: 'abc',
-    message:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: new Date(),
-  },
-  {
-    title: 'abc',
-    message:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit soluta quasi architecto dicta alias, incidunt fugit impedit vitae! Provident in adipisci quaerat et asperiores quibusdam repellat perferendis, incidunt nisi doloremque.',
-    createdAt: new Date(),
-  },
-])
+let nts = $ref([])
+onMounted(async () => {
+  let { response } = await useAxios('get', '/auth/notifications')
+
+  if (response.data.ok) nts = response.data.data
+  console.log(response)
+})
 
 const text = $ref({
   title: {
