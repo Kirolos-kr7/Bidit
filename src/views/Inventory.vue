@@ -16,7 +16,7 @@ import BaseSelect from '../components/Base/BaseSelect.vue'
 import ImgSelector from '../components/ImgSelector.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 
 const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),

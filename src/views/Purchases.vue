@@ -4,7 +4,7 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 import Bids from '../components/Bids.vue'
 
 const text = $ref({

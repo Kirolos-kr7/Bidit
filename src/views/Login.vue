@@ -9,7 +9,7 @@ import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
 import { onMounted } from 'vue'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()

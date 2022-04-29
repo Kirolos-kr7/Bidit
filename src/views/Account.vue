@@ -1,7 +1,7 @@
 <script setup>
 import { useStore } from '../store'
 import BaseButton from '../components/Base/BaseButton.vue'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 </script>
 

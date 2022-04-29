@@ -3,7 +3,7 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { useAxios } from '../functions'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 
 let bids = $ref([])
 

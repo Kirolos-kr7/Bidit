@@ -7,7 +7,7 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import gsap from 'gsap'
 import { useAxios } from '../functions'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 
 const { $state: state } = $(useStore())
 

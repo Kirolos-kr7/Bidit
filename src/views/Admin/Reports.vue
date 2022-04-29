@@ -1,6 +1,6 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
-import AdminLayout from '../../layouts/AdminLayout.vue'
+import AdminLayout from '../../components/AdminLayout.vue'
 
 let data = $ref([
   {

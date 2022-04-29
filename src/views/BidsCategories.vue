@@ -6,7 +6,7 @@ import { $t, useAxios } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 import Bids from '../components/Bids.vue'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -16,7 +16,7 @@ import 'dayjs/locale/es'
 import 'dayjs/locale/ar'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 dayjs.extend(advancedFormat)
 dayjs.extend(localizedFormat)
 

@@ -7,7 +7,7 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import { useAxios } from '../functions'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import Bids from '../components/Bids.vue'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 
 const text = $ref({

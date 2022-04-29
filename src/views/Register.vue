@@ -10,7 +10,7 @@ import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import BaseCountryCode from '../components/Base/BaseCountryCode.vue'
 import { useCookies } from 'vue3-cookies'
-import UserLayout from '../Layouts/UserLayout.vue'
+import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 const { cookies } = useCookies()
 
