@@ -4,8 +4,8 @@ import BaseEmpty from './Base/BaseEmpty.vue'
 
 defineProps({
   bids: {
-    type: Object,
-    default: [],
+    type: Array,
+    default: () => [],
   },
 })
 </script>

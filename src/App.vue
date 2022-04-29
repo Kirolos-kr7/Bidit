@@ -1,6 +1,4 @@
 <script setup>
-import Navbar from './components/Navbar.vue'
-import Footer from './components/Footer.vue'
 import PWAPrompt from './components/PWAPrompt.vue'
 import { onMounted } from 'vue'
 import { useCookies } from 'vue3-cookies'

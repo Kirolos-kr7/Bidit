@@ -38,6 +38,7 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
     <tr class="bg-gray-300">
       <th
         v-for="(column, i) in columns"
+        :key="column"
         class="p-3 text-left"
         :width="layout[i]"
       >
@@ -75,9 +76,14 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
       <th class="p-3 text-right">Actions</th>
     </tr>
 
-    <tr v-for="(item, i) in data" class="border-b last-of-type:border-b-0">
+    <tr
+      v-for="item in data"
+      :key="item"
+      class="border-b last-of-type:border-b-0"
+    >
       <td
         v-for="value in values"
+        :key="value"
         class="clamp-2 px-3 py-2"
         :class="value === 'status' && 'capitalize'"
       >
