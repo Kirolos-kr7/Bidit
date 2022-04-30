@@ -53,7 +53,9 @@ export const getPreferedLanguage = () => {
 }
 
 export const getType = (val) => {
-  let itemType = val
+  let itemType
+
+  if (!val) return 'N/F'
 
   categories.items.forEach((item) => {
     if (item.en.toLowerCase() === val?.toLowerCase()) {
@@ -61,19 +63,21 @@ export const getType = (val) => {
     }
   })
 
-  return itemType
+  return itemType || 'N/F'
 }
 
 export const getStatus = (val) => {
-  let itemType = val
+  let bidStatus
 
-  status.forEach((item) => {
-    if (item.en.toLowerCase() === val.toLowerCase()) {
-      itemType = $t(item)
+  if (!val) return 'N/F'
+
+  status.forEach((state) => {
+    if (state.en.toLowerCase() === val.toLowerCase()) {
+      bidStatus = $t(state)
     }
   })
 
-  return itemType
+  return bidStatus || 'N/F'
 }
 
 export const getPricePerLang = (val) => {
@@ -106,6 +110,7 @@ export const getNumPerLang = (val) => {
 
 export const useAxios = async (req, path, body) => {
   const { $state: state } = useStore()
+  // const BASE_URL = 'https://9b65-156-204-20-156.eu.ngrok.io'
   const BASE_URL = 'https://bidit-app.herokuapp.com'
 
   const { cookies } = useCookies()
