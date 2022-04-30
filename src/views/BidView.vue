@@ -7,9 +7,10 @@ import {
   useAxios,
   $t,
 } from '../functions'
-import { onMounted, watchEffect } from 'vue'
+import { onMounted, onUnmounted, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
+import { io } from 'socket.io-client'
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
@@ -17,17 +18,24 @@ import 'dayjs/locale/ar'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import UserLayout from '../components/UserLayout.vue'
+import { useRoute, useRouter } from 'vue-router'
+import BaseError from '../components/Base/BaseError.vue'
 dayjs.extend(advancedFormat)
 dayjs.extend(localizedFormat)
 
 const { $state: state } = useStore()
+const route = useRoute()
+const router = useRouter()
+const socket = io('https://9b65-156-204-20-156.eu.ngrok.io/')
 
 let isLoading = $ref(false)
+let error = $ref()
 let bid = $ref()
 let currBid = $ref(0)
 let TOE = $ref('')
 let status = $ref('')
 let clock = $ref('')
+let newPrice = $ref(0)
 
 watchEffect(() => {
   if (bid) {
@@ -39,27 +47,45 @@ watchEffect(() => {
 
 onMounted(async () => {
   isLoading = true
+  let bidID = route.params.bidID
+  if (!route.params.bidID) router.replace(`/${state.lang}/404`)
 
-  let bidID = '6249d7078f3db98ae5267e6d'
+  socket.on('connect', () => {
+    console.log(socket.id) // x8WIv7-mJelg7on_ALbx
 
-  let { response } = await useAxios('get', `/bid/view/${bidID}`)
+    socket.emit('pageLoaded', bidID)
 
-  if (response.data.ok) {
-    bid = response.data.data
+    socket.on('bidFound', (data) => {
+      bid = data
+      isLoading = false
+      calcDiff()
+      setInterval(calcDiff, 1000)
+    })
 
-    calcDiff()
-    setInterval(calcDiff, 1000)
-  }
-  isLoading = false
+    socket.on('bidNotFound', () => router.replace(`/${state.lang}/404`))
+    socket.on('bidError', (err) => {
+      error = err
+    })
+  })
 })
 
-// const formatDate = (d) => {
-//   return dayjs(d).locale(state.lang).format('LLLL')
-// }
+onUnmounted(async () => {
+  socket.close()
+})
 
+const joinBid = () => {
+  let data = { newPrice, user: state.user._id, bidID: route.params.bidID }
+  console.log(data)
+  socket.emit('joinBid', data)
+  newPrice = 0
+}
+
+// const getMinBiddingPrice = () => {
+
+// }
 const calcDiff = () => {
-  let startDate = dayjs('4-30-2022')
-  let endDate = dayjs('4-31-2022')
+  let startDate = dayjs(bid?.startDate)
+  let endDate = dayjs(bid?.endDate)
   let now = dayjs()
   let diff = ''
   let days
@@ -84,7 +110,7 @@ const calcDiff = () => {
     diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
 
     TOE = diff
-    status = $t(text.waiting)
+    status = $t(text.soon)
     clock = $t(text.toLive)
     return
   }
@@ -154,9 +180,9 @@ const text = $ref({
     ar: 'على النشاط',
     en: 'To Live',
   },
-  waiting: {
+  soon: {
     ar: 'انتظار',
-    en: 'Waiting',
+    en: 'Soon',
   },
 })
 </script>
@@ -206,26 +232,30 @@ const text = $ref({
             exercitationem eveniet?
           </p>
 
-          <div class="grid grid-cols-3 gap-5 pt-3">
+          <div class="grid gap-x-5 gap-y-2 pt-3 sm:grid-cols-3">
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4>{{ $t(text.bidsMade) }}</h4>
-              <span class="text-3xl font-semibold">{{
-                getNumPerLang(bid?.bidsHistory.length)
+              <h4 class="text-sm">{{ $t(text.bidsMade) }}</h4>
+              <span class="text-xl font-bold">{{
+                bid?.bidsHistory.length > 0
+                  ? getNumPerLang(bid?.bidsHistory.length)
+                  : '--'
               }}</span>
             </div>
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4>{{ $t(text.price) }}</h4>
-              <span class="text-3xl font-semibold">{{
+              <h4 class="text-sm">{{ $t(text.price) }}</h4>
+              <span class="text-xl font-bold">{{
                 getPricePerLang(bid?.minPrice)
               }}</span>
             </div>
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4>{{ $t(text.currBid) }}</h4>
-              <span class="text-3xl font-semibold">{{
-                currBid !== 0 ? getPricePerLang(currBid) : '---'
+              <h4 class="text-sm">{{ $t(text.currBid) }}</h4>
+              <span class="text-xl font-bold">{{
+                currBid !== 0 ? getPricePerLang(currBid) : '--'
               }}</span>
             </div>
           </div>
+
+          <BaseError v-if="error" class="mt-4">{{ error }}</BaseError>
 
           <div
             class="my-3 flex flex-col overflow-hidden rounded-md border border-gray-800"
@@ -248,10 +278,11 @@ const text = $ref({
             </div>
             <form
               v-if="status === 'Live' || status === 'نشط'"
-              @submit.prevent=""
+              @submit.prevent="joinBid"
               class="grid border border-gray-800 md:grid-cols-4"
             >
               <input
+                v-model="newPrice"
                 type="number"
                 placeholder="Your Price"
                 class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"

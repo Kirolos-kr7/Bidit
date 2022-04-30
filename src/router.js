@@ -35,7 +35,7 @@ const router = createRouter({
           component: () => import('./views/Home.vue'),
         },
         {
-          path: 'bid',
+          path: 'bid/:bidID',
           name: 'bidview',
           component: () => import('./views/BidView.vue'),
         },
