@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar.vue'
 
 <template>
   <Navbar />
-  <div class="mx-auto min-h-[70vh] pt-[5.5rem] lg:container">
+  <div class="mx-auto min-h-[70vh] max-w-atreus pt-[5.5rem]">
     <slot />
   </div>
   <Footer />

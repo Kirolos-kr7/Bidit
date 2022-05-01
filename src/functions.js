@@ -85,14 +85,10 @@ export const getPricePerLang = (val) => {
 
   if (state.lang === 'ar') {
     return new Intl.NumberFormat('ar-EG', {
-      style: 'currency',
-      currency: 'EGP',
       maximumFractionDigits: 0,
     }).format(val)
   } else {
     return new Intl.NumberFormat('en-EG', {
-      style: 'currency',
-      currency: 'EGP',
       maximumFractionDigits: 0,
     }).format(val)
   }
@@ -110,8 +106,6 @@ export const getNumPerLang = (val) => {
 
 export const useAxios = async (req, path, body) => {
   const { $state: state } = useStore()
-  // const BASE_URL = 'https://9b65-156-204-20-156.eu.ngrok.io'
-  const BASE_URL = 'https://bidit-app.herokuapp.com'
 
   const { cookies } = useCookies()
   let authToken = cookies.get('authToken')
@@ -127,7 +121,7 @@ export const useAxios = async (req, path, body) => {
   try {
     response = await axios({
       method: req,
-      url: BASE_URL + path,
+      url: state.BASE_URL + path,
       data: body,
       headers,
     })

@@ -26,21 +26,24 @@ dayjs.extend(localizedFormat)
 const { $state: state } = useStore()
 const route = useRoute()
 const router = useRouter()
-const socket = io('https://9b65-156-204-20-156.eu.ngrok.io/')
+const socket = io(state.BASE_URL)
 
 let isLoading = $ref(false)
 let error = $ref()
 let bid = $ref()
 let currBid = $ref(0)
+let newPrice = $ref(0)
 let TOE = $ref('')
 let status = $ref('')
 let clock = $ref('')
-let newPrice = $ref(0)
 
 watchEffect(() => {
   if (bid) {
     bid?.bidsHistory.forEach((aBid) => {
-      if (currBid < aBid.price) currBid = aBid.price
+      if (currBid < aBid.price) {
+        currBid = aBid.price
+        newPrice = currBid + 1
+      }
     })
   }
 })
@@ -74,15 +77,10 @@ onUnmounted(async () => {
 })
 
 const joinBid = () => {
-  let data = { newPrice, user: state.user._id, bidID: route.params.bidID }
-  console.log(data)
+  let data = { newPrice, userID: state.user._id, bidID: route.params.bidID }
   socket.emit('joinBid', data)
-  newPrice = 0
 }
 
-// const getMinBiddingPrice = () => {
-
-// }
 const calcDiff = () => {
   let startDate = dayjs(bid?.startDate)
   let endDate = dayjs(bid?.endDate)
@@ -189,8 +187,11 @@ const text = $ref({
 
 <template>
   <UserLayout>
-    <div class="-mt-6 grid bg-white shadow-sm sm:grid-cols-3" v-if="!isLoading">
-      <div class="grid place-content-center bg-bi-200">
+    <div
+      class="grid overflow-hidden rounded-md bg-white shadow-sm sm:grid-cols-2"
+      v-if="!isLoading"
+    >
+      <div class="grid place-content-center">
         <img
           v-if="bid?.item.images !== null"
           src="/images/monalisa-art.jpg"
@@ -198,8 +199,8 @@ const text = $ref({
         />
       </div>
 
-      <div class="bg-bi-800 sm:col-span-2 sm:mt-8">
-        <div class="p-4 pt-6 sm:pt-8">
+      <div class="bg-bi-800">
+        <div class="p-4 sm:py-6">
           <BaseType
             :to="`/${state.lang}/bids/${bid?.item.type}`"
             class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
@@ -208,7 +209,7 @@ const text = $ref({
           </BaseType>
 
           <h2
-            class="overflow-hidden break-all text-lg font-semibold capitalize text-black md:text-[22px]"
+            class="overflow-hidden break-all text-xl font-semibold capitalize text-black md:text-[22px]"
           >
             {{ bid?.item.name }}
           </h2>
@@ -220,7 +221,7 @@ const text = $ref({
                 to="#"
                 class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
               >
-                {{ bid?.user?.name || 'mario' }}
+                {{ bid?.user?.name || 'mariox' }}
               </Router-Link>
             </div>
           </div>
@@ -232,67 +233,127 @@ const text = $ref({
             exercitationem eveniet?
           </p>
 
-          <div class="grid gap-x-5 gap-y-2 pt-3 sm:grid-cols-3">
+          <div class="grid gap-x-5 gap-y-2 break-words pt-3 md:grid-cols-3">
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4 class="text-sm">{{ $t(text.bidsMade) }}</h4>
-              <span class="text-xl font-bold">{{
-                bid?.bidsHistory.length > 0
-                  ? getNumPerLang(bid?.bidsHistory.length)
-                  : '--'
-              }}</span>
+              <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
+              <div class="flex items-end gap-1">
+                <h5 class="text-3xl font-bold">
+                  {{ getNumPerLang(bid?.bidsHistory.length) }}
+                </h5>
+                <span class="mb-0.5 text-sm">{{
+                  state.lang === 'ar' ? 'مزايدات' : 'Bids'
+                }}</span>
+              </div>
             </div>
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4 class="text-sm">{{ $t(text.price) }}</h4>
-              <span class="text-xl font-bold">{{
-                getPricePerLang(bid?.minPrice)
-              }}</span>
+              <h4 class="text-sm text-gray-600">{{ $t(text.price) }}</h4>
+              <div class="flex items-end gap-1">
+                <h5 class="text-3xl font-bold">
+                  {{ getPricePerLang(bid?.minPrice) }}
+                </h5>
+                <span class="mb-0.5 text-sm">{{
+                  state.lang === 'ar' ? 'جنيه' : 'LE'
+                }}</span>
+              </div>
             </div>
             <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4 class="text-sm">{{ $t(text.currBid) }}</h4>
-              <span class="text-xl font-bold">{{
-                currBid !== 0 ? getPricePerLang(currBid) : '--'
-              }}</span>
+              <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
+              <div class="flex items-end gap-1">
+                <h5 class="text-3xl font-bold">
+                  {{ getPricePerLang(currBid) }}
+                </h5>
+                <span class="mb-0.5 text-sm">{{
+                  state.lang === 'ar' ? 'جنيه' : 'LE'
+                }}</span>
+              </div>
             </div>
           </div>
 
           <BaseError v-if="error" class="mt-4">{{ error }}</BaseError>
 
           <div
-            class="my-3 flex flex-col overflow-hidden rounded-md border border-gray-800"
+            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
           >
-            <div
-              class="flex w-full items-center justify-between bg-gray-800 px-3 py-2 text-white"
-            >
-              <h4 class="text-lg font-semibold">
-                {{ status }}
-                <span
-                  class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
-                  v-if="status === 'Live' || status === 'نشط'"
-                />
-              </h4>
-              <div>
-                {{ TOE }}
-                &nbsp;
-                <span class="text-lg font-semibold">{{ clock }}</span>
-              </div>
+            <h4 class="text-lg font-semibold">
+              {{ status }}
+              <span
+                class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
+                v-if="status === 'Live' || status === 'نشط'"
+              />
+            </h4>
+            <div>
+              {{ TOE }}
+              &nbsp;
+              <span class="text-lg font-semibold">{{ clock }}</span>
             </div>
-            <form
-              v-if="status === 'Live' || status === 'نشط'"
-              @submit.prevent="joinBid"
-              class="grid border border-gray-800 md:grid-cols-4"
-            >
+          </div>
+
+          <form
+            v-if="status === 'Live' || status === 'نشط'"
+            class="flex items-center justify-between"
+            @submit.prevent="joinBid"
+          >
+            <div class="flex w-min items-center rounded-md bg-gray-200">
+              <BaseButton
+                class="h-[40px] px-2.5"
+                @click.prevent="
+                  newPrice < currBid
+                    ? (newPrice = currBid + 1)
+                    : (newPrice += 1)
+                "
+              >
+                <svg
+                  class="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  ></path>
+                </svg>
+              </BaseButton>
               <input
                 v-model="newPrice"
                 type="number"
                 placeholder="Your Price"
-                class="bg-transparent p-3 font-semibold text-black focus:outline-none md:col-span-3"
+                class="h-[40px] w-24 bg-transparent text-center font-semibold text-black focus:outline-none md:col-span-3"
+                style="-moz-appearance: textfield; -webkit-appearance: none"
                 :min="parseFloat(currBid) + 1"
               />
-              <BaseButton class="!w-full rounded-none border-none">
-                {{ $t(text.joinBid) }}
+              <BaseButton
+                class="h-[40px] px-2.5"
+                @click.prevent="
+                  newPrice > currBid + 1
+                    ? (newPrice -= 1)
+                    : (newPrice = currBid + 1)
+                "
+              >
+                <svg
+                  class="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 12H4"
+                  ></path>
+                </svg>
               </BaseButton>
-            </form>
-          </div>
+            </div>
+
+            <BaseButton>
+              {{ $t(text.joinBid) }}
+            </BaseButton>
+          </form>
 
           <a
             href="#"
@@ -304,3 +365,11 @@ const text = $ref({
     </div>
   </UserLayout>
 </template>
+
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

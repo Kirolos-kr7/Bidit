@@ -53,7 +53,7 @@ const text = $ref({
 <template>
   <UserLayout>
     <header
-      class="relative -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 md:grid-cols-3 md:gap-0"
+      class="relative -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 shadow-sm md:grid-cols-3 md:gap-0 md:rounded-md"
     >
       <Carousel
         :breakpoints="brp"
@@ -93,7 +93,7 @@ const text = $ref({
     </section>
 
     <section
-      class="my-4 grid grid-cols-2 gap-2 bg-white p-3 md:my-6 md:grid-cols-4 md:gap-5 md:p-6"
+      class="my-4 grid grid-cols-2 gap-2 bg-white p-3 shadow-sm md:my-6 md:grid-cols-4 md:gap-5 md:rounded-md md:p-6"
     >
       <RouterLink
         :to="`/${state.lang}/bids/technology`"
