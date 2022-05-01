@@ -18,7 +18,6 @@ onMounted(async () => {
 
   if (response.data.ok) {
     bids = response.data.data
-    console.table(response.data.data)
   }
 
   gsap.from('[data-cat-animate]', {

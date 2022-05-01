@@ -301,14 +301,14 @@ const text = $ref({
 
           <div
             class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
-            v-if="status === 'expired' && state.user._id === currBid.user"
+            v-if="status === 'expired' && state?.user?._id === currBid.user"
           >
             {{ $t(text.youWonTheBid) }}
           </div>
 
           <div
             class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
-            v-if="status === 'active' && state.user._id === currBid.user"
+            v-if="status === 'active' && state?.user?._id === currBid.user"
           >
             {{ $t(text.youAreTheHeighstBidder) }}
           </div>
@@ -316,8 +316,8 @@ const text = $ref({
           <form
             v-if="
               status === 'active' &&
-              bid?.user?._id !== state?.user?._id &&
-              state.user._id !== currBid.user
+              bid?.user?._id !== state?.user?._id && // Creator is logged user
+              currBid.user !== state?.user?._id // Heighst Bidder is logged user
             "
             class="flex items-center justify-between"
             @submit.prevent="joinBid"
@@ -383,6 +383,16 @@ const text = $ref({
               {{ $t(text.joinBid) }}
             </BaseButton>
           </form>
+
+          <div
+            class="my-5 flex flex-col gap-2"
+            v-if="!state.user && !state.isLoggedIn"
+          >
+            <p class="font-semibold">You Need To Login First To Join The Bid</p>
+            <RouterLink :to="`/${state.lang}/login`" class="flex"
+              ><BaseButton> Login to Bid </BaseButton></RouterLink
+            >
+          </div>
 
           <a
             href="#"
