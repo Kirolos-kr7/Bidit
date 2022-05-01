@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useStore } from './store'
 import { categories } from './lang/categories.json'
-import { status } from './lang/bidstatus.json'
+import { statuses } from './lang/bidstatus.json'
 import { useCookies } from 'vue3-cookies'
 
 export const $t = (x) => {
@@ -71,7 +71,7 @@ export const getStatus = (val) => {
 
   if (!val) return 'N/F'
 
-  status.forEach((state) => {
+  statuses.forEach((state) => {
     if (state.en.toLowerCase() === val.toLowerCase()) {
       bidStatus = $t(state)
     }

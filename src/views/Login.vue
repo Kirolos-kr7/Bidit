@@ -20,19 +20,19 @@ let isLoading = $ref(false)
 let error = $ref('')
 
 onMounted(() => {
-  google.accounts.id.initialize({
-    client_id:
-      '93523739734-gm8s6ba175gn6ad2h7ioapcvrnbq7k6p.apps.googleusercontent.com',
-    callback: (res) => {
-      console.log(res)
-    },
-  })
-  google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
-    theme: 'filled_blue',
-    size: 'large',
-    text: 'continue_with',
-    width: '250px',
-  })
+  // google.accounts.id.initialize({
+  //   client_id:
+  //     '93523739734-gm8s6ba175gn6ad2h7ioapcvrnbq7k6p.apps.googleusercontent.com',
+  //   callback: (res) => {
+  //     console.log(res)
+  //   },
+  // })
+  // google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
+  //   theme: 'filled_blue',
+  //   size: 'large',
+  //   text: 'continue_with',
+  //   width: '250px',
+  // })
 })
 
 const text = $ref({
@@ -87,13 +87,18 @@ const loginUser = async () => {
       class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
     >
       <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
-      <div id="buttonDiv" class="my-6"></div>
+      <!-- <div id="buttonDiv" class="my-6"></div> -->
       <form @submit.prevent="loginUser">
         <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
           <BaseWarn
             v-if="router.currentRoute.value.query.ref === `token_expired`"
             class="sm:col-span-2"
             >Your token has expired, please login again.</BaseWarn
+          >
+          <BaseWarn
+            v-else-if="router.currentRoute.value.query.ref === `login_to_join`"
+            class="sm:col-span-2"
+            >You need to login first in order to join this bid.</BaseWarn
           >
           <BaseInput
             type="email"

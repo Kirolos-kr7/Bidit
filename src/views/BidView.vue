@@ -2,16 +2,15 @@
 import { useStore } from '../store'
 import {
   getType,
+  getStatus,
   getPricePerLang,
   getNumPerLang,
-  useAxios,
   $t,
 } from '../functions'
 import { onMounted, onUnmounted, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import { io } from 'socket.io-client'
-
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import 'dayjs/locale/ar'
@@ -31,18 +30,19 @@ const socket = io(state.BASE_URL)
 let isLoading = $ref(false)
 let error = $ref()
 let bid = $ref()
-let currBid = $ref(0)
+let currBid = $ref({ price: 0, user: null })
 let newPrice = $ref(0)
 let TOE = $ref('')
 let status = $ref('')
 let clock = $ref('')
+let bidID = route.params.bidID
 
 watchEffect(() => {
   if (bid) {
     bid?.bidsHistory.forEach((aBid) => {
-      if (currBid < aBid.price) {
-        currBid = aBid.price
-        newPrice = currBid + 1
+      if (currBid.price < aBid.price) {
+        currBid = aBid
+        newPrice = currBid.price + 1
       }
     })
   }
@@ -50,11 +50,11 @@ watchEffect(() => {
 
 onMounted(async () => {
   isLoading = true
-  let bidID = route.params.bidID
+
   if (!route.params.bidID) router.replace(`/${state.lang}/404`)
 
   socket.on('connect', () => {
-    console.log(socket.id) // x8WIv7-mJelg7on_ALbx
+    console.log(socket.id)
 
     socket.emit('pageLoaded', bidID)
 
@@ -77,6 +77,12 @@ onUnmounted(async () => {
 })
 
 const joinBid = () => {
+  if (!state.isLoggedIn || !state.user)
+    return router.push({
+      name: `login`,
+      query: { ref: 'login_to_join' },
+    })
+
   let data = { newPrice, userID: state.user._id, bidID: route.params.bidID }
   socket.emit('joinBid', data)
 }
@@ -108,7 +114,7 @@ const calcDiff = () => {
     diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
 
     TOE = diff
-    status = $t(text.soon)
+    status = 'soon'
     clock = $t(text.toLive)
     return
   }
@@ -132,11 +138,11 @@ const calcDiff = () => {
     diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
 
     TOE = diff
-    status = $t(text.live)
+    status = 'active'
     clock = $t(text.left)
   } else {
     TOE = ''
-    status = $t(text.expired)
+    status = 'expired'
     clock = ''
   }
 }
@@ -162,14 +168,6 @@ const text = $ref({
     ar: 'الابلاغ عن المزاد!',
     en: 'Report This Bid!',
   },
-  live: {
-    ar: 'نشط',
-    en: 'Live',
-  },
-  expired: {
-    ar: 'انتهى',
-    en: 'Expired',
-  },
   left: {
     ar: 'متبقي',
     en: 'Left',
@@ -178,9 +176,13 @@ const text = $ref({
     ar: 'على النشاط',
     en: 'To Live',
   },
-  soon: {
-    ar: 'انتظار',
-    en: 'Soon',
+  youAreTheHeighstBidder: {
+    ar: 'حالياً انت اعلى مزايد.',
+    en: 'Currently You Are the Heighst bidder.',
+  },
+  youWonTheBid: {
+    ar: 'مبروك. لقد ربحت المزاد.',
+    en: ' Congratulations. You Won This Bid.',
   },
 })
 </script>
@@ -221,7 +223,7 @@ const text = $ref({
                 to="#"
                 class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
               >
-                {{ bid?.user?.name || 'mariox' }}
+                {{ bid?.user?.name || 'N/F' }}
               </Router-Link>
             </div>
           </div>
@@ -233,8 +235,14 @@ const text = $ref({
             exercitationem eveniet?
           </p>
 
-          <div class="grid gap-x-5 gap-y-2 break-words pt-3 md:grid-cols-3">
-            <div class="overflow-hidden rounded-md border-2 p-3">
+          <div
+            class="grid gap-x-5 gap-y-2 break-words pt-3"
+            :class="status !== 'soon' ? 'md:grid-cols-3' : ''"
+          >
+            <div
+              class="overflow-hidden rounded-md border-2 p-3"
+              v-if="status !== 'soon'"
+            >
               <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
               <div class="flex items-end gap-1">
                 <h5 class="text-3xl font-bold">
@@ -256,11 +264,14 @@ const text = $ref({
                 }}</span>
               </div>
             </div>
-            <div class="overflow-hidden rounded-md border-2 p-3">
+            <div
+              class="overflow-hidden rounded-md border-2 p-3"
+              v-if="status !== 'soon'"
+            >
               <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
               <div class="flex items-end gap-1">
                 <h5 class="text-3xl font-bold">
-                  {{ getPricePerLang(currBid) }}
+                  {{ getPricePerLang(currBid.price) }}
                 </h5>
                 <span class="mb-0.5 text-sm">{{
                   state.lang === 'ar' ? 'جنيه' : 'LE'
@@ -274,11 +285,11 @@ const text = $ref({
           <div
             class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
           >
-            <h4 class="text-lg font-semibold">
-              {{ status }}
+            <h4 class="text-lg font-semibold capitalize">
+              {{ getStatus(status) }}
               <span
                 class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
-                v-if="status === 'Live' || status === 'نشط'"
+                v-if="status === 'active'"
               />
             </h4>
             <div>
@@ -288,8 +299,26 @@ const text = $ref({
             </div>
           </div>
 
+          <div
+            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
+            v-if="status === 'expired' && state.user._id === currBid.user"
+          >
+            {{ $t(text.youWonTheBid) }}
+          </div>
+
+          <div
+            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
+            v-if="status === 'active' && state.user._id === currBid.user"
+          >
+            {{ $t(text.youAreTheHeighstBidder) }}
+          </div>
+
           <form
-            v-if="status === 'Live' || status === 'نشط'"
+            v-if="
+              status === 'active' &&
+              bid?.user?._id !== state?.user?._id &&
+              state.user._id !== currBid.user
+            "
             class="flex items-center justify-between"
             @submit.prevent="joinBid"
           >
@@ -297,8 +326,8 @@ const text = $ref({
               <BaseButton
                 class="h-[40px] px-2.5"
                 @click.prevent="
-                  newPrice < currBid
-                    ? (newPrice = currBid + 1)
+                  newPrice < currBid.price
+                    ? (newPrice = currBid.price + 1)
                     : (newPrice += 1)
                 "
               >
@@ -323,14 +352,14 @@ const text = $ref({
                 placeholder="Your Price"
                 class="h-[40px] w-24 bg-transparent text-center font-semibold text-black focus:outline-none md:col-span-3"
                 style="-moz-appearance: textfield; -webkit-appearance: none"
-                :min="parseFloat(currBid) + 1"
+                :min="currBid.price + 1"
               />
               <BaseButton
                 class="h-[40px] px-2.5"
                 @click.prevent="
-                  newPrice > currBid + 1
+                  newPrice > currBid.price + 1
                     ? (newPrice -= 1)
-                    : (newPrice = currBid + 1)
+                    : (newPrice = currBid.price + 1)
                 "
               >
                 <svg

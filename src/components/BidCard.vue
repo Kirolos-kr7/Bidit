@@ -53,8 +53,11 @@ defineEmits(['editItem', 'deleteItem'])
     />
 
     <div class="p-3">
-      <BaseType :to="`/${state.lang}/bids/${bid.item.type}`">
-        {{ getType(bid.item?.type) }}
+      <BaseType
+        :to="`/${state.lang}/bids/${bid.item.type}`"
+        v-if="bid?.item?.type"
+      >
+        {{ getType(bid.item.type) }}
       </BaseType>
       <h2
         class="overflow-hidden break-all text-xl font-semibold capitalize text-black"
@@ -64,7 +67,7 @@ defineEmits(['editItem', 'deleteItem'])
           -webkit-box-orient: vertical;
         "
       >
-        {{ bid.item.name }}
+        {{ bid?.item?.name || 'N/F' }}
       </h2>
 
       <div class="mt-3 grid grid-cols-[auto,1fr] gap-x-3 capitalize text-black">
