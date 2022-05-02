@@ -1,23 +1,31 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
 import AdminLayout from '../../components/AdminLayout.vue'
+import { onMounted } from 'vue'
+import { useAxios } from '../../functions'
 
-let data = $ref([
-  {
-    _id: '6249d7078f3db98ae5267e6d',
-    type: 'complaint',
-    status: 'active',
-  },
-])
+let data = $ref()
 
 let constraint = $ref('_id')
 let direction = $ref('asc')
 
+const fetchReports = async () => {
+  let { response } = await useAxios(
+    'get',
+    `/admin/reports?sortBy=${constraint}&dir=${direction}`,
+  )
+
+  if (response.data.ok) data = response.data.data
+}
+
+onMounted(async () => fetchReports())
+
 const sortBy = (value, dir) => {
   constraint = value
   direction = dir
-}
 
+  fetchReports()
+}
 const open = (value) => {
   console.log(value)
 }

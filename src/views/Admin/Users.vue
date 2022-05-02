@@ -1,18 +1,30 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
 import AdminLayout from '../../components/AdminLayout.vue'
+import { useAxios } from '../../functions'
+import { onMounted } from 'vue'
 
-let data = $ref([
-  { name: 'Kirolos Rafaat', email: 'k@k.co', isAdmin: false },
-  { name: 'Mario George', email: 'mario@gmail.com', isAdmin: true },
-])
+let data = $ref([])
 
 let constraint = $ref('name')
 let direction = $ref('asc')
 
+const fetchUsers = async () => {
+  let { response } = await useAxios(
+    'get',
+    `/admin/users?sortBy=${constraint}&dir=${direction}`,
+  )
+
+  if (response.data.ok) data = response.data.data
+}
+
+onMounted(async () => fetchUsers())
+
 const sortBy = (value, dir) => {
   constraint = value
   direction = dir
+
+  fetchUsers()
 }
 
 const open = (value) => {
