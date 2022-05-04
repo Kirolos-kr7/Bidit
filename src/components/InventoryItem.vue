@@ -39,7 +39,10 @@ const emits = defineEmits(['editItem', 'deleteItem', 'newBid', 'showItemView'])
   <div
     class="bg-bi-700 relative flex flex-col overflow-hidden rounded-md bg-white shadow-sm"
   >
-    <BaseImg :src="item.images[0]" class="h-[260px] object-cover" />
+    <BaseImg
+      :src="`https://ik.imagekit.io/bidit/${item?.images[0]}`"
+      class="h-[260px] object-cover"
+    />
 
     <div class="p-3 pt-1.5">
       <BaseType :to="`/${state.lang}/bids/${item.type}`">

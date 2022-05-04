@@ -17,6 +17,7 @@ import ImgSelector from '../components/ImgSelector.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import UserLayout from '../components/UserLayout.vue'
+import BaseInputFile from '../components/Base/BaseInputFile.vue'
 
 const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),
@@ -27,7 +28,8 @@ let itemsDialog = $ref(false),
   error = $ref(null),
   itemName = $ref(''),
   itemType = $ref(),
-  itemDesc = $ref('')
+  itemDesc = $ref(''),
+  itemImages = $ref([])
 
 const text = $ref({
   title: {
@@ -126,6 +128,7 @@ const addItem = async () => {
     name: itemName,
     type: itemType,
     description: itemDesc,
+    images: itemImages,
   })
 
   console.log(response)
@@ -185,16 +188,15 @@ const showNewBidDialog = async (item) => {
 }
 
 const deleteItem = async () => {
-  console.log('RUN')
-
-  let { response } = await useAxios('delete', '/item/delete', {
-    id: selectedItem.id,
-  })
+  let { response } = await useAxios(
+    'delete',
+    `/item/delete/${selectedItem._id}`,
+  )
 
   if (!response.data.ok) return console.log(response.data.message)
   else {
     items.forEach((item, i) => {
-      if (item.id === selectedItem.id) {
+      if (item._id === selectedItem._id) {
         items.splice(i, 1)
       }
     })
@@ -285,6 +287,11 @@ const deleteItem = async () => {
             :placeholder="$t(text.descriptionPlaceholder)"
             v-model="itemDesc"
             @updateInput="(val) => (itemDesc = val)"
+          />
+          <BaseInputFile
+            placeholder="Click to Add Images MAX(4)"
+            class="!w-full"
+            @updateInput="(images) => (itemImages = images)"
           />
           <transition name="fade">
             <BaseError v-if="error">{{ error }}</BaseError>
