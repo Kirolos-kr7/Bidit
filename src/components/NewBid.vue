@@ -4,6 +4,7 @@ import BaseInput from './Base/BaseInput.vue'
 import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
+import dayjs from 'dayjs'
 
 const props = defineProps(['item'])
 const emits = defineEmits(['resetDialog'])
@@ -38,8 +39,8 @@ const text = $ref({
 
 const newBid = async () => {
   let { response } = await useAxios('post', '/bid/add', {
-    startDate,
-    endDate,
+    startDate: new Date(startDate).toGMTString(),
+    endDate: new Date(endDate).toGMTString(),
     minPrice,
     status: 'soon',
     item: props.item._id,

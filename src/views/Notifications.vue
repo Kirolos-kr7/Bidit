@@ -10,7 +10,6 @@ onMounted(async () => {
   let { response } = await useAxios('get', '/auth/notifications')
 
   if (response.data.ok) nts = response.data.data
-  console.log(response)
 })
 
 const text = $ref({
@@ -19,6 +18,12 @@ const text = $ref({
     en: 'Notifications',
   },
 })
+
+const notificationSeen = (_id) => {
+  nts.forEach((nt) => {
+    if (nt._id === _id) nt.seen = true
+  })
+}
 </script>
 
 <template>
@@ -30,6 +35,7 @@ const text = $ref({
           v-for="(nt, index) in nts"
           :key="index"
           :notification="nt"
+          @notificationSeen="notificationSeen"
         />
       </div>
     </div>

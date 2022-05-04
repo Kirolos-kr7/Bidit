@@ -1,6 +1,9 @@
 <script setup>
 import { useStore } from '../store'
 import { getType, getStatus } from '../functions'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ar'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import BaseType from './Base/BaseType.vue'
 import BaseImg from './Base/BaseImg.vue'
 
@@ -18,6 +21,10 @@ const text = $ref({
   deleteTitle: {
     ar: 'حذف',
     en: 'Delete',
+  },
+  price: {
+    ar: 'السعر',
+    en: 'Price',
   },
   status: {
     ar: 'الحالة',
@@ -71,15 +78,23 @@ defineEmits(['editItem', 'deleteItem'])
       </h2>
 
       <div class="mt-3 grid grid-cols-[auto,1fr] gap-x-3 capitalize text-black">
-        <span class="font-medium text-neutral-600">{{ $t(text.status) }}</span>
+        <span class="font-medium text-neutral-600">{{ $t(text.price) }}</span>
+        <span class="font-medium">{{
+          state.lang === 'ar' ? bid?.minPrice + ' جنيه' : bid?.minPrice + ' LE'
+        }}</span
+        ><span class="font-medium text-neutral-600">{{ $t(text.status) }}</span>
         <span class="font-medium">{{ getStatus(bid.status) }}</span>
         <span class="font-medium text-neutral-600">{{ $t(text.from) }}</span>
         <span class="font-medium">{{
-          new Date(bid.startDate).toDateString()
+          dayjs(bid.startDate)
+            .locale(state.lang)
+            .format('ddd, D MMMM, YYYY | h:mm A')
         }}</span>
         <span class="font-medium text-neutral-600">{{ $t(text.to) }}</span>
         <span class="font-medium">{{
-          new Date(bid.endDate).toDateString()
+          dayjs(bid.endDate)
+            .locale(state.lang)
+            .format('ddd, D MMMM, YYYY | h:mm A')
         }}</span>
       </div>
     </div>

@@ -12,15 +12,9 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
-import 'dayjs/locale/es'
-import 'dayjs/locale/ar'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
 import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
-dayjs.extend(advancedFormat)
-dayjs.extend(localizedFormat)
 
 const { $state: state } = useStore()
 const route = useRoute()
@@ -39,12 +33,16 @@ let bidID = route.params.bidID
 
 watchEffect(() => {
   if (bid) {
-    bid?.bidsHistory.forEach((aBid) => {
-      if (currBid.price < aBid.price) {
-        currBid = aBid
-        newPrice = currBid.price + 1
-      }
-    })
+    if (bid?.bidsHistory.length === 0) {
+      newPrice = bid.minPrice
+      currBid = { user: null, price: bid.minPrice }
+    } else
+      bid?.bidsHistory.forEach((aBid) => {
+        if (currBid.price < aBid.price) {
+          currBid = aBid
+          newPrice = currBid.price + 1
+        }
+      })
   }
 })
 
@@ -56,7 +54,7 @@ onMounted(async () => {
   socket.on('connect', () => {
     console.log(socket.id)
 
-    socket.emit('pageLoaded', bidID)
+    socket.emit('pageLoaded', bidID, state.user._id)
 
     socket.on('bidFound', (data) => {
       bid = data
@@ -383,16 +381,6 @@ const text = $ref({
               {{ $t(text.joinBid) }}
             </BaseButton>
           </form>
-
-          <div
-            class="my-5 flex flex-col gap-2"
-            v-if="!state.user && !state.isLoggedIn"
-          >
-            <p class="font-semibold">You Need To Login First To Join The Bid</p>
-            <RouterLink :to="`/${state.lang}/login`" class="flex"
-              ><BaseButton> Login to Bid </BaseButton></RouterLink
-            >
-          </div>
 
           <a
             href="#"

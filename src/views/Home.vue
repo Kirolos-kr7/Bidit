@@ -14,7 +14,7 @@ const { $state: state } = $(useStore())
 let bids = $ref([])
 
 onMounted(async () => {
-  let { response } = await useAxios('get', '/bid/all')
+  let { response } = await useAxios('get', '/bid/all?limit=4')
 
   if (response.data.ok) {
     bids = response.data.data
