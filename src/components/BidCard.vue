@@ -55,7 +55,7 @@ defineEmits(['editItem', 'deleteItem'])
     class="relative flex flex-col overflow-hidden rounded-md bg-white shadow-md sm:flex-row"
   >
     <BaseImg
-      src="https://media.btech.com/media/catalog/product/cache/22b1bed05f04d71c4a848d770186c3c4/0/0/0022549_apple-iphone-13-pro-max-256-gb-5g-sierra-blue_3umnabtijaqwmjdf.jpeg"
+      :src="`https://ik.imagekit.io/bidit/${bid.item.images[0]}`"
       class="h-[250px] object-cover sm:h-auto sm:w-1/3"
     />
 

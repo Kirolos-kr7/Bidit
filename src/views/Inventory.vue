@@ -311,26 +311,7 @@ const deleteItem = async () => {
         v-if="itemViewDialog"
       >
         <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
-        <ImgSelector
-          :imgs="[
-            '/images/home/ar/antiques.png',
-            '/images/home/ar/art.png',
-            '/images/home/ar/technology.png',
-            '/images/home/ar/cats.png',
-            '/images/home/ar/antiques.png',
-            '/images/home/ar/art.png',
-            '/images/home/ar/technology.png',
-            '/images/home/ar/cats.png',
-            '/images/home/ar/antiques.png',
-            '/images/home/ar/art.png',
-            '/images/home/ar/technology.png',
-            '/images/home/ar/cats.png',
-            '/images/home/ar/antiques.png',
-            '/images/home/ar/art.png',
-            '/images/home/ar/technology.png',
-            '/images/home/ar/cats.png',
-          ]"
-        />
+        <ImgSelector :imgs="selectedItem?.images" />
         <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
           selectedItem.type
         }}</BaseType>

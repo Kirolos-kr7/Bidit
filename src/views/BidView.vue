@@ -15,6 +15,7 @@ import dayjs from 'dayjs'
 import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
+import ImgSelector from '../components/ImgSelector.vue'
 
 const { $state: state } = useStore()
 const route = useRoute()
@@ -191,11 +192,11 @@ const text = $ref({
       class="grid overflow-hidden rounded-md bg-white shadow-sm sm:grid-cols-2"
       v-if="!isLoading"
     >
-      <div class="grid place-content-center">
-        <img
-          v-if="bid?.item.images !== null"
-          src="/images/monalisa-art.jpg"
-          class="mx-auto my-auto h-[230px] w-[240px] object-cover"
+      <div>
+        <ImgSelector
+          v-if="bid?.item?.images"
+          :imgs="bid?.item?.images"
+          class="mx-auto block p-4"
         />
       </div>
 
