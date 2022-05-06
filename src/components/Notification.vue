@@ -49,10 +49,10 @@ let scrollObserver = async () => {
 
 onMounted(() => {
   if (!props.notification.seen) {
-    scrollObserver()
-    window.addEventListener('scroll', () => {
-      scrollObserver()
-    })
+    // scrollObserver()
+    // window.addEventListener('scroll', () => {
+    //   scrollObserver()
+    // })
   }
 })
 

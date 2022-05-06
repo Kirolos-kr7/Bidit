@@ -18,7 +18,7 @@ let bids = $ref([])
 const getBids = async () => {
   let { response } = await useAxios(
     'get',
-    `/bid/${route.params.cat.toLowerCase()}`,
+    `/bid/category/${route.params.cat.toLowerCase()}`,
   )
 
   if (response.data.ok) {

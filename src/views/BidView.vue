@@ -35,7 +35,7 @@ let bidID = route.params.bidID
 watchEffect(() => {
   if (bid) {
     if (bid?.bidsHistory.length === 0) {
-      newPrice = bid.minPrice
+      newPrice = bid.minPrice + 1
       currBid = { user: null, price: bid.minPrice }
     } else
       bid?.bidsHistory.forEach((aBid) => {
@@ -196,12 +196,12 @@ const text = $ref({
         <ImgSelector
           v-if="bid?.item?.images"
           :imgs="bid?.item?.images"
-          class="mx-auto block p-4"
+          class="mx-auto block md:p-6"
         />
       </div>
 
       <div class="bg-bi-800">
-        <div class="p-4 sm:py-6">
+        <div class="p-4 md:p-6">
           <BaseType
             :to="`/${state.lang}/bids/${bid?.item.type}`"
             class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
@@ -228,10 +228,7 @@ const text = $ref({
           </div>
 
           <p class="mb-2 font-medium text-neutral-500">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam hic
-            corporis, doloribus debitis maxime harum placeat itaque fugit culpa
-            nihil sit est rerum molestias asperiores quam alias! Odit,
-            exercitationem eveniet?
+            {{ bid?.item?.description || 'N/F' }}
           </p>
 
           <div
@@ -270,7 +267,11 @@ const text = $ref({
               <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
               <div class="flex items-end gap-1">
                 <h5 class="text-3xl font-bold">
-                  {{ getPricePerLang(currBid.price) }}
+                  {{
+                    getPricePerLang(
+                      bid?.bidsHistory.length > 0 ? currBid.price : 0,
+                    )
+                  }}
                 </h5>
                 <span class="mb-0.5 text-sm">{{
                   state.lang === 'ar' ? 'جنيه' : 'LE'

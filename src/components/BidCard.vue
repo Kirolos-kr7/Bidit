@@ -31,11 +31,11 @@ const text = $ref({
     en: 'Status',
   },
   to: {
-    ar: 'من',
+    ar: 'الى',
     en: 'To',
   },
   from: {
-    ar: 'الى',
+    ar: 'من',
     en: 'From',
   },
 })

@@ -58,17 +58,17 @@ const tmImage = (e) => {
 </script>
 
 <template>
-  <div class="grid grid-cols-6">
+  <div class="flex items-center justify-evenly">
     <div
       class="mt-4 mb-2 hidden flex-col items-center gap-2 overflow-scroll p-1 md:flex"
     >
       <img
         v-for="(img, i) in imgs"
-        :src="`https://ik.imagekit.io/bidit/${img}`"
+        :src="`https://ik.imagekit.io/bidit/${img}?tr=w-52`"
         :key="i"
         :class="
-          (front === 1 && index === i && 'ring-4 ring-black') ||
-          (front === 2 && index === i && 'ring-4 ring-black')
+          (front === 1 && index === i && 'ring-2 ring-black') ||
+          (front === 2 && index === i && 'ring-2 ring-black')
         "
         alt=""
         class="w-[60px] cursor-pointer rounded-md p-1"
@@ -76,33 +76,24 @@ const tmImage = (e) => {
       />
     </div>
 
-    <div
-      class="relative col-span-6 flex flex-col items-center gap-4 md:col-span-5"
-    >
-      <transition-group
-        name="fade"
-        mode="out-in"
-        tag="div"
-        @touchstart="tsImage($event)"
-        @touchmove="tmImage($event)"
-      >
+    <div class="relative flex flex-col items-center gap-4 overflow-hidden">
+      <div @touchstart="tsImage($event)" @touchmove="tmImage($event)">
         <img
           :src="`https://ik.imagekit.io/bidit/${imageToshow1}?tr=w-400,h-400`"
-          v-if="front === 1"
           key="1"
           alt=""
-          class="mx-auto rounded-md"
+          class="absolute z-[4] mx-auto rounded-md opacity-0 transition-opacity"
+          :class="front === 1 ? 'opacity-100' : ''"
         />
         <img
           :src="`https://ik.imagekit.io/bidit/${imageToshow2}?tr=w-400,h-400`"
-          v-if="front === 2"
           key="2"
           alt=""
-          class="mx-auto rounded-md"
+          class="relative z-[3] mx-auto rounded-md"
         />
-      </transition-group>
+      </div>
 
-      <div class="flex items-center gap-2 md:hidden">
+      <div class="mb-2 flex items-center gap-2 md:hidden">
         <span
           v-for="(img, i) in imgs"
           :key="i"
@@ -110,8 +101,7 @@ const tmImage = (e) => {
             (front === 1 && index === i && 'ring-2 ring-black') ||
             (front === 2 && index === i && 'ring-2 ring-black')
           "
-          alt=""
-          class="h-2 w-2 rounded-full bg-gray-300"
+          class="h-2 w-2 cursor-pointer rounded-full bg-gray-300"
           @click="changeSelectedImg(i)"
         ></span>
       </div>
