@@ -12,8 +12,10 @@ import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 
 let bids = $ref([])
+let isLoading = $ref(true)
 
 onMounted(async () => {
+  isLoading = true
   let { response } = await useAxios('get', '/bid/all?limit=4')
 
   if (response.data.ok) {
@@ -25,6 +27,7 @@ onMounted(async () => {
     duration: 0.4,
     stagger: 0.2,
   })
+  isLoading = false
 })
 
 const brp = $ref({
@@ -88,7 +91,7 @@ const text = $ref({
 
     <section class="my-4 p-4 md:my-6" v-if="bids">
       <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
-      <Bids :bids="bids" />
+      <Bids :bids="bids" :isLoading="isLoading" />
     </section>
 
     <section
@@ -138,7 +141,7 @@ const text = $ref({
 
     <section class="my-4 p-4 md:my-6" v-if="bids">
       <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
-      <Bids :bids="bids" />
+      <Bids :bids="bids" :isLoading="isLoading" />
     </section>
   </UserLayout>
 </template>

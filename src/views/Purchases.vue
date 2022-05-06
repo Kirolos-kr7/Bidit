@@ -43,7 +43,10 @@ onMounted(async () => {
       <div v-if="!isLoading">
         <BaseEmpty
           v-if="bids.length === 0"
-          msg="You Don't have any bids yet!"
+          :msg="{
+            ar: 'لا يوجد لديك مزادات حتى الان!',
+            en: `You Don't have any bids yet!`,
+          }"
         />
         <Bids :bids="bids" v-else />
       </div>

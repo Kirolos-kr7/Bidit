@@ -8,6 +8,11 @@
         "to": "art"
       },
       {
+        "ar": "اثاث",
+        "en": "furniture",
+        "to": "furniture"
+      },
+      {
         "ar": "تحف",
         "en": "antiques",
         "to": "antiques"

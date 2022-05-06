@@ -221,7 +221,11 @@ const deleteItem = async () => {
       <div v-if="!isLoading">
         <BaseEmpty
           v-if="items.length === 0"
-          msg="You Don't have any items yet!"
+          msg=""
+          :msg="{
+            ar: 'لا يوجد لديك عناصر حتى الان!',
+            en: `You Don't have any items yet!`,
+          }"
         />
         <div
           v-else

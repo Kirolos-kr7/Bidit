@@ -78,6 +78,6 @@ defineProps(['msg'])
         </g>
       </g>
     </svg>
-    <span class="font-semibold">{{ msg }}</span>
+    <span class="font-semibold">{{ $t(msg) }}</span>
   </div>
 </template>

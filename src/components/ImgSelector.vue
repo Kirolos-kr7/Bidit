@@ -1,4 +1,6 @@
 <script setup>
+import { onMounted } from 'vue'
+
 const props = defineProps({
   imgs: {
     type: Array,
@@ -7,9 +9,19 @@ const props = defineProps({
 
 let front = $ref(1)
 let index = $ref(0)
+let interval = $ref(4500)
 let xDown = $ref(null)
 let imageToshow1 = $ref(props?.imgs[0])
 let imageToshow2 = $ref(props?.imgs[1])
+let imageInterval
+
+onMounted(() => startAutoSwitcher())
+
+const startAutoSwitcher = () => {
+  imageInterval = setInterval(() => {
+    nextImg()
+  }, interval)
+}
 
 const changeSelectedImg = (i) => {
   if (front === 1) {
@@ -25,6 +37,8 @@ const changeSelectedImg = (i) => {
       index = i
     }
   }
+  clearInterval(imageInterval)
+  startAutoSwitcher()
 }
 
 const tsImage = (e) => {
@@ -37,23 +51,28 @@ const tmImage = (e) => {
   let xUp = e.touches[0].clientX
   let xDiff = xDown - xUp
 
-  if (xDiff > 0) {
-    if (index < props.imgs.length - 1) {
-      changeSelectedImg(index + 1)
-    } else {
-      index = 0
-      changeSelectedImg(index)
-    }
-  } else {
-    if (index === 0) {
-      index = props.imgs.length - 1
-      changeSelectedImg(index)
-    } else {
-      changeSelectedImg(index - 1)
-    }
-  }
+  if (xDiff > 0) nextImg()
+  else prevImg()
 
   xDown = null
+}
+
+const nextImg = () => {
+  if (index < props.imgs.length - 1) {
+    changeSelectedImg(index + 1)
+  } else {
+    index = 0
+    changeSelectedImg(index)
+  }
+}
+
+const prevImg = () => {
+  if (index === 0) {
+    index = props.imgs.length - 1
+    changeSelectedImg(index)
+  } else {
+    changeSelectedImg(index - 1)
+  }
 }
 </script>
 

@@ -16,6 +16,7 @@ import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import ImgSelector from '../components/ImgSelector.vue'
+import { computed } from '@vue/reactivity'
 
 const { $state: state } = useStore()
 const route = useRoute()
@@ -35,13 +36,13 @@ let bidID = route.params.bidID
 watchEffect(() => {
   if (bid) {
     if (bid?.bidsHistory.length === 0) {
-      newPrice = bid.minPrice + 1
+      newPrice = bid.minPrice + getOffest.value
       currBid = { user: null, price: bid.minPrice }
     } else
       bid?.bidsHistory.forEach((aBid) => {
         if (currBid.price < aBid.price) {
           currBid = aBid
-          newPrice = currBid.price + 1
+          newPrice = currBid.price + getOffest.value
         }
       })
   }
@@ -55,7 +56,7 @@ onMounted(async () => {
   socket.on('connect', () => {
     console.log(socket.id)
 
-    socket.emit('pageLoaded', bidID, state.user._id)
+    socket.emit('pageLoaded', bidID, state?.user?._id ? state?.user?._id : null)
 
     socket.on('bidFound', (data) => {
       bid = data
@@ -84,6 +85,37 @@ const joinBid = () => {
 
   let data = { newPrice, userID: state.user._id, bidID: route.params.bidID }
   socket.emit('joinBid', data)
+}
+
+const getOffest = computed(() => {
+  let base = currBid.price
+  let muls = [10, 20, 50, 100, 250, 500, 750, 1000, 1250, 1500]
+  let vals = [1, 2, 5, 10, 25, 50, 75, 100, 125, 150]
+
+  if (base > 1000000000) return getNumWOZeros(Math.floor((base * 1) / 100))
+  if (base > 1000000) return getNumWOZeros(Math.floor((base * 2) / 100))
+  if (base > 10000) return getNumWOZeros(Math.floor((base * 5) / 100))
+  if (base > 1500) return getNumWOZeros(Math.floor((base * 10) / 100))
+
+  muls.forEach((mul, i) => {
+    if (base <= mul) {
+      return vals[i]
+    }
+  })
+})
+
+const getNumWOZeros = (num) => {
+  let arr = num.toString().split('')
+  let str = ''
+
+  arr.forEach((char, i) => {
+    if (i == 0) str += char
+    else str += '0'
+  })
+
+  console.log(str)
+
+  return parseInt(str)
 }
 
 const calcDiff = () => {
@@ -327,8 +359,8 @@ const text = $ref({
                 class="h-[40px] px-2.5"
                 @click.prevent="
                   newPrice < currBid.price
-                    ? (newPrice = currBid.price + 1)
-                    : (newPrice += 1)
+                    ? (newPrice = currBid.price + getOffest)
+                    : (newPrice += getOffest)
                 "
               >
                 <svg
@@ -352,14 +384,14 @@ const text = $ref({
                 placeholder="Your Price"
                 class="h-[40px] w-24 bg-transparent text-center font-semibold text-black focus:outline-none md:col-span-3"
                 style="-moz-appearance: textfield; -webkit-appearance: none"
-                :min="currBid.price + 1"
+                :min="currBid.price + getOffest"
               />
               <BaseButton
                 class="h-[40px] px-2.5"
                 @click.prevent="
-                  newPrice > currBid.price + 1
-                    ? (newPrice -= 1)
-                    : (newPrice = currBid.price + 1)
+                  newPrice > currBid.price + getOffest
+                    ? (newPrice -= getOffest)
+                    : (newPrice = currBid.price + getOffest)
                 "
               >
                 <svg

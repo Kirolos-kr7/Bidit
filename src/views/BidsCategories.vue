@@ -11,19 +11,21 @@ import UserLayout from '../components/UserLayout.vue'
 const route = useRoute()
 const router = useRouter()
 const { $state: state } = useStore()
-let title = $ref()
 
+let title = $ref()
 let bids = $ref([])
+let isLoading = $ref(true)
 
 const getBids = async () => {
+  isLoading = true
   let { response } = await useAxios(
     'get',
     `/bid/category/${route.params.cat.toLowerCase()}`,
   )
 
-  if (response.data.ok) {
-    bids = response.data.data
-  }
+  if (response.data.ok) bids = response.data.data
+
+  isLoading = false
 }
 
 onMounted(() => {
@@ -60,7 +62,7 @@ watch(route, cats)
   <UserLayout>
     <div class="px-4">
       <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
-      <Bids :bids="bids" />
+      <Bids :bids="bids" :isLoading="isLoading" />
     </div>
   </UserLayout>
 </template>

@@ -6,13 +6,15 @@ import { useAxios } from '../functions'
 import UserLayout from '../components/UserLayout.vue'
 
 let bids = $ref([])
+let isLoading = $ref(true)
 
 onMounted(async () => {
+  isLoading = true
   let { response } = await useAxios('get', '/bid/all')
 
-  if (response.data.ok) {
-    bids = response.data.data
-  }
+  if (response.data.ok) bids = response.data.data
+
+  isLoading = false
 })
 
 const text = $ref({
@@ -27,7 +29,7 @@ const text = $ref({
   <UserLayout>
     <div class="px-4">
       <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
-      <Bids :bids="bids" />
+      <Bids :bids="bids" :isLoading="isLoading" />
     </div>
   </UserLayout>
 </template>
