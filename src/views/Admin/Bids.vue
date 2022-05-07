@@ -1,56 +1,46 @@
 <script setup>
+import { computed } from '@vue/reactivity'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import AdminLayout from '../../components/AdminLayout.vue'
 import BaseTable from '../../components/Base/BaseTable.vue'
+import { useAxios } from '../../functions'
+import { useStore } from '../../store'
 
-let data = $ref([
-  {
-    _id: '6249d7078f3db98ae5267e6d',
-    user: '6244a1a469e973dd888a0623',
-    status: 'active',
-    minPrice: 600,
-  },
-  {
-    _id: '6249daaf3d755be5401b9db4',
-    user: '6244a1a469e973dd888a0623',
-    status: 'soon',
-    minPrice: 400,
-  },
-  {
-    _id: '6249d7078f3db98ae5267e6d',
-    user: '6244a1a469e973dd888a0623',
-    status: 'active',
-    minPrice: 600,
-  },
-  {
-    _id: '6249daaf3d755be5401b9db4',
-    user: '6244a1a469e973dd888a0623',
-    status: 'soon',
-    minPrice: 400,
-  },
-  {
-    _id: '6249d7078f3db98ae5267e6d',
-    user: '6244a1a469e973dd888a0623',
-    status: 'active',
-    minPrice: 600,
-  },
-  {
-    _id: '6249daaf3d755be5401b9db4',
-    user: '6244a1a469e973dd888a0623',
-    status: 'soon',
-    minPrice: 400,
-  },
-])
+let data = $ref([])
+let router = useRouter()
+let { $state: state } = useStore()
 
-let constraint = $ref('_id')
+let constraint = $ref('item')
 let direction = $ref('asc')
+
+const fetchBids = async () => {
+  let { response } = await useAxios(
+    'get',
+    `/admin/bids?sortBy=${constraint}&dir=${direction}`,
+  )
+
+  if (response.data.ok) data = response.data.data
+}
+
+let formatedData = computed(() => {
+  return data.map((x) => {
+    return { ...x, user: x.user.email, item: x.item.name }
+  })
+})
+
+onMounted(async () => fetchBids())
 
 const sortBy = (value, dir) => {
   constraint = value
   direction = dir
+
+  fetchBids()
 }
 
-const open = (value) => {
-  console.log(value)
+const open = (val) => {
+  let route = router.resolve({ path: `/${state.lang}/bid/${val._id}` })
+  window.open(route.href, '_blank')
 }
 
 const edit = (value) => {
@@ -65,10 +55,10 @@ const remove = (value) => {
 <template>
   <AdminLayout title="Bids">
     <BaseTable
-      :columns="['Bid', 'User', 'Status', 'Start Price']"
-      :values="['_id', 'user', 'status', 'minPrice']"
+      :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
+      :values="['item', 'user', 'status', 'minPrice']"
       :layout="['auto', 'auto', 'auto', 'auto']"
-      :data="data"
+      :data="formatedData"
       :constraint="constraint"
       :direction="direction"
       :actions="{ open: true, edit: true, remove: true }"
