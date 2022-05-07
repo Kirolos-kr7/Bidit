@@ -4,7 +4,7 @@ import AdminLayout from '../../components/AdminLayout.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../../functions'
 
-let data = $ref()
+let data = $ref([])
 
 let constraint = $ref('_id')
 let direction = $ref('asc')

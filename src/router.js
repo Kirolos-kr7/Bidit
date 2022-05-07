@@ -98,6 +98,22 @@ const router = createRouter({
           },
         },
         {
+          path: 'forgot-password',
+          name: 'forgotPassword',
+          component: () => import('./views/ForgotPassword.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
+        },
+        {
+          path: 'verify-email',
+          name: 'verifyEmail',
+          component: () => import('./views/VerifyEmail.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: 'register',
           name: 'register',
           component: () => import('./views/Register.vue'),

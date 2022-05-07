@@ -133,7 +133,7 @@ const loginUser = async () => {
               >{{ $t(text.newHere) }}</RouterLink
             >
             <RouterLink
-              :to="`/${state.lang}/register`"
+              :to="`/${state.lang}/forgot-password`"
               class="text-bi-300 transition-colors hover:text-bi-400/50"
               >{{ $t(text.forgotPassword) }}</RouterLink
             >

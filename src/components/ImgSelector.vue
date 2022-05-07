@@ -101,14 +101,14 @@ const prevImg = () => {
           :src="`https://ik.imagekit.io/bidit/${imageToshow1}?tr=w-400,h-400`"
           key="1"
           alt=""
-          class="absolute z-[4] mx-auto rounded-md opacity-0 transition-opacity"
+          class="pointer-events-none absolute z-[4] mx-auto rounded-md opacity-0 transition-opacity"
           :class="front === 1 ? 'opacity-100' : ''"
         />
         <img
           :src="`https://ik.imagekit.io/bidit/${imageToshow2}?tr=w-400,h-400`"
           key="2"
           alt=""
-          class="relative z-[3] mx-auto rounded-md"
+          class="pointer-events-none relative z-[3] mx-auto rounded-md"
         />
       </div>
 

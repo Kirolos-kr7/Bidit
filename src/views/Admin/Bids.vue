@@ -54,18 +54,19 @@ const remove = (value) => {
 
 <template>
   <AdminLayout title="Bids">
-    <BaseTable
-      :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
-      :values="['item', 'user', 'status', 'minPrice']"
-      :layout="['auto', 'auto', 'auto', 'auto']"
-      :data="formatedData"
-      :constraint="constraint"
-      :direction="direction"
-      :actions="{ open: true, edit: true, remove: true }"
-      @sortBy="sortBy"
-      @open="open"
-      @edit="edit"
-      @remove="remove"
-    />
+    <div class="w-full">
+      <BaseTable
+        :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
+        :values="['item', 'user', 'status', 'minPrice']"
+        :layout="['auto', 'auto', 'auto', 'auto']"
+        :data="formatedData"
+        :constraint="constraint"
+        :direction="direction"
+        :actions="{ open: true, edit: false, remove: true }"
+        @sortBy="sortBy"
+        @open="open"
+        @remove="remove"
+      />
+    </div>
   </AdminLayout>
 </template>

@@ -8,9 +8,9 @@ import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 
 let data = $ref([])
-
 let userDialog = $ref(false)
 let removeDialog = $ref(false)
+let adminDialog = $ref(false)
 let selectedUser = $ref(null)
 let constraint = $ref('name')
 let direction = $ref('asc')
@@ -36,12 +36,29 @@ const sortBy = (value, dir) => {
 const resetDialog = () => {
   userDialog = false
   removeDialog = false
+  adminDialog = false
   selectedUser = null
 }
 
 const open = (val) => {
   userDialog = true
   selectedUser = val
+}
+
+const edit = (val) => {
+  adminDialog = true
+  selectedUser = val
+}
+
+const changePrivlages = async () => {
+  let { response } = await useAxios('patch', `/auth/user-role`, {
+    email: selectedUser.email,
+  })
+
+  if (response.data.ok) {
+    adminDialog = false
+    fetchUsers()
+  }
 }
 
 const remove = (val) => {
@@ -63,15 +80,19 @@ const approveRemove = () => {
       :data="data"
       :constraint="constraint"
       :direction="direction"
-      :actions="{ open: true, edit: false, remove: true }"
+      :actions="{ open: true, edit: true, remove: true }"
       @sortBy="sortBy"
       @open="open"
+      @edit="edit"
       @remove="remove"
     />
   </AdminLayout>
 
   <transition name="fade">
-    <BaseDialog v-if="userDialog || removeDialog" @click="resetDialog()">
+    <BaseDialog
+      v-if="userDialog || removeDialog || adminDialog"
+      @click="resetDialog()"
+    >
     </BaseDialog>
   </transition>
 
@@ -120,6 +141,30 @@ const approveRemove = () => {
           >Yes</BaseButton
         >
         <BaseButton @click="removeDialog = false">No</BaseButton>
+      </div>
+    </div>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="adminDialog"
+    >
+      <BaseTitle>Change User Role</BaseTitle>
+      <p class="my-3">
+        Current user is {{ !selectedUser?.isAdmin ? 'NOT' : '' }} an admin.
+        <br />
+        Are you sure you want to
+        {{ selectedUser?.isAdmin ? 'remove' : 'give' }} admin privlages to this
+        user?
+      </p>
+      <div class="flex justify-end gap-2">
+        <BaseButton
+          class="!bg-red-600 hover:!bg-red-700"
+          @click="changePrivlages()"
+          >Yes</BaseButton
+        >
+        <BaseButton @click="adminDialog = false">No</BaseButton>
       </div>
     </div>
   </transition>
