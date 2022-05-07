@@ -10,10 +10,15 @@ defineProps({
   },
   isLoading: {
     type: Boolean,
-    default: true,
     required: true,
   },
+  actions: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+const emits = defineEmits(['deleteBid'])
 </script>
 
 <template>
@@ -26,7 +31,13 @@ defineProps({
       }"
     />
     <div class="mt-6 grid gap-3 md:grid-cols-2" v-else>
-      <BidCard v-for="(bid, index) in bids" :key="index" :bid="bid" />
+      <BidCard
+        v-for="(bid, index) in bids"
+        :key="index"
+        :bid="bid"
+        :actions="actions"
+        @deleteBid="(val) => emits('deleteBid', val)"
+      />
     </div>
   </div>
   <BaseLoader v-else />

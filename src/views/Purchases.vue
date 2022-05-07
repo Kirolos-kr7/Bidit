@@ -1,7 +1,6 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
-import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
 import UserLayout from '../components/UserLayout.vue'
@@ -18,8 +17,8 @@ const text = $ref({
   },
 })
 
-let isLoading = $ref(false)
 let bids = $ref([])
+let isLoading = $ref(false)
 
 onMounted(async () => {
   isLoading = true
@@ -40,16 +39,7 @@ onMounted(async () => {
         >{{ $t(text.title) }}
         <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
       >
-      <div v-if="!isLoading">
-        <BaseEmpty
-          v-if="bids.length === 0"
-          :msg="{
-            ar: 'لا يوجد لديك مزادات حتى الان!',
-            en: `You Don't have any bids yet!`,
-          }"
-        />
-        <Bids :bids="bids" v-else />
-      </div>
+      <Bids :bids="bids" :isLoading="isLoading" />
     </div>
   </UserLayout>
 </template>

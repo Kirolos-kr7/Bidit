@@ -5,6 +5,7 @@ import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
 import dayjs from 'dayjs'
+import BaseImg from './Base/BaseImg.vue'
 
 const props = defineProps(['item'])
 const emits = defineEmits(['resetDialog'])
@@ -62,7 +63,10 @@ const newBid = async () => {
       <div
         class="grid grid-cols-[4.5rem,1fr] overflow-hidden rounded-md border-2 border-neutral-200"
       >
-        <img src="/images/monalisa-art.jpg" class="h-full object-cover" />
+        <BaseImg
+          :src="`https://ik.imagekit.io/bidit/${item.images[0]}`"
+          class="h-full"
+        />
         <div class="p-3">
           <h2
             class="overflow-hidden break-all font-semibold capitalize md:text-xl"
