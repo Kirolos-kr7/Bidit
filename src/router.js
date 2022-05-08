@@ -106,8 +106,24 @@ const router = createRouter({
           },
         },
         {
+          path: 'reset-password/:token',
+          name: 'resetPassword',
+          component: () => import('./views/ResetPassword.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
+        },
+        {
           path: 'verify-email',
           name: 'verifyEmail',
+          component: () => import('./views/VerifyEmail.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'verify-email/:token',
+          name: 'verifyEmailWToken',
           component: () => import('./views/VerifyEmail.vue'),
           meta: {
             requiresAuth: true,
@@ -204,6 +220,30 @@ router.beforeEach(async (to, from, next) => {
   }
 
   routerLang(state, to, next)
+
+  if (
+    state.isLoggedIn &&
+    !state.user.isVerified &&
+    to.name !== 'verifyEmail' &&
+    to.name !== 'verifyEmailWToken' &&
+    to.name !== 'account'
+  ) {
+    return next({
+      name: 'verifyEmail',
+      params: { lang: state.lang },
+    })
+  }
+
+  if (
+    state.isLoggedIn &&
+    state.user.isVerified &&
+    (to.name === 'verifyEmail' || to.name === 'verifyEmailWToken')
+  ) {
+    return next({
+      name: 'home',
+      params: { lang: state.lang },
+    })
+  }
 
   if (tokenExpired) {
     next({

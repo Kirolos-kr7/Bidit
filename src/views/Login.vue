@@ -14,8 +14,8 @@ const { $state: state } = $(useStore())
 
 const router = useRouter()
 const { cookies } = useCookies()
-let email = $ref('mario@gmail.com')
-let password = $ref('m123456')
+let email = $ref('kiroloskr7@gmail.com')
+let password = $ref('k123456')
 let isLoading = $ref(false)
 let error = $ref('')
 
@@ -99,6 +99,13 @@ const loginUser = async () => {
             v-else-if="router.currentRoute.value.query.ref === `login_to_join`"
             class="sm:col-span-2"
             >You need to login first in order to join this bid.</BaseWarn
+          >
+          <BaseWarn
+            v-else-if="
+              router.currentRoute.value.query.ref === `password_reset_success`
+            "
+            class="sm:col-span-2"
+            >Your password reset is successful.</BaseWarn
           >
           <BaseInput
             type="email"

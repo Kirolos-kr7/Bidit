@@ -3,19 +3,15 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
-import BaseWarn from '../components/Base/BaseWarn.vue'
 import { useStore } from '../store'
 import { useAxios } from '../functions'
-import { useRouter } from 'vue-router'
-import { useCookies } from 'vue3-cookies'
 import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 
-const router = useRouter()
-const { cookies } = useCookies()
-let email = $ref('mario@gmail.com')
+let email = $ref('kiroloskr7@gmail.com')
 let isLoading = $ref(false)
 let error = $ref('')
+let successful = $ref('')
 
 const text = $ref({
   forgotPassword: {
@@ -37,8 +33,18 @@ const text = $ref({
 })
 
 const sendRecoveryEmail = async () => {
-  let { response } = useAxios('get', '/auth/forgot-password')
-  console.log(response)
+  isLoading = true
+  let { response } = await useAxios(
+    'get',
+    `/auth/forgot-password?email=${email}`,
+  )
+  if (!response.data.ok) {
+    error = response.data.message
+  } else {
+    error = ''
+    successful = response.data.message
+  }
+  isLoading = false
 }
 </script>
 
@@ -48,7 +54,7 @@ const sendRecoveryEmail = async () => {
       class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
     >
       <BaseTitle>{{ $t(text.forgotPassword) }}</BaseTitle>
-      <form @submit.prevent="sendRecoveryEmail">
+      <form @submit.prevent="sendRecoveryEmail" v-if="!successful">
         <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
           <BaseInput
             type="email"
@@ -77,6 +83,7 @@ const sendRecoveryEmail = async () => {
           </div>
         </div>
       </form>
+      <div v-else class="mt-6">{{ successful }}</div>
     </div>
   </UserLayout>
 </template>
