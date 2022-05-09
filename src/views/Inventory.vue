@@ -221,7 +221,6 @@ const deleteItem = async () => {
       <div v-if="!isLoading">
         <BaseEmpty
           v-if="items.length === 0"
-          msg=""
           :msg="{
             ar: 'لا يوجد لديك عناصر حتى الان!',
             en: `You Don't have any items yet!`,
@@ -293,7 +292,7 @@ const deleteItem = async () => {
             @updateInput="(val) => (itemDesc = val)"
           />
           <BaseInputFile
-            placeholder="Click to Add Images MAX(4)"
+            placeholder="Click to Add Images MAX [5]"
             class="!w-full"
             @updateInput="(images) => (itemImages = images)"
           />
@@ -314,7 +313,6 @@ const deleteItem = async () => {
         class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
         v-if="itemViewDialog"
       >
-        <!-- v-if="selectedItem.images !== null && selectedItem.images.length > 0" -->
         <ImgSelector :imgs="selectedItem?.images" />
         <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
           selectedItem.type

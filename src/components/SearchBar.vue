@@ -1,14 +1,23 @@
 <script setup>
 import { useStore } from '../store'
 import { onMounted, onUnmounted } from 'vue'
+import { useAxios } from '../functions'
+import router from '../router'
 
 const { $state: state } = $(useStore())
 const emits = defineEmits(['exitSearch'])
 let currRes = $ref(0)
+let inputSearch = $ref()
 let searchText = $ref('')
+let results = $ref([])
 
-const handleInput = () => {
+const search = async () => {
   currRes = 0
+  if (searchText && searchText.trim() !== '') {
+    let { response } = await useAxios('get', `/bid/search/${searchText}`)
+    if (response.data.data) results = response.data.data
+    else results = []
+  } else results = []
 }
 
 const changeCurr = (i) => {
@@ -18,7 +27,8 @@ const changeCurr = (i) => {
 const handleKeys = (e) => {
   e.preventDefault()
 
-  if (e.keyCode === 13) console.log(results[currRes].item.name)
+  if (e.keyCode === 13)
+    router.replace(`/${state.lang}/bid/${results[currRes]?._id}`)
   if (e.keyCode === 27) emits('exitSearch')
 
   if (e.keyCode === 38) {
@@ -33,45 +43,19 @@ const handleKeys = (e) => {
     } else currRes += 1
   }
 
-  document
-    .querySelector(`[id="res_${currRes}"]`)
-    .scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  if (document.querySelector(`[id="res_${currRes}"]`))
+    document
+      .querySelector(`[id="res_${currRes}"]`)
+      .scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 }
 
 onMounted(() => {
   addEventListener('keyup', handleKeys)
+  inputSearch.focus()
 })
 onUnmounted(() => {
   removeEventListener('keyup', handleKeys)
 })
-
-let results = $ref([
-  {
-    item: {
-      name: 'item #1',
-    },
-  },
-  {
-    item: {
-      name: 'item #2',
-    },
-  },
-  {
-    item: {
-      name: 'item #3',
-    },
-  },
-  {
-    item: {
-      name: 'item #4',
-    },
-  },
-  {
-    item: {
-      name: 'item #5',
-    },
-  },
-])
 
 const text = $ref({
   placeholder: {
@@ -103,12 +87,13 @@ const text = $ref({
     <div class="p-5 pb-1">
       <div class="relative">
         <input
+          ref="inputSearch"
           v-model="searchText"
           type="text"
           class="bg-bi-800 w-full rounded-sm border border-bi-200 px-3 py-2.5 font-medium text-black outline-none ring-2 ring-indigo-400 focus:ring-indigo-700"
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
           :placeholder="$t(text.placeholder)"
-          @input.prevent="handleInput"
+          @input.prevent="search"
         />
         <svg
           class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-black"
@@ -128,25 +113,36 @@ const text = $ref({
       </div>
     </div>
 
-    <div
+    <ul
       class="flex max-h-[60vh] scroll-p-4 flex-col gap-2 px-5 py-4 text-black"
       v-if="results.length > 0"
       style="overflow: overlay"
     >
       <transition-group name="fade">
-        <RouterLink
+        <li
           v-for="(result, index) in results"
           :key="index"
           :id="`res_${index}`"
           :class="currRes === index ? ' !bg-bi-300' : ''"
-          class="rounded-md bg-bi-400 p-3 font-medium text-white transition-colors"
+          class="list-none overflow-hidden rounded-md bg-bi-400 font-medium text-white transition-colors"
           @mouseenter="changeCurr(index)"
-          :to="`/${state.lang}/`"
         >
-          {{ result.item.name }}
-        </RouterLink>
+          <RouterLink
+            :to="`/${state.lang}/bid/${result?._id}`"
+            class="flex gap-3"
+          >
+            <img
+              :src="`https://ik.imagekit.io/bidit/${result?.item?.images[0]}`"
+              class="h-14 w-14 object-cover"
+              alt=""
+            />
+            <span class="my-auto">
+              {{ result.item.name }}
+            </span>
+          </RouterLink>
+        </li>
       </transition-group>
-    </div>
+    </ul>
     <div class="p-5 py-10 text-center" v-else>
       <div v-if="searchText !== ''">
         Oops, No Results for "<b>{{ searchText }}</b

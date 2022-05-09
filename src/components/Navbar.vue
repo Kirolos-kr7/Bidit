@@ -285,7 +285,18 @@ const logout = () => {
             :data-user="true"
             @click="toggleDDL('user')"
           >
-            <img class="pointer-events-none w-10" src="/images/avatar.png" />
+            <img
+              v-if="state?.user?.profilePicture"
+              :src="`https://ik.imagekit.io/bidit/${state?.user?.profilePicture?.name}?tr=w-40,h-40,`"
+              class="w-10 rounded-full"
+              alt="avatar"
+            />
+            <img
+              v-else
+              src="/images/avatar.png"
+              class="w-10 rounded-full"
+              alt="avatar"
+            />
           </button>
           <transition name="curtain">
             <BaseDDL class="absolute right-0" v-if="activeMenu === 'user'">
