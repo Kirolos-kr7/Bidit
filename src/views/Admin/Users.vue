@@ -72,7 +72,10 @@ const approveRemove = () => {
 </script>
 
 <template>
-  <AdminLayout title="Users">
+  <AdminLayout>
+    <div class="flex items-start justify-between">
+      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Users</h1>
+    </div>
     <BaseTable
       :columns="['User', 'Email', 'Admin']"
       :values="['name', 'email', 'isAdmin']"

@@ -9,15 +9,20 @@ const emits = defineEmits(['exitSearch'])
 let currRes = $ref(0)
 let inputSearch = $ref()
 let searchText = $ref('')
+let isLoading = $ref(false)
 let results = $ref([])
 
 const search = async () => {
   currRes = 0
-  if (searchText && searchText.trim() !== '') {
-    let { response } = await useAxios('get', `/bid/search/${searchText}`)
-    if (response.data.data) results = response.data.data
-    else results = []
-  } else results = []
+  if (searchText === '' && searchText.trim() === '') {
+    results = []
+    return
+  }
+  isLoading = true
+  let { response } = await useAxios('get', `/bid/search/${searchText}`)
+  if (response.data.data) results = response.data.data
+  else results = []
+  isLoading = false
 }
 
 const changeCurr = (i) => {
@@ -144,11 +149,12 @@ const text = $ref({
       </transition-group>
     </ul>
     <div class="p-5 py-10 text-center" v-else>
-      <div v-if="searchText !== ''">
+      <div v-if="searchText === ''">Start typing something to search</div>
+      <div v-if="!isLoading && searchText !== ''">
         Oops, No Results for "<b>{{ searchText }}</b
         >"
       </div>
-      <div v-else>Start typing something to search</div>
+      <div v-if="isLoading" class="text-white">hidden text</div>
     </div>
 
     <ul

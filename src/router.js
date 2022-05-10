@@ -45,6 +45,11 @@ const router = createRouter({
           component: () => import('./views/AllBids.vue'),
         },
         {
+          path: 'bids/categories',
+          name: 'allCategories',
+          component: () => import('./views/AllCategories.vue'),
+        },
+        {
           path: 'bids/:cat',
           name: 'bids categories',
           component: () => import('./views/BidsCategories.vue'),
