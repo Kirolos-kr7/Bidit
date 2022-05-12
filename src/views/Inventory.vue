@@ -13,7 +13,7 @@ import NewBid from '../components/NewBid.vue'
 import BaseError from '../components/Base/BaseError.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
-import ImgSelector from '../components/ImgSelector.vue'
+import ImageViewer from '../components/ImageViewer.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import UserLayout from '../components/UserLayout.vue'
@@ -313,7 +313,7 @@ const deleteItem = async () => {
         class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
         v-if="itemViewDialog"
       >
-        <ImgSelector :imgs="selectedItem?.images" />
+        <ImageViewer :imgs="selectedItem?.images" />
         <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
           selectedItem.type
         }}</BaseType>

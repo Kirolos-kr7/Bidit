@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
-import ImgSelector from '../components/ImgSelector.vue'
+import ImageViewer from '../components/ImageViewer.vue'
 import { computed } from '@vue/reactivity'
 
 const { $state: state } = useStore()
@@ -224,7 +224,7 @@ const text = $ref({
       v-if="!isLoading"
     >
       <div>
-        <ImgSelector
+        <ImageViewer
           v-if="bid?.item?.images"
           :imgs="bid?.item?.images"
           class="mx-auto block md:p-6"
