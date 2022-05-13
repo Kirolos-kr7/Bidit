@@ -4,7 +4,6 @@ import BaseInput from './Base/BaseInput.vue'
 import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
-import dayjs from 'dayjs'
 import BaseImg from './Base/BaseImg.vue'
 
 const props = defineProps(['item'])

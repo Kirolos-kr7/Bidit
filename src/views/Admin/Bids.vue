@@ -43,10 +43,6 @@ const open = (val) => {
   window.open(route.href, '_blank')
 }
 
-const edit = (value) => {
-  console.log(value)
-}
-
 const remove = (value) => {
   console.log(value)
 }

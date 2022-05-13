@@ -10,7 +10,7 @@ let newImage = $ref('')
 let isLoading = $ref(false)
 let error = $ref(false)
 
-const fileChanged = async (e) => {
+const fileChanged = async () => {
   if (inputFile.files[0] && !props.image) {
     newImage = await toBase64(inputFile.files[0])
   }

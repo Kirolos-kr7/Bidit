@@ -1,8 +1,6 @@
 <script setup>
-import { useStore } from '../../store'
 defineProps(['placeholder', 'modelValue'])
 const emits = defineEmits(['updateInput'])
-const { $state: state } = $(useStore())
 let inputFile = $ref()
 let files = $ref([])
 

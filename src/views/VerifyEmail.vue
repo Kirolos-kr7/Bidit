@@ -1,20 +1,15 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
-import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
-import BaseWarn from '../components/Base/BaseWarn.vue'
 import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
-import { useCookies } from 'vue3-cookies'
 import UserLayout from '../components/UserLayout.vue'
 import { onMounted } from 'vue'
 const { $state: state } = $(useStore())
 
 const router = useRouter()
-const { cookies } = useCookies()
-let email = $ref('mario@gmail.com')
 let verificationToken = $ref(router.currentRoute.value.params.token)
 let isLoading = $ref(false)
 let error = $ref('')
