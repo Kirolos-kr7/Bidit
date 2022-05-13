@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { useStore } from './store'
 import { categories } from './lang/categories.json'
+import { reportTypes } from './lang/reportTypes.json'
 import { statuses } from './lang/bidstatus.json'
+import { reportStatuses } from './lang/reportstatus.json'
 import { useCookies } from 'vue3-cookies'
 
 export const $t = (x) => {
@@ -64,6 +66,34 @@ export const getType = (val) => {
   })
 
   return itemType || 'N/F'
+}
+
+export const getReportType = (val) => {
+  let reportType
+
+  if (!val) return 'N/F'
+
+  reportTypes.forEach((report) => {
+    if (report.en.toLowerCase() === val?.toLowerCase()) {
+      reportType = $t(report)
+    }
+  })
+
+  return reportType || 'N/F'
+}
+
+export const getReportStatus = (val) => {
+  let reportStatus
+
+  if (!val) return 'N/F'
+
+  reportStatuses.forEach((state) => {
+    if (state.en.toLowerCase() === val.toLowerCase()) {
+      reportStatus = $t(state)
+    }
+  })
+
+  return reportStatus || 'N/F'
 }
 
 export const getStatus = (val) => {

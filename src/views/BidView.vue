@@ -6,7 +6,9 @@ import {
   getPricePerLang,
   getNumPerLang,
   $t,
+  useAxios,
 } from '../functions'
+import { reportTypes } from '../lang/reportTypes.json'
 import { onMounted, onUnmounted, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
@@ -21,10 +23,11 @@ import BaseDialog from '../components/Base/BaseDialog.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
+import BaseSelect from '../components/Base/BaseSelect.vue'
 
 let reportsDialog = $ref(false),
-  itemName = $ref(''),
-  itemDesc = $ref('')
+  reportType = $ref(reportTypes[0].en),
+  reportDesc = $ref('')
 
 const { $state: state } = useStore()
 const route = useRoute()
@@ -114,7 +117,6 @@ const getOffest = computed(() => {
 })
 const getNumWOZeros = (num) => {
   let arr = num.toString().split('')
-  console.log(arr)
   let str = ''
 
   arr.forEach((char, i) => {
@@ -239,6 +241,18 @@ const text = $ref({
     en: 'Add Report',
   },
 })
+
+const newReport = async () => {
+  let body = {
+    type: reportType,
+    description: reportDesc,
+    recipientID: bid?.user?._id,
+  }
+
+  let { response } = await useAxios('post', '/report/add', body)
+
+  if (response.data.ok) router.push(`/${state.lang}/account/reports`)
+}
 </script>
 
 <template>
@@ -440,54 +454,55 @@ const text = $ref({
           </form>
 
           <button
+            v-if="state?.user?._id !== bid?.user?._id"
             class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
             @click="reportsDialog = true"
-            >{{ $t(text.report) }}</button
           >
+            {{ $t(text.report) }}
+          </button>
         </div>
       </div>
     </div>
 
-     <transition name="fade">
-      <BaseDialog
-        v-if="reportsDialog"
-        @click="reportsDialog = false"
-      >
+    <transition name="fade">
+      <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
       </BaseDialog>
     </transition>
 
-     <transition name="zoom">
+    <transition name="zoom">
       <div
         class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
         v-if="reportsDialog"
       >
-      <BaseTitle>
-          {{ $t(text.newReport) }}</BaseTitle
-      > 
-      <form @submit.prevent="" class="mt-5 grid gap-5">
-        <BaseInput
-          type="text"
-          class="!w-full"
-          :placeholder="$t(text.typePlaceholder)"
-          v-model="itemName"
-          @updateInput="(val) => (itemName = val)"
-        />
-        <BaseTextArea
-          rows="8"
-          type="text"
-          class="col-span-2 !w-full"
-          :placeholder="$t(text.descriptionPlaceholder)"
-          v-model="itemDesc"
-          @updateInput="(val) => (itemDesc = val)"
-        />
-        <BaseButton @click=""
-          >{{ $t(text.addReport) }}
-        </BaseButton>
-         
-      </form>
+        <BaseTitle> {{ $t(text.newReport) }}</BaseTitle>
+        <form @submit.prevent="newReport" class="mt-5 grid gap-5">
+          <BaseSelect
+            v-model="reportType"
+            class="!w-full"
+            @updateInput="(val) => (reportType = val)"
+            :placeholder="$t(text.typePlaceholder)"
+          >
+            <option
+              v-for="(type, index) in reportTypes"
+              :key="index"
+              :value="type.en"
+              class="capitalize"
+            >
+              {{ $t(type) }}
+            </option>
+          </BaseSelect>
+          <BaseTextArea
+            rows="8"
+            type="text"
+            class="col-span-2 !w-full"
+            :placeholder="$t(text.descriptionPlaceholder)"
+            v-model="reportDesc"
+            @updateInput="(val) => (reportDesc = val)"
+          />
+          <BaseButton>{{ $t(text.addReport) }} </BaseButton>
+        </form>
       </div>
     </transition>
-
   </UserLayout>
 </template>
 

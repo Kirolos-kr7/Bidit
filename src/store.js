@@ -12,10 +12,12 @@ export const useStore = defineStore('main', {
   },
   getters: {
     getNTCount: (state) => {
-      if (!state.user) return null
+      if (!state.user || !state.isLoggedIn) {
+        return null
+      }
       let nTCount = 0
 
-      state.user.notifications.map((nt) => {
+      state?.user?.notifications?.map((nt) => {
         if (nt.seen === false) nTCount += 1
       })
 
