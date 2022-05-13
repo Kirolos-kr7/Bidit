@@ -90,6 +90,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'account/reports',
+          name: 'account/reports',
+          component: () => import('./views/Reports.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: 'login',
           name: 'login',
           component: () => import('./views/Login.vue'),
