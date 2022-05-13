@@ -45,6 +45,11 @@ const router = createRouter({
           component: () => import('./views/AllBids.vue'),
         },
         {
+          path: 'bids/categories',
+          name: 'allCategories',
+          component: () => import('./views/AllCategories.vue'),
+        },
+        {
           path: 'bids/:cat',
           name: 'bids categories',
           component: () => import('./views/BidsCategories.vue'),
@@ -103,6 +108,38 @@ const router = createRouter({
           component: () => import('./views/Login.vue'),
           meta: {
             requiresUnAuth: true,
+          },
+        },
+        {
+          path: 'forgot-password',
+          name: 'forgotPassword',
+          component: () => import('./views/ForgotPassword.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
+        },
+        {
+          path: 'reset-password/:token',
+          name: 'resetPassword',
+          component: () => import('./views/ResetPassword.vue'),
+          meta: {
+            requiresUnAuth: true,
+          },
+        },
+        {
+          path: 'verify-email',
+          name: 'verifyEmail',
+          component: () => import('./views/VerifyEmail.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'verify-email/:token',
+          name: 'verifyEmailWToken',
+          component: () => import('./views/VerifyEmail.vue'),
+          meta: {
+            requiresAuth: true,
           },
         },
         {
@@ -196,6 +233,30 @@ router.beforeEach(async (to, from, next) => {
   }
 
   routerLang(state, to, next)
+
+  if (
+    state.isLoggedIn &&
+    !state.user.isVerified &&
+    to.name !== 'verifyEmail' &&
+    to.name !== 'verifyEmailWToken' &&
+    to.name !== 'account'
+  ) {
+    return next({
+      name: 'verifyEmail',
+      params: { lang: state.lang },
+    })
+  }
+
+  if (
+    state.isLoggedIn &&
+    state.user.isVerified &&
+    (to.name === 'verifyEmail' || to.name === 'verifyEmailWToken')
+  ) {
+    return next({
+      name: 'home',
+      params: { lang: state.lang },
+    })
+  }
 
   if (tokenExpired) {
     next({

@@ -31,6 +31,16 @@
         "ar": "سيارات",
         "en": "cars",
         "to": "cars"
+      },
+      {
+        "ar": "حيوانات",
+        "en": "animals",
+        "to": "animals"
+      },
+      {
+        "ar": "اخرى",
+        "en": "others",
+        "to": "others"
       }
     ]
   }

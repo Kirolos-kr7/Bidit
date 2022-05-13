@@ -9,7 +9,7 @@ const props = defineProps({
 
 let front = $ref(1)
 let index = $ref(0)
-let interval = $ref(4500)
+let interval = $ref(5000)
 let xDown = $ref(null)
 let imageToshow1 = $ref(props?.imgs[0])
 let imageToshow2 = $ref(props?.imgs[1])
@@ -58,6 +58,7 @@ const tmImage = (e) => {
 }
 
 const nextImg = () => {
+  if (props.imgs.length <= 1) return
   if (index < props.imgs.length - 1) {
     changeSelectedImg(index + 1)
   } else {
@@ -67,6 +68,7 @@ const nextImg = () => {
 }
 
 const prevImg = () => {
+  if (props.imgs.length <= 1) return
   if (index === 0) {
     index = props.imgs.length - 1
     changeSelectedImg(index)
@@ -81,34 +83,34 @@ const prevImg = () => {
     <div
       class="mt-4 mb-2 hidden flex-col items-center gap-2 overflow-scroll p-1 md:flex"
     >
-      <img
+      <div
         v-for="(img, i) in imgs"
-        :src="`https://ik.imagekit.io/bidit/${img}?tr=w-52`"
         :key="i"
+        class="cursor-pointer rounded-sm p-1"
         :class="
           (front === 1 && index === i && 'ring-2 ring-black') ||
           (front === 2 && index === i && 'ring-2 ring-black')
         "
-        alt=""
-        class="w-[60px] cursor-pointer rounded-md p-1"
         @click="changeSelectedImg(i)"
-      />
+      >
+        <img
+          :src="`https://ik.imagekit.io/bidit/${img}?tr=w-52`"
+          class="pointer-events-none w-[60px]"
+        />
+      </div>
     </div>
 
     <div class="relative flex flex-col items-center gap-4 overflow-hidden">
       <div @touchstart="tsImage($event)" @touchmove="tmImage($event)">
         <img
           :src="`https://ik.imagekit.io/bidit/${imageToshow1}?tr=w-400,h-400`"
-          key="1"
-          alt=""
-          class="absolute z-[4] mx-auto rounded-md opacity-0 transition-opacity"
-          :class="front === 1 ? 'opacity-100' : ''"
+          class="pointer-events-none relative z-[3] mx-auto rounded-md"
         />
         <img
+          v-if="props.imgs.length > 1"
           :src="`https://ik.imagekit.io/bidit/${imageToshow2}?tr=w-400,h-400`"
-          key="2"
-          alt=""
-          class="relative z-[3] mx-auto rounded-md"
+          class="pointer-events-none absolute top-0 z-[4] mx-auto rounded-md opacity-0 transition-opacity"
+          :class="front === 2 ? 'opacity-100' : ''"
         />
       </div>
 

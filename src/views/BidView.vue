@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
-import ImgSelector from '../components/ImgSelector.vue'
+import ImageViewer from '../components/ImageViewer.vue'
 import { computed } from '@vue/reactivity'
 import BaseDialog from '../components/Base/BaseDialog.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
@@ -36,9 +36,9 @@ let error = $ref()
 let bid = $ref()
 let currBid = $ref({ price: 0, user: null })
 let newPrice = $ref(0)
-let TOE = $ref('')
+let timer = $ref('')
 let status = $ref('')
-let clock = $ref('')
+let clockPrefix = $ref('')
 let bidID = route.params.bidID
 
 watchEffect(() => {
@@ -62,8 +62,6 @@ onMounted(async () => {
   if (!route.params.bidID) router.replace(`/${state.lang}/404`)
 
   socket.on('connect', () => {
-    console.log(socket.id)
-
     socket.emit('pageLoaded', bidID, state?.user?._id ? state?.user?._id : null)
 
     socket.on('bidFound', (data) => {
@@ -96,6 +94,7 @@ const joinBid = () => {
 }
 
 const getOffest = computed(() => {
+  let offset = 0
   let base = currBid.price
   let muls = [10, 20, 50, 100, 250, 500, 750, 1000, 1250, 1500]
   let vals = [1, 2, 5, 10, 25, 50, 75, 100, 125, 150]
@@ -107,21 +106,21 @@ const getOffest = computed(() => {
 
   muls.forEach((mul, i) => {
     if (base <= mul) {
-      return vals[i]
+      offset = vals[i]
     }
   })
-})
 
+  return offset
+})
 const getNumWOZeros = (num) => {
   let arr = num.toString().split('')
+  console.log(arr)
   let str = ''
 
   arr.forEach((char, i) => {
     if (i == 0) str += char
     else str += '0'
   })
-
-  console.log(str)
 
   return parseInt(str)
 }
@@ -152,9 +151,9 @@ const calcDiff = () => {
   if (Math.floor(secs) >= 0) {
     diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
 
-    TOE = diff
+    timer = diff
     status = 'soon'
-    clock = $t(text.toLive)
+    clockPrefix = $t(text.toLive)
     return
   }
 
@@ -176,13 +175,13 @@ const calcDiff = () => {
   if (Math.floor(secs) >= 0) {
     diff += Math.floor(secs) + (state.lang === 'ar' ? 'ث' : 's ')
 
-    TOE = diff
+    timer = diff
     status = 'active'
-    clock = $t(text.left)
+    clockPrefix = $t(text.left)
   } else {
-    TOE = ''
+    timer = ''
     status = 'expired'
-    clock = ''
+    clockPrefix = ''
   }
 }
 
@@ -249,7 +248,7 @@ const text = $ref({
       v-if="!isLoading"
     >
       <div>
-        <ImgSelector
+        <ImageViewer
           v-if="bid?.item?.images"
           :imgs="bid?.item?.images"
           class="mx-auto block md:p-6"
@@ -349,9 +348,9 @@ const text = $ref({
               />
             </h4>
             <div>
-              {{ TOE }}
+              {{ timer }}
               &nbsp;
-              <span class="text-lg font-semibold">{{ clock }}</span>
+              <span class="text-lg font-semibold">{{ clockPrefix }}</span>
             </div>
           </div>
 

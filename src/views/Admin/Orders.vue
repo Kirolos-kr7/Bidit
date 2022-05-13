@@ -45,7 +45,10 @@ const remove = (value) => {
 </script>
 
 <template>
-  <AdminLayout title="Orders">
+  <AdminLayout>
+    <div class="flex items-start justify-between">
+      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Orders</h1>
+    </div>
     <BaseTable
       :columns="['Order', 'User', 'Status', 'Total Price']"
       :values="['_id', 'user', 'status', 'totalPrice']"

@@ -2,17 +2,28 @@
 import { useStore } from '../store'
 import BaseButton from '../components/Base/BaseButton.vue'
 import UserLayout from '../components/UserLayout.vue'
+import BaseDialog from '../components/Base/BaseDialog.vue'
+import ProfileImage from '../components/ProfileImage.vue'
 const { $state: state } = $(useStore())
+
+let imageDialog = $ref(false)
 </script>
 
 <template>
   <UserLayout>
     <div class="relative mt-20 rounded-md bg-white px-4 pt-20 shadow-sm">
       <div
-        class="absolute -top-20 left-4 rounded-full border-8 border-bi-100"
+        class="absolute -top-20 left-4 cursor-pointer overflow-hidden rounded-full border-8 border-bi-100 transition-opacity hover:opacity-75"
         :class="state.lang === 'ar' ? 'right-4 left-auto' : 'left-4 right-auto'"
+        @click="imageDialog = true"
       >
-        <img src="/images/avatar.png" class="w-32" alt="avatar" />
+        <img
+          v-if="state?.user?.profilePicture"
+          :src="`https://ik.imagekit.io/bidit/${state?.user?.profilePicture?.name}?tr=w-128,h-128,`"
+          class="w-32"
+          alt="avatar"
+        />
+        <img v-else src="/images/avatar.png" class="w-32" alt="avatar" />
       </div>
       <div class="flex justify-between p-5 pt-0">
         <div>
@@ -106,4 +117,11 @@ const { $state: state } = $(useStore())
       </div>
     </div>
   </UserLayout>
+
+  <transition name="fade">
+    <BaseDialog v-if="imageDialog" @click="imageDialog = false"> </BaseDialog>
+  </transition>
+  <transition name="zoom">
+    <ProfileImage v-if="imageDialog" :image="state?.user?.profilePicture" />
+  </transition>
 </template>

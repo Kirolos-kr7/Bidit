@@ -4,7 +4,7 @@ import AdminLayout from '../../components/AdminLayout.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../../functions'
 
-let data = $ref()
+let data = $ref([])
 
 let constraint = $ref('_id')
 let direction = $ref('asc')
@@ -40,7 +40,10 @@ const remove = (value) => {
 </script>
 
 <template>
-  <AdminLayout title="Reports">
+  <AdminLayout>
+    <div class="flex items-start justify-between">
+      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Reports</h1>
+    </div>
     <BaseTable
       :columns="['Report', 'Type', 'Status']"
       :values="['_id', 'type', 'status']"
