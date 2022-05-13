@@ -5,14 +5,18 @@ import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
 import BaseImg from './Base/BaseImg.vue'
+import { useRouter } from 'vue-router'
+import { useStore } from '../store'
 
 const props = defineProps(['item'])
 const emits = defineEmits(['resetDialog'])
+let router = useRouter()
+let { $state: state } = useStore()
 
 let error = $ref('')
-let startDate = $ref('')
+let startDate = $ref(new Date())
 let endDate = $ref('')
-let minPrice = $ref(0)
+let minPrice = $ref(1)
 
 const text = $ref({
   title: {
@@ -48,6 +52,7 @@ const newBid = async () => {
 
   if (!response.data.ok) error = response.data.message
   else {
+    router.push(`/${state.lang}/bid/${response.data.data._id}`)
     emits('resetDialog')
   }
 }
@@ -63,7 +68,11 @@ const newBid = async () => {
         class="grid grid-cols-[4.5rem,1fr] overflow-hidden rounded-md border-2 border-neutral-200"
       >
         <BaseImg
-          :src="`https://ik.imagekit.io/bidit/${item.images[0]}`"
+          :src="
+            item.images.length > 0
+              ? `https://ik.imagekit.io/bidit/${item.images[0]}`
+              : ''
+          "
           class="h-full"
         />
         <div class="p-3">
@@ -92,6 +101,7 @@ const newBid = async () => {
       <BaseInput
         type="number"
         class="!w-full"
+        min="1"
         :placeholder="$t(text.minPricePlaceholder)"
         v-model="minPrice"
         @updateInput="(val) => (minPrice = val)"

@@ -15,7 +15,8 @@ import DropDownNav from './DropDownNav.vue'
 import { ref, watch } from 'vue'
 import { useCookies } from 'vue3-cookies'
 
-const { $state: state } = $(useStore())
+const { $state: state } = useStore()
+const store = useStore()
 const router = useRouter()
 let activeMenu = $ref(null)
 let searchDialog = ref(false)
@@ -182,11 +183,36 @@ const logout = () => {
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2.8"
+                stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               ></path>
             </svg>
           </button>
+        </li>
+        <li class="relative h-full" v-if="state.isLoggedIn && state.user">
+          <RouterLink
+            :to="`/${state.lang}/account/notification`"
+            class="relative flex h-full cursor-pointer items-center justify-center px-3 font-semibold transition-colors hover:bg-bi-200"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              ></path>
+            </svg>
+            <span
+              class="h-2 w-2 rounded-full bg-red-700 p-0.5 text-xs text-white"
+              v-if="store.getNTCount > 0"
+            ></span>
+          </RouterLink>
         </li>
         <li class="relative hidden h-full md:block">
           <button
@@ -316,9 +342,17 @@ const logout = () => {
                 <RouterLink
                   v-else
                   :to="`/${state.lang}/${item.to}`"
-                  class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
+                  class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
                 >
-                  {{ $t(item) }}</RouterLink
+                  {{ $t(item) }}
+                  <div
+                    v-if="item.en === 'Notification'"
+                    class="flex h-5 w-5 items-center justify-center rounded-full bg-red-700 text-xs text-white"
+                  >
+                    <span class="translate-y-px">
+                      {{ store.getNTCount }}
+                    </span>
+                  </div></RouterLink
                 >
               </li>
             </BaseDDL>

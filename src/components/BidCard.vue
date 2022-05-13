@@ -56,7 +56,7 @@ const emits = defineEmits(['deleteBid'])
   <div class="relative overflow-hidden rounded-md bg-white shadow-md">
     <Router-Link
       :to="`/${state.lang}/bid/${bid._id}`"
-      class="flex flex-col sm:flex-row"
+      class="flex h-full flex-col sm:flex-row"
     >
       <BaseImg
         :src="`https://ik.imagekit.io/bidit/${bid?.item?.images[0]}`"
