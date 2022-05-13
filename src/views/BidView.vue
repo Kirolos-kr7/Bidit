@@ -17,6 +17,14 @@ import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 import { computed } from '@vue/reactivity'
+import BaseDialog from '../components/Base/BaseDialog.vue'
+import BaseTitle from '../components/Base/BaseTitle.vue'
+import BaseInput from '../components/Base/BaseInput.vue'
+import BaseTextArea from '../components/Base/BaseTextArea.vue'
+
+let reportsDialog = $ref(false),
+  itemName = $ref(''),
+  itemDesc = $ref('')
 
 const { $state: state } = useStore()
 const route = useRoute()
@@ -213,6 +221,22 @@ const text = $ref({
   youWonTheBid: {
     ar: 'مبروك. لقد ربحت المزاد.',
     en: ' Congratulations. You Won This Bid.',
+  },
+  newReport: {
+    ar: 'ابلاغ جديد',
+    en: 'New Report',
+  },
+  typePlaceholder: {
+    ar: 'النوع',
+    en: 'Type',
+  },
+  descriptionPlaceholder: {
+    ar: 'الوصف',
+    en: 'Description',
+  },
+  addReport: {
+    ar: 'أضافه ابلاغ',
+    en: 'Add Report',
   },
 })
 </script>
@@ -415,14 +439,55 @@ const text = $ref({
             </BaseButton>
           </form>
 
-          <a
-            href="#"
+          <button
             class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
-            >{{ $t(text.report) }}</a
+            @click="reportsDialog = true"
+            >{{ $t(text.report) }}</button
           >
         </div>
       </div>
     </div>
+
+     <transition name="fade">
+      <BaseDialog
+        v-if="reportsDialog"
+        @click="reportsDialog = false"
+      >
+      </BaseDialog>
+    </transition>
+
+     <transition name="zoom">
+      <div
+        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+        v-if="reportsDialog"
+      >
+      <BaseTitle>
+          {{ $t(text.newReport) }}</BaseTitle
+      > 
+      <form @submit.prevent="" class="mt-5 grid gap-5">
+        <BaseInput
+          type="text"
+          class="!w-full"
+          :placeholder="$t(text.typePlaceholder)"
+          v-model="itemName"
+          @updateInput="(val) => (itemName = val)"
+        />
+        <BaseTextArea
+          rows="8"
+          type="text"
+          class="col-span-2 !w-full"
+          :placeholder="$t(text.descriptionPlaceholder)"
+          v-model="itemDesc"
+          @updateInput="(val) => (itemDesc = val)"
+        />
+        <BaseButton @click=""
+          >{{ $t(text.addReport) }}
+        </BaseButton>
+         
+      </form>
+      </div>
+    </transition>
+
   </UserLayout>
 </template>
 

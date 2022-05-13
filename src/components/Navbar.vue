@@ -60,6 +60,11 @@ const text = $ref({
       to: 'account/sales',
     },
     {
+      ar: 'البلاغات',
+      en: 'Reports',
+      to: 'account/reports',
+    },
+    {
       ar: 'تسجيل الخروج',
       en: 'Logout',
       to: 'logout',
