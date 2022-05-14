@@ -59,7 +59,11 @@ const emits = defineEmits(['deleteBid'])
       class="flex h-full flex-col sm:flex-row"
     >
       <BaseImg
-        :src="`https://ik.imagekit.io/bidit/${bid?.item?.images[0]}`"
+        :src="
+          bid?.item?.images?.length > 0
+            ? `https://ik.imagekit.io/bidit/${bid?.item?.images[0]}`
+            : ''
+        "
         class="h-[250px] object-cover sm:h-auto sm:w-1/3"
       />
 

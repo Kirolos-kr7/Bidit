@@ -5,7 +5,6 @@ import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
-import gsap from 'gsap'
 import { useAxios } from '../functions'
 import UserLayout from '../components/UserLayout.vue'
 
@@ -22,11 +21,6 @@ onMounted(async () => {
     bids = response.data.data
   }
 
-  gsap.from('[data-cat-animate]', {
-    opacity: 0,
-    duration: 0.4,
-    stagger: 0.2,
-  })
   isLoading = false
 })
 
@@ -104,7 +98,6 @@ const text = $ref({
         <img
           :src="`/images/home/${state.lang}/technology.png`"
           class="cursor-pointer"
-          data-cat-animate
         />
       </RouterLink>
       <RouterLink
@@ -117,14 +110,12 @@ const text = $ref({
         />
       </RouterLink>
       <RouterLink
-        data-cat-animate
         :to="`/${state.lang}/bids/antiques`"
         class="transition-all hover:brightness-90"
       >
         <img
           :src="`/images/home/${state.lang}/antiques.png`"
           class="cursor-pointer"
-          data-cat-animate
         />
       </RouterLink>
       <RouterLink
@@ -134,7 +125,6 @@ const text = $ref({
         <img
           :src="`/images/home/${state.lang}/cats.png`"
           class="cursor-pointer"
-          data-cat-animate
         />
       </RouterLink>
     </section>

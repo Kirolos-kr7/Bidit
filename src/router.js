@@ -138,9 +138,6 @@ const router = createRouter({
           path: 'verify-email/:token',
           name: 'verifyEmailWToken',
           component: () => import('./views/VerifyEmail.vue'),
-          meta: {
-            requiresAuth: true,
-          },
         },
         {
           path: 'register',

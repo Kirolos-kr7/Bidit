@@ -11,18 +11,20 @@ export const useStore = defineStore('main', {
     }
   },
   getters: {
-    getNTCount: (state) => {
+    isNTUnSeen: (state) => {
       if (!state.user || !state.isLoggedIn) {
         return null
       }
-      let nTCount = 0
 
-      state?.user?.notifications?.map((nt) => {
-        if (nt.seen === false) nTCount += 1
+      let unSeen = false
+
+      state?.user?.notifications?.forEach((nt) => {
+        if (nt.seen === false) {
+          unSeen = true
+        }
       })
 
-      if (nTCount < 10) return nTCount
-      else return '+9'
+      return unSeen
     },
   },
 })

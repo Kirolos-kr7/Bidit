@@ -124,6 +124,7 @@ const registerUser = async () => {
             :placeholder="$t(text.namePlaceholder)"
             v-model="name"
             @updateInput="(val) => (name = val)"
+            required
           />
           <BaseInput
             type="text"
@@ -131,6 +132,7 @@ const registerUser = async () => {
             :placeholder="$t(text.emailPlaceholder)"
             v-model="email"
             @updateInput="(val) => (email = val)"
+            required
           />
 
           <BaseInput
@@ -139,6 +141,7 @@ const registerUser = async () => {
             :placeholder="$t(text.passwordPlaceholder)"
             v-model="password"
             @updateInput="(val) => (password = val)"
+            required
           />
           <BaseInput
             type="password"
@@ -146,6 +149,7 @@ const registerUser = async () => {
             :placeholder="$t(text.confirmPasswordPlaceholder)"
             v-model="confirmPassword"
             @updateInput="(val) => (confirmPassword = val)"
+            required
           />
           <BaseInput
             type="text"
@@ -153,6 +157,7 @@ const registerUser = async () => {
             :placeholder="$t(text.addressPlaceholder)"
             v-model="address"
             @updateInput="(val) => (address = val)"
+            required
           />
 
           <BaseSelect
@@ -168,23 +173,17 @@ const registerUser = async () => {
           </BaseSelect>
 
           <div class="flex items-center gap-3 sm:col-span-2">
-            <BaseCountryCode
-              v-model="cc"
-              @updateInput="(val) => (cc = val)"
-              :placeholder="$t(text.ccPlaceholder)"
-            >
-              <option class="capitalize" value="+20">+20</option>
-              <option class="capitalize" value="+1">+1</option>
-            </BaseCountryCode>
-
             <BasePhone
               type="tel"
-              class="!w-full sm:col-span-2"
+              class="!w-full"
               :placeholder="$t(text.phonePlaceholder)"
               v-model="phone"
+              pattern="^(00201|\+201|01)[0-2,5]{1}[0-9]{8}$"
               @updateInput="(val) => (phone = val)"
+              required
             />
           </div>
+          <span>Format: 01xx xxx xxxx</span>
         </div>
         <transition name="fade">
           <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>

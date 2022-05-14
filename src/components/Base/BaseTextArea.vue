@@ -19,8 +19,6 @@ const { $state: state } = $(useStore())
       :id="placeholder"
       :placeholder="placeholder"
       :value="modelValue"
-      readonly
-      @focus="(e) => e.target.removeAttribute('readonly')"
       @change="(e) => emits('updateInput', e.target.value)"
       @keyup="(e) => emits('updateInput', e.target.value)"
     ></textarea>

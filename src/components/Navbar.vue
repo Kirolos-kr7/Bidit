@@ -45,11 +45,6 @@ const text = $ref({
       to: 'account/inventory',
     },
     {
-      ar: 'الاشعارات',
-      en: 'Notification',
-      to: 'account/notification',
-    },
-    {
       ar: 'المشتريات',
       en: 'Purchases',
       to: 'account/purchases',
@@ -215,7 +210,7 @@ const logout = () => {
             </svg>
             <span
               class="h-2 w-2 rounded-full bg-red-700 p-0.5 text-xs text-white"
-              v-if="store.getNTCount > 0"
+              v-if="store.isNTUnSeen"
             ></span>
           </RouterLink>
         </li>
@@ -350,15 +345,7 @@ const logout = () => {
                   class="flex w-full items-center justify-between gap-2 px-3 py-2 text-left font-semibold transition-colors hover:bg-bi-200"
                 >
                   {{ $t(item) }}
-                  <div
-                    v-if="item.en === 'Notification'"
-                    class="flex h-5 w-5 items-center justify-center rounded-full bg-red-700 text-xs text-white"
-                  >
-                    <span class="translate-y-px">
-                      {{ store.getNTCount }}
-                    </span>
-                  </div></RouterLink
-                >
+                </RouterLink>
               </li>
             </BaseDDL>
           </transition>
