@@ -3,8 +3,11 @@ import BaseTitle from './Base/BaseTitle.vue'
 import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
+import { useStore } from '../store'
 
 const props = defineProps(['image'])
+const emits = defineEmits(['done'])
+const { $state: state } = useStore()
 let inputFile = $ref()
 let newImage = $ref('')
 let isLoading = $ref(false)
@@ -33,6 +36,13 @@ const changeProfileImage = async () => {
   if (!response.data.ok) error = response.data.message
 
   isLoading = false
+
+  let { response: user } = await useAxios('get', '/auth/user')
+
+  if (user.data.ok) {
+    state.user = user.data.data
+  }
+  emits('done')
 }
 
 const deleteProfileImage = async () => {
@@ -44,6 +54,12 @@ const deleteProfileImage = async () => {
   console.log(response.data)
 
   isLoading = false
+  let { response: user } = await useAxios('get', '/auth/user')
+
+  if (user.data.ok) {
+    state.user = user.data.data
+  }
+  emits('done')
 }
 
 let text = $ref({

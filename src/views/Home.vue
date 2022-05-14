@@ -7,6 +7,7 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { useAxios } from '../functions'
 import UserLayout from '../components/UserLayout.vue'
+import RecentBids from '../components/RecentBids.vue'
 
 const { $state: state } = $(useStore())
 
@@ -38,10 +39,6 @@ const text = $ref({
   forYou: {
     ar: `أفضل الاختيارات لك`,
     en: `Top Bids For You`,
-  },
-  youRecentlyViewed: {
-    ar: `شاهدت مؤخراً`,
-    en: `You Recently Viewed`,
   },
 })
 </script>
@@ -129,9 +126,6 @@ const text = $ref({
       </RouterLink>
     </section>
 
-    <section class="my-4 p-4 md:my-6" v-if="bids">
-      <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
-      <Bids :bids="bids" :isLoading="isLoading" />
-    </section>
+    <RecentBids />
   </UserLayout>
 </template>

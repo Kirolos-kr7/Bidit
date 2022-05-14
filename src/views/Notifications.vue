@@ -4,12 +4,22 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import Notification from '../components/Notification.vue'
 import { useAxios } from '../functions'
 import UserLayout from '../components/UserLayout.vue'
+import { useStore } from '../store'
 
+let { $state: state } = useStore()
 let nts = $ref([])
 onMounted(async () => {
   let { response } = await useAxios('get', '/auth/notifications')
 
-  if (response.data.ok) nts = response.data.data
+  if (response.data.ok) {
+    state.user.notifications = response.data.data
+    nts = response.data.data
+  }
+
+  let { response: user } = await useAxios('get', '/auth/user')
+  if (user.data.ok) {
+    state.user = user.data.data
+  }
 })
 
 const text = $ref({

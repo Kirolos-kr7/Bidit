@@ -310,7 +310,7 @@ const newReport = async () => {
             >
               <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
               <div class="flex items-end gap-1">
-                <h5 class="text-3xl font-bold">
+                <h5 class="break-all text-3xl font-bold">
                   {{ getNumPerLang(bid?.bidsHistory.length) }}
                 </h5>
                 <span class="mb-0.5 text-sm">{{
@@ -321,7 +321,7 @@ const newReport = async () => {
             <div class="overflow-hidden rounded-md border-2 p-3">
               <h4 class="text-sm text-gray-600">{{ $t(text.price) }}</h4>
               <div class="flex items-end gap-1">
-                <h5 class="text-3xl font-bold">
+                <h5 class="break-all text-3xl font-bold">
                   {{ getPricePerLang(bid?.minPrice) }}
                 </h5>
                 <span class="mb-0.5 text-sm">{{
@@ -335,7 +335,7 @@ const newReport = async () => {
             >
               <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
               <div class="flex items-end gap-1">
-                <h5 class="text-3xl font-bold">
+                <h5 class="break-all text-3xl font-bold">
                   {{
                     getPricePerLang(
                       bid?.bidsHistory.length > 0 ? currBid.price : 0,

@@ -122,6 +122,10 @@ let imageDialog = $ref(false)
     <BaseDialog v-if="imageDialog" @click="imageDialog = false"> </BaseDialog>
   </transition>
   <transition name="zoom">
-    <ProfileImage v-if="imageDialog" :image="state?.user?.profilePicture" />
+    <ProfileImage
+      v-if="imageDialog"
+      :image="state?.user?.profilePicture"
+      @done="imageDialog = false"
+    />
   </transition>
 </template>

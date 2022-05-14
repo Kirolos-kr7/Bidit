@@ -47,11 +47,6 @@ const handleKeys = (e) => {
       currRes = 0
     } else currRes += 1
   }
-
-  if (document.querySelector(`[id="res_${currRes}"]`))
-    document
-      .querySelector(`[id="res_${currRes}"]`)
-      .scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 }
 
 onMounted(() => {
