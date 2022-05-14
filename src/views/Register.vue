@@ -20,7 +20,6 @@ let email = $ref('')
 let address = $ref('')
 let password = $ref('')
 let confirmPassword = $ref('')
-let cc = $ref('+20')
 let phone = $ref('')
 let gender = $ref('male')
 let error = $ref(null)
@@ -91,7 +90,7 @@ const registerUser = async () => {
     address,
     password,
     confirmPassword,
-    phone: `${cc} ${phone.replaceAll(' ', '')}`,
+    phone: phone.replaceAll(' ', ''),
     gender,
   }
 

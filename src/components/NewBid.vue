@@ -14,7 +14,7 @@ let router = useRouter()
 let { $state: state } = useStore()
 
 let error = $ref('')
-let startDate = $ref(new Date())
+let startDate = $ref('')
 let endDate = $ref('')
 let minPrice = $ref(1)
 
@@ -42,6 +42,7 @@ const text = $ref({
 })
 
 const newBid = async () => {
+  console.log(startDate)
   let { response } = await useAxios('post', '/bid/add', {
     startDate: new Date(startDate).toGMTString(),
     endDate: new Date(endDate).toGMTString(),
