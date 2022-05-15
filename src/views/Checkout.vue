@@ -9,6 +9,7 @@ let authToken = $ref('')
 let orderToken = $ref('')
 let orderID = $ref('')
 let paymentToken = $ref('')
+let paymentLink = $ref('')
 
 onMounted(async () => {
   let response = await axios({
@@ -74,19 +75,20 @@ const makePayment = async () => {
       state: 'NA',
     },
     currency: 'EGP',
-    integration_id: 1,
+    integration_id: 2062140,
     lock_order_when_paid: 'true',
   }
 
   try {
     let response = await axios({
       method: 'post',
-      url: 'https://accept.paymob.com/api/acceptance/payment_keys',
+      url: `https://accept.paymob.com/api/acceptance/payment_keys`,
       data: body,
     })
 
     console.log(response)
     paymentToken = response.data.token
+    paymentLink = `https://accept.paymobsolutions.com/api/acceptance/iframes/381359?payment_token=${paymentToken}`
   } catch (err) {
     console.log(err)
   }
@@ -99,6 +101,10 @@ const makePayment = async () => {
       <BaseTitle>Checkout</BaseTitle>
       <BaseButton @click="sendOrder">Send Order</BaseButton>
       <BaseButton @click="makePayment">Make Payment</BaseButton>
+    </div>
+
+    <div v-if="paymentLink">
+      {{ paymentLink }}
     </div>
   </UserLayout>
 </template>

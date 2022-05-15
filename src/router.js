@@ -156,6 +156,16 @@ const router = createRouter({
           },
         },
         {
+          path: 'payment-successful',
+          name: 'paymentSuccessful',
+          component: () => import('./views/payment/PaymentSuccessful.vue'),
+        },
+        {
+          path: 'payment-failed',
+          name: 'paymentFailed',
+          component: () => import('./views/payment/PaymentFailed.vue'),
+        },
+        {
           path: 'admin',
           name: 'admin',
           component: () => import('./views/Admin/Admin.vue'),
