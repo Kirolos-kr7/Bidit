@@ -54,6 +54,12 @@ const text = $ref({
       en: 'Sales',
       to: 'account/sales',
     },
+
+    {
+      ar: 'البلاغات',
+      en: 'Orders',
+      to: 'account/orders',
+    },
     {
       ar: 'البلاغات',
       en: 'Reports',

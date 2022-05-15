@@ -95,6 +95,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'account/orders',
+          name: 'orders',
+          component: () => import('./views/Orders.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: 'account/reports',
           name: 'account/reports',
           component: () => import('./views/Reports.vue'),
@@ -147,6 +155,7 @@ const router = createRouter({
             requiresUnAuth: true,
           },
         },
+
         {
           path: 'checkout',
           name: 'checkout',

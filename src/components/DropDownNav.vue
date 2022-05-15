@@ -57,7 +57,9 @@ const changeLang = (lang) => {
 </script>
 
 <template>
-  <div class="fixed top-0 left-0 z-10 h-full w-full bg-bi-200 transition-all">
+  <div
+    class="fixed top-0 left-0 z-10 h-full w-full overflow-auto bg-bi-200 transition-all"
+  >
     <div class="mt-20 flex w-full flex-col items-start gap-5 text-black">
       <ul class="grid w-full grid-cols-2">
         <li class="col-span-2 mb-3 px-3 text-xl font-extrabold text-bi-300">
@@ -101,7 +103,7 @@ const changeLang = (lang) => {
           </RouterLink>
         </li>
       </ul>
-      <ul class="grid w-full grid-cols-2">
+      <ul class="mb-3 grid w-full grid-cols-2">
         <li class="col-span-2 mb-3 px-3 text-xl font-extrabold text-bi-300">
           {{ $t(text.lang.name) }}
         </li>

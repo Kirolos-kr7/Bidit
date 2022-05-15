@@ -3,6 +3,7 @@ import { useStore } from './store'
 import { categories } from './lang/categories.json'
 import { reportTypes } from './lang/reportTypes.json'
 import { statuses } from './lang/bidstatus.json'
+import { statuses as orderStatuses } from './lang/orderstatus.json'
 import { reportStatuses } from './lang/reportstatus.json'
 import { useCookies } from 'vue3-cookies'
 
@@ -94,6 +95,20 @@ export const getReportStatus = (val) => {
   })
 
   return reportStatus || 'N/F'
+}
+
+export const getOrderStatus = (val) => {
+  let orderStatus
+
+  if (!val) return 'N/F'
+
+  orderStatuses.forEach((state) => {
+    if (state.en.toLowerCase() === val.toLowerCase()) {
+      orderStatus = $t(state)
+    }
+  })
+
+  return orderStatus || 'N/F'
 }
 
 export const getStatus = (val) => {
