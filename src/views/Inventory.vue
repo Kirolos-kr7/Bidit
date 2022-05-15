@@ -65,17 +65,17 @@ const text = $ref({
     ar: 'أًضافه',
     en: 'Add',
   },
-  edit: {
-    ar: 'تعديل',
-    en: 'Edit',
+  save: {
+    ar: 'حفظ',
+    en: 'Save',
   },
   deleteItem: {
     ar: 'حذف العنصر',
     en: 'Delete Item',
   },
   doneProcess: {
-    ar: 'تاكيد العمليه؟',
-    en: 'Are you sure you want to proceed?',
+    ar: 'هذا العنصر سوف يتم حذفه فقط اذا كان لا يوجد مزاد نشط, انتهى أو الغى مرتبط به. هل تريد الاستمرار؟',
+    en: 'This item will only be deleted if there is no active, expired or canceled bids linked to it. Are you sure you want to proceed?',
   },
   yes: {
     ar: 'نعم',
@@ -118,7 +118,9 @@ const resetDialog = () => {
   isEditing = false
   deleteDialog = false
   bidDialog = false
+  error = null
   selectedItem = null
+  newImages = false
   itemName = ''
   itemType = categories.items[0].en
   itemDesc = ''
@@ -132,12 +134,11 @@ const addItem = async () => {
     images: itemImages,
   })
 
-  console.log(response)
-
   if (!response.data.ok) error = response.data.message
   else {
     items.push(response.data.data)
-    itemsDialog = false
+
+    resetDialog()
   }
 }
 
@@ -157,19 +158,19 @@ const editItem = async () => {
     type: itemType,
     description: itemDesc,
     images: itemImages,
-    id: selectedItem._id,
     newImages,
   }
 
-  console.log(newItem)
-  return
+  let { response } = await useAxios(
+    'patch',
+    `/item/edit/${selectedItem._id}`,
+    newItem,
+  )
 
-  let { response } = await useAxios('patch', '/item/edit', newItem)
-
-  if (!response.data.ok) return console.log(response.data.message)
+  if (!response.data.ok) error = response.data.message
   else {
     items.forEach((item, i) => {
-      if (item.id === selectedItem.id) {
+      if (item._id === selectedItem._id) {
         items[i] = response.data.data
       }
     })
@@ -199,7 +200,7 @@ const deleteItem = async () => {
     `/item/delete/${selectedItem._id}`,
   )
 
-  if (!response.data.ok) return console.log(response.data.message)
+  if (!response.data.ok) error = response.data.message
   else {
     items.forEach((item, i) => {
       if (item._id === selectedItem._id) {
@@ -321,7 +322,7 @@ const deleteItem = async () => {
             </button>
           </div>
           <BaseInputFile
-            v-if="newImages"
+            v-if="!isEditing || (isEditing && newImages)"
             placeholder="Click to Add Images MAX [5]"
             class="!w-full"
             @updateInput="(images) => (itemImages = images)"
@@ -330,7 +331,7 @@ const deleteItem = async () => {
             <BaseError v-if="error">{{ error }}</BaseError>
           </transition>
           <BaseButton @click="editItem" v-if="isEditing"
-            >{{ $t(text.edit) }}
+            >{{ $t(text.save) }}
           </BaseButton>
           <BaseButton @click="addItem" v-else
             >{{ $t(text.newItem) }}
@@ -364,6 +365,7 @@ const deleteItem = async () => {
       >
         <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
         <p class="my-3">{{ $t(text.doneProcess) }}</p>
+        <BaseError v-if="error" class="mb-3">{{ error }}</BaseError>
         <div class="flex justify-end gap-2">
           <BaseButton
             class="!bg-red-600 hover:!bg-red-700"
