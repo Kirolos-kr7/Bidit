@@ -10,8 +10,10 @@ const fileChanged = async (e) => {
     Array.from(e.target.files)
       .slice(0, 5)
       .forEach(async (img) => {
-        let imgs = await toBase64(img)
-        files.push(imgs)
+        if(img.type.split('/')[0] === 'image') {
+          let imgs = await toBase64(img)
+          files.push(imgs)
+        }
       })
     emits('updateInput', files)
   }
@@ -124,7 +126,7 @@ const moveRight = (index) => {
       </div>
     </div>
     <button
-      v-if="files.length > 0"
+      v-if="files.length > 1"
       class="mt-2 inline-block rounded-md bg-red-200 px-2.5 py-1 font-medium hover:bg-red-300"
       @click="files = []"
     >

@@ -25,6 +25,7 @@ let itemsDialog = $ref(false),
   deleteDialog = $ref(false),
   bidDialog = $ref(false),
   isEditing = $ref(false),
+  newImages = $ref(false),
   error = $ref(null),
   itemName = $ref(''),
   itemType = $ref(),
@@ -146,6 +147,7 @@ const showEditItem = (item) => {
   itemName = item.name
   itemType = item.type
   itemDesc = item.description
+  itemImages = item.images
   selectedItem = item
 }
 
@@ -154,9 +156,13 @@ const editItem = async () => {
     name: itemName,
     type: itemType,
     description: itemDesc,
-    images: null,
-    id: selectedItem.id,
+    images: itemImages,
+    id: selectedItem._id,
+    newImages,
   }
+
+  console.log(newItem)
+  return
 
   let { response } = await useAxios('patch', '/item/edit', newItem)
 
@@ -291,7 +297,31 @@ const deleteItem = async () => {
             v-model="itemDesc"
             @updateInput="(val) => (itemDesc = val)"
           />
+          <div
+            class="relative rounded-md border-2 border-dashed border-neutral-200 p-5 text-center"
+            v-if="isEditing && !newImages"
+          >
+            <div :class="`flex flex-wrap items-start justify-around gap-3`">
+              <div
+                v-for="image in selectedItem?.images"
+                :key="image"
+                class="relative"
+              >
+                <img
+                  :src="`https://ik.imagekit.io/bidit/${image}?tr=w-128,h-128`"
+                  class="h-28 w-28 object-cover"
+                />
+              </div>
+            </div>
+            <button
+              @click=";(newImages = true), (itemImages = [])"
+              class="mt-2 inline-block rounded-md bg-red-200 px-2.5 py-1 font-medium hover:bg-red-300"
+            >
+              Upload New Images
+            </button>
+          </div>
           <BaseInputFile
+            v-if="newImages"
             placeholder="Click to Add Images MAX [5]"
             class="!w-full"
             @updateInput="(images) => (itemImages = images)"

@@ -86,15 +86,15 @@ let text = $ref({
     >
       <img
         v-if="image"
-        :src="`https://ik.imagekit.io/bidit/${image.name}`"
+        :src="`https://ik.imagekit.io/bidit/${image.name}?tr=w-380,h-380`"
         alt="Profile Picture"
-        class="mx-auto max-h-[400px] max-w-[400px] object-cover"
+        class="mx-auto w-[380px] object-cover"
       />
       <img
         v-if="newImage"
         :src="newImage"
         alt="Profile Picture"
-        class="mx-auto max-h-[400px] max-w-[400px] object-cover"
+        class="mx-auto w-[380px] object-cover"
       />
       <input
         type="file"
