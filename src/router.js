@@ -103,6 +103,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'account/order/:id',
+          name: 'order',
+          component: () => import('./views/Order.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: 'account/reports',
           name: 'account/reports',
           component: () => import('./views/Reports.vue'),
