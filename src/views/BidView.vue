@@ -97,24 +97,24 @@ const joinBid = () => {
 }
 
 const getOffest = computed(() => {
-  let offset = 0
   let base = currBid.price
-  let muls = [10, 20, 50, 100, 250, 500, 750, 1000, 1250, 1500]
-  let vals = [1, 2, 5, 10, 25, 50, 75, 100, 125, 150]
 
-  if (base > 1000000000) return getNumWOZeros(Math.floor((base * 1) / 100))
-  if (base > 1000000) return getNumWOZeros(Math.floor((base * 2) / 100))
-  if (base > 10000) return getNumWOZeros(Math.floor((base * 5) / 100))
-  if (base > 1500) return getNumWOZeros(Math.floor((base * 10) / 100))
-
-  muls.forEach((mul, i) => {
-    if (base <= mul) {
-      offset = vals[i]
-    }
-  })
-
-  return offset
+  if (base <= 10) return 1
+  if (base <= 20) return 2
+  if (base <= 50) return 5
+  if (base <= 100) return 10
+  if (base <= 250) return 25
+  if (base <= 500) return 50
+  if (base <= 750) return 75
+  if (base <= 1000) return 100
+  if (base <= 1250) return 125
+  if (base <= 1500) return 150
+  if (base <= 5000) return getNumWOZeros(Math.floor((base * 10) / 100))
+  if (base <= 10000) return getNumWOZeros(Math.floor((base * 5) / 100))
+  if (base <= 1000000) return getNumWOZeros(Math.floor((base * 2) / 100))
+  else return getNumWOZeros(Math.floor((base * 1) / 100))
 })
+
 const getNumWOZeros = (num) => {
   let arr = num.toString().split('')
   let str = ''
