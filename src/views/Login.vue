@@ -8,7 +8,6 @@ import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
-import { onMounted } from 'vue'
 import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 
@@ -18,22 +17,6 @@ let email = $ref('kiroloskr7@gmail.com')
 let password = $ref('k123456')
 let isLoading = $ref(false)
 let error = $ref('')
-
-onMounted(() => {
-  // google.accounts.id.initialize({
-  //   client_id:
-  //     '93523739734-gm8s6ba175gn6ad2h7ioapcvrnbq7k6p.apps.googleusercontent.com',
-  //   callback: (res) => {
-  //     console.log(res)
-  //   },
-  // })
-  // google.accounts.id.renderButton(document.getElementById('buttonDiv'), {
-  //   theme: 'filled_blue',
-  //   size: 'large',
-  //   text: 'continue_with',
-  //   width: '250px',
-  // })
-})
 
 const text = $ref({
   myAccount: {
@@ -89,7 +72,6 @@ const loginUser = async () => {
       class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
     >
       <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
-      <!-- <div id="buttonDiv" class="my-6"></div> -->
       <form @submit.prevent="loginUser">
         <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
           <BaseWarn

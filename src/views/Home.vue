@@ -13,6 +13,7 @@ const { $state: state } = $(useStore())
 
 let bids = $ref([])
 let isLoading = $ref(true)
+let preferedWidth = $ref(1200)
 
 onMounted(async () => {
   isLoading = true
@@ -23,17 +24,27 @@ onMounted(async () => {
   }
 
   isLoading = false
+
+  setPreferedWidth()
 })
 
 const brp = $ref({
   900: {
-    itemsToShow: 1.5,
+    itemsToShow: 1.8,
   },
-
   0: {
     itemsToShow: 1.04,
   },
 })
+
+const setPreferedWidth = () => {
+  if (window.innerWidth < 400) return (preferedWidth = 400)
+  if (window.innerWidth < 600) return (preferedWidth = 600)
+  if (window.innerWidth < 800) return (preferedWidth = 800)
+  if (window.innerWidth < 1000) return (preferedWidth = 1000)
+  if (window.innerWidth < 1000) return (preferedWidth = 1000)
+  else preferedWidth = 1200
+}
 
 const text = $ref({
   forYou: {
@@ -46,32 +57,50 @@ const text = $ref({
 <template>
   <UserLayout>
     <header
-      class="relative -mt-2 grid justify-end gap-5 overflow-hidden bg-white pt-2 shadow-sm md:grid-cols-3 md:gap-0 md:rounded-md"
+      class="relative -mt-2 overflow-hidden bg-white pt-2 shadow-sm md:rounded-md"
     >
       <Carousel
         :breakpoints="brp"
-        class="w-[calc(100vw-1rem)] gap-3 py-3"
+        class="w-[inherit] gap-3 py-3"
         :autoplay="4000"
         :wrap-around="true"
         dir="ltr"
       >
         <Slide class="p-0.5 md:p-2" key="1">
-          <img :src="`/images/home/${state.lang}/shipping.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
         <Slide class="p-0.5 md:p-2" key="2">
-          <img :src="`/images/home/${state.lang}/easyToUse.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
         <Slide class="p-0.5 md:p-2" key="3">
-          <img :src="`/images/home/${state.lang}/participate.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
         <Slide class="p-0.5 md:p-2" key="4">
-          <img :src="`/images/home/${state.lang}/shipping.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
         <Slide class="p-0.5 md:p-2" key="5">
-          <img :src="`/images/home/${state.lang}/easyToUse.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
         <Slide class="p-0.5 md:p-2" key="6">
-          <img :src="`/images/home/${state.lang}/participate.png`" />
+          <img
+            class="pointer-events-none"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
+          />
         </Slide>
 
         <template #addons>
@@ -93,7 +122,7 @@ const text = $ref({
         class="transition-all hover:brightness-90"
       >
         <img
-          :src="`/images/home/${state.lang}/technology.png`"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/technology.webp?tr=w-${preferedWidth}`"
           class="cursor-pointer"
         />
       </RouterLink>
@@ -102,7 +131,7 @@ const text = $ref({
         class="transition-all hover:brightness-90"
       >
         <img
-          :src="`/images/home/${state.lang}/art.png`"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/art.webp?tr=w-${preferedWidth}`"
           class="cursor-pointer"
         />
       </RouterLink>
@@ -111,7 +140,7 @@ const text = $ref({
         class="transition-all hover:brightness-90"
       >
         <img
-          :src="`/images/home/${state.lang}/antiques.png`"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/antiques.webp?tr=w-${preferedWidth}`"
           class="cursor-pointer"
         />
       </RouterLink>
@@ -120,7 +149,7 @@ const text = $ref({
         class="transition-all hover:brightness-90"
       >
         <img
-          :src="`/images/home/${state.lang}/cats.png`"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/cats.webp?tr=w-${preferedWidth}`"
           class="cursor-pointer"
         />
       </RouterLink>

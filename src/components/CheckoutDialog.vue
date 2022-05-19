@@ -3,7 +3,6 @@ import BaseTitle from './Base/BaseTitle.vue'
 import BaseButton from './Base/BaseButton.vue'
 import { useAxios } from '../functions'
 import BaseError from './Base/BaseError.vue'
-import { useRouter } from 'vue-router'
 import { useStore } from '../store'
 import BaseInput from './Base/BaseInput.vue'
 
@@ -12,7 +11,6 @@ const props = defineProps({
     required: true,
   },
 })
-let router = useRouter()
 let { $state: state } = useStore()
 
 let error = $ref('')

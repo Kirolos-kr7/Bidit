@@ -10,7 +10,7 @@ const fileChanged = async (e) => {
     Array.from(e.target.files)
       .slice(0, 5)
       .forEach(async (img) => {
-        if(img.type.split('/')[0] === 'image') {
+        if (img.type.split('/')[0] === 'image') {
           let imgs = await toBase64(img)
           files.push(imgs)
         }

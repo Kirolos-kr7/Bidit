@@ -21,7 +21,6 @@ import ImageViewer from '../components/ImageViewer.vue'
 import { computed } from '@vue/reactivity'
 import BaseDialog from '../components/Base/BaseDialog.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
-import BaseInput from '../components/Base/BaseInput.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 

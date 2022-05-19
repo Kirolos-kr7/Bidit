@@ -25,7 +25,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/furniture.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/furniture.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -34,7 +34,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/technology.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/technology.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -43,7 +43,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/art.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/art.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -52,7 +52,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/cars.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/cars.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -61,7 +61,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/clothes.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/clothes.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -70,7 +70,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/antiques.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/antiques.webp`"
             class="cursor-pointer"
           /> </RouterLink
         ><RouterLink
@@ -78,7 +78,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/animals.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/animals.webp`"
             class="cursor-pointer"
           />
         </RouterLink>
@@ -87,7 +87,7 @@ const text = $ref({
           class="transition-all hover:brightness-90"
         >
           <img
-            :src="`/images/home/${state.lang}/others.png`"
+            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/others.webp`"
             class="cursor-pointer"
           />
         </RouterLink>

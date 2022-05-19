@@ -8,6 +8,7 @@ import BaseType from '../components/Base/BaseType.vue'
 import { useStore } from '../store'
 import BaseWarn from './Base/BaseWarn.vue'
 
+dayjs.extend(localizedFormat)
 defineProps(['order'])
 let { $state: state } = useStore()
 
