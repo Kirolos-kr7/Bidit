@@ -50,7 +50,7 @@ const handleKeys = (e) => {
 }
 
 onMounted(() => {
-  addEventListener('keyup', handleKeys)
+  addEventListener('keyup', handleKeys, { passive: true })
   inputSearch.focus()
 })
 onUnmounted(() => {

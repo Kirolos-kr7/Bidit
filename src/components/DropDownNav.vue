@@ -14,7 +14,7 @@ const handleResize = () => {
 }
 
 onMounted(() => {
-  addEventListener('resize', handleResize)
+  addEventListener('resize', handleResize, { passive: true })
 })
 
 onUnmounted(() => {

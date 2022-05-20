@@ -108,6 +108,7 @@ const toggleDDL = (ddl = null) => {
       },
       {
         once: true,
+        passive: true,
       },
     )
   } else {
