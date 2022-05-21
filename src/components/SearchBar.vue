@@ -50,7 +50,7 @@ const handleKeys = (e) => {
 }
 
 onMounted(() => {
-  addEventListener('keyup', handleKeys, { passive: true })
+  addEventListener('keyup', handleKeys)
   inputSearch.focus()
 })
 onUnmounted(() => {
@@ -93,7 +93,7 @@ const text = $ref({
           class="bg-bi-800 w-full rounded-sm border border-bi-200 px-3 py-2.5 font-medium text-black outline-none ring-2 ring-indigo-400 focus:ring-indigo-700"
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
           :placeholder="$t(text.placeholder)"
-          @input.prevent="search"
+          @keyup="search"
         />
         <svg
           class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-black"
@@ -114,9 +114,8 @@ const text = $ref({
     </div>
 
     <ul
-      class="flex max-h-[60vh] scroll-p-4 flex-col gap-2 px-5 py-4 text-black"
+      class="flex max-h-[60vh] scroll-p-4 flex-col gap-2 overflow-auto px-5 py-4 text-black"
       v-if="results.length > 0"
-      style="overflow: overlay"
     >
       <transition-group name="fade">
         <li
