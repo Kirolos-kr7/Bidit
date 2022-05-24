@@ -187,6 +187,14 @@ const calcDiff = () => {
 }
 
 const text = $ref({
+  bidBy: {
+    ar: 'بواسطة',
+    en: 'Bid by',
+  },
+  description: {
+    ar: 'الوصف',
+    en: 'Description',
+  },
   price: {
     ar: 'السعر المبدئي',
     en: 'Start Price',
@@ -283,18 +291,19 @@ const newReport = async () => {
             {{ bid?.item.name }}
           </h2>
 
-          <div class="my-2 flex flex-wrap items-center gap-2">
+          <div class="my-1 flex flex-wrap items-center gap-2">
             <div class="flex items-center gap-2">
-              <img src="/images/avatar.png" class="w-7 cursor-pointer" />
-              <Router-Link
-                to="#"
-                class="inline-block cursor-pointer font-semibold text-bi-300 underline hover:text-bi-400"
-              >
-                {{ bid?.user?.name || 'N/F' }}
-              </Router-Link>
+              <span class="text-sm font-medium text-neutral-400">{{
+                $t(text.bidBy)
+              }}</span>
+
+              <span class="font-semibold">{{ bid?.user?.name || 'N/F' }}</span>
             </div>
           </div>
 
+          <p class="mt-3 text-sm font-medium text-neutral-400">
+            {{ $t(text.description) }}
+          </p>
           <p class="mb-2 font-medium text-neutral-500">
             {{ bid?.item?.description || 'N/F' }}
           </p>
