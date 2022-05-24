@@ -87,7 +87,7 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
         class="clamp-2 px-3 py-2"
         :class="value === 'status' && 'capitalize'"
       >
-        {{ item[value] }}
+        {{ item[value] || 'N/F' }}
       </td>
       <td class="flex items-center justify-end p-2">
         <button @click="emits('open', item)" v-if="actions.open">

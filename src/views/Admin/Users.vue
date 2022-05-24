@@ -6,6 +6,7 @@ import { onMounted } from 'vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
+import { computed } from '@vue/reactivity'
 
 let data = $ref([])
 let userDialog = $ref(false)
@@ -25,6 +26,15 @@ const fetchUsers = async () => {
 }
 
 onMounted(async () => fetchUsers())
+
+let formatedData = computed(() => {
+  return data.map((x) => {
+    return {
+      ...x,
+      isAdmin: String(x?.isAdmin),
+    }
+  })
+})
 
 const sortBy = (value, dir) => {
   constraint = value
@@ -66,8 +76,17 @@ const remove = (val) => {
   selectedUser = val
 }
 
-const approveRemove = () => {
-  console.log(selectedUser)
+const approveRemove = async () => {
+  let { response } = await useAxios(
+    'delete',
+    `/admin/user-account/${selectedUser._id}`,
+  )
+
+  if (response.data.ok) {
+    removeDialog = false
+    selectedUser = null
+    fetchUsers()
+  }
 }
 </script>
 
@@ -80,7 +99,7 @@ const approveRemove = () => {
       :columns="['User', 'Email', 'Admin']"
       :values="['name', 'email', 'isAdmin']"
       :layout="['auto', 'auto', 'auto']"
-      :data="data"
+      :data="formatedData"
       :constraint="constraint"
       :direction="direction"
       :actions="{ open: true, edit: true, remove: true }"
@@ -112,19 +131,21 @@ const approveRemove = () => {
       >
       <div class="mt-4 grid grid-cols-[auto,1fr] gap-x-3 gap-y-1">
         <div class="font-semibold">Name</div>
-        <span class="text-gray-500">{{ selectedUser?.name }}</span>
+        <span class="text-gray-500">{{ selectedUser?.name || 'N/F' }}</span>
         <div class="font-semibold">Email</div>
-        <span class="text-gray-500">{{ selectedUser?.email }}</span>
+        <span class="text-gray-500">{{ selectedUser?.email || 'N/F' }}</span>
         <div class="font-semibold">isAdmin</div>
-        <span class="text-gray-500">{{ selectedUser?.isAdmin }}</span>
+        <span class="text-gray-500">{{ selectedUser?.isAdmin || 'N/F' }}</span>
         <div class="font-semibold">Gender</div>
-        <span class="text-gray-500">{{ selectedUser?.gender }}</span>
+        <span class="text-gray-500">{{ selectedUser?.gender || 'N/F' }}</span>
         <div class="font-semibold">Phone</div>
-        <span class="text-gray-500">{{ selectedUser?.phone }}</span>
+        <span class="text-gray-500">{{ selectedUser?.phone || 'N/F' }}</span>
         <div class="font-semibold">Address</div>
-        <span class="text-gray-500">{{ selectedUser?.address }}</span>
+        <span class="text-gray-500">{{ selectedUser?.address || 'N/F' }}</span>
         <div class="font-semibold">JoinedAt</div>
-        <span class="text-gray-500">{{ selectedUser?.createdAt }}</span>
+        <span class="text-gray-500">{{
+          selectedUser?.createdAt || 'N/F'
+        }}</span>
         <!-- <div>isPremium: </div> <span>{{ selectedUser.premium }}</span> -->
       </div>
     </div>

@@ -10,9 +10,15 @@ import BaseError from '../../components/Base/BaseError.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import { useAxios } from '../../functions'
-
+import BaseImg from '../../components/Base/BaseImg.vue'
+import BaseType from '../../components/Base/BaseType.vue'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(localizedFormat)
 let data = $ref([])
+let orderDialog = $ref(false)
 let editDialog = $ref(false)
+let removeDialog = $ref(false)
 let selectedOrder = $ref({})
 let error = $ref(null)
 
@@ -48,8 +54,9 @@ const sortBy = (value, dir) => {
   fetchOrders()
 }
 
-const open = (value) => {
-  console.log(value)
+const open = (val) => {
+  orderDialog = true
+  selectedOrder = val
 }
 
 const edit = (value) => {
@@ -70,12 +77,28 @@ const saveEdit = async () => {
   }
 }
 
-const remove = (value) => {
-  console.log(value)
+const remove = (val) => {
+  removeDialog = true
+  selectedOrder = val
+}
+
+const approveRemove = async () => {
+  let { response } = await useAxios(
+    'delete',
+    `/admin/order/${selectedOrder._id}`,
+  )
+
+  if (response.data.ok) {
+    removeDialog = false
+    selectedOrder = null
+    fetchOrders()
+  }
 }
 
 const resetDialog = () => {
-  editDialog = null
+  orderDialog = false
+  editDialog = false
+  removeDialog = false
   selectedOrder = null
 }
 </script>
@@ -101,8 +124,13 @@ const resetDialog = () => {
   </AdminLayout>
 
   <transition name="fade">
-    <BaseDialog v-if="editDialog" @click="resetDialog()"> </BaseDialog>
+    <BaseDialog
+      v-if="editDialog || orderDialog || removeDialog"
+      @click="resetDialog()"
+    >
+    </BaseDialog>
   </transition>
+
   <transition name="zoom">
     <div
       class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
@@ -127,6 +155,68 @@ const resetDialog = () => {
         <BaseError v-if="error">{{ error }}</BaseError>
         <BaseButton>Save</BaseButton>
       </form>
+    </div>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white font-medium text-black md:min-w-prose"
+      v-if="orderDialog"
+    >
+      <div class="col-span-2 flex gap-3 border-b bg-slate-50">
+        <BaseImg
+          :src="`https://ik.imagekit.io/bidit/${selectedOrder?.bid?.item?.images[0]}?tr=w-80,h-80`"
+          class="h-auto w-[80px] object-cover"
+        />
+        <div class="py-3">
+          <BaseType :to="`/en/bids/${selectedOrder?.bid?.item?.type}`">{{
+            selectedOrder?.bid?.item?.type || 'N/F'
+          }}</BaseType>
+          <h3 class="font-semibold">{{ selectedOrder.bid.item.name }}</h3>
+        </div>
+      </div>
+      <div class="relative grid gap-x-5 gap-y-0.5 p-3 md:grid-cols-[auto,1fr]">
+        <div class="font-semibold">Pickup Address</div>
+        <span>{{ selectedOrder.pickupAddress || 'N/F' }}</span>
+        <div class="font-semibold">Arrival Address</div>
+        <span>{{ selectedOrder.arrivalAddress || 'N/F' }}</span>
+        <div class="font-semibold">Pickup Time</div>
+        <span>{{
+          dayjs(selectedOrder.pickupTime).format('ddd, D MMMM, YYYY') || 'N/F'
+        }}</span>
+        <div class="font-semibold">Arrival Time</div>
+        <span>{{
+          dayjs(selectedOrder.arrivalTime).format('ddd, D MMMM, YYYY') || 'N/F'
+        }}</span>
+        <div class="font-semibold">Status</div>
+        <span>{{ selectedOrder.status }}</span>
+        <div class="font-semibold">Payment Method</div>
+        <span>{{ selectedOrder.paymentMethod || 'N/F' }}</span>
+        <div class="font-semibold">Price</div>
+        <span>{{ selectedOrder.price || 'N/F' }}</span>
+        <div class="font-semibold">Shipping</div>
+        <span>{{ selectedOrder.shipping || 'N/F' }}</span>
+        <div class="font-semibold">Total Price</div>
+        <span>{{ selectedOrder.price + selectedOrder.shipping || 'N/F' }}</span>
+      </div>
+    </div>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="removeDialog"
+    >
+      <BaseTitle>Remove Bid</BaseTitle>
+      <p class="my-3">Are you sure you want to proceed?</p>
+      <div class="flex justify-end gap-2">
+        <BaseButton
+          class="!bg-red-600 hover:!bg-red-700"
+          @click="approveRemove()"
+          >Yes</BaseButton
+        >
+        <BaseButton @click="removeDialog = false">No</BaseButton>
+      </div>
     </div>
   </transition>
 </template>

@@ -253,7 +253,7 @@ const newReport = async () => {
   let body = {
     type: reportType,
     description: reportDesc,
-    recipientID: bid?.user?._id,
+    recipient: bid?.user?._id,
   }
 
   let { response } = await useAxios('post', '/report/add', body)

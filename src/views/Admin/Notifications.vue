@@ -11,6 +11,10 @@ import BaseError from '../../components/Base/BaseError.vue'
 import { onMounted } from 'vue'
 import { computed } from '@vue/reactivity'
 import Notification from '../../components/Notification.vue'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat)
 
 let data = $ref([])
 
@@ -23,7 +27,12 @@ onMounted(async () => {
 
 let formatedData = computed(() => {
   return data.map((x) => {
-    return { ...x, title: x.title.en, message: x.message.en }
+    return {
+      ...x,
+      title: x.title.en,
+      message: x.message.en,
+      createdAt: dayjs(x.createdAt).format('ddd, D MMMM, YYYY | hh:mm'),
+    }
   })
 })
 
@@ -94,7 +103,7 @@ const broadcast = async () => {
     </div>
     <BaseTable
       :columns="['Title', 'Date', 'Message']"
-      :values="['title', 'date', 'message']"
+      :values="['title', 'createdAt', 'message']"
       :layout="['auto', 'auto', '60%']"
       :data="formatedData"
       :constraint="constraint"

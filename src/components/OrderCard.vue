@@ -73,8 +73,8 @@ const text = $ref({
         class="h-auto w-[80px] object-cover"
       />
       <div class="py-3">
-        <BaseType :to="`/${state.lang}/bids/${order.bid.item.type}`">{{
-          order.bid.item.type
+        <BaseType :to="`/${state.lang}/bids/${order?.bid?.item?.type}`">{{
+          order?.bid?.item?.type || 'N/F'
         }}</BaseType>
         <h3 class="font-semibold">{{ order.bid.item.name }}</h3>
       </div>
