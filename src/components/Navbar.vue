@@ -56,7 +56,7 @@ const text = $ref({
     },
 
     {
-      ar: 'البلاغات',
+      ar: 'الطلبات',
       en: 'Orders',
       to: 'account/orders',
     },
@@ -126,6 +126,16 @@ const changeLang = (lang) => {
   router.replace({ params: { lang: newLang } })
 }
 
+const toggleDDM = () => {
+  if (!hamburgerMenu) {
+    hamburgerMenu = true
+    document.body.style.overflow = 'hidden'
+  } else {
+    hamburgerMenu = false
+    document.body.style.overflow = 'auto'
+  }
+}
+
 const logout = () => {
   let { cookies } = useCookies()
 
@@ -149,7 +159,7 @@ const logout = () => {
       <div class="flex items-center gap-2">
         <button
           class="flex h-full cursor-pointer items-center justify-center px-3 font-semibold text-black transition-colors hover:bg-bi-200 md:hidden"
-          @click="hamburgerMenu = !hamburgerMenu"
+          @click="toggleDDM()"
         >
           <svg
             class="h-5 w-5"

@@ -1,7 +1,7 @@
 <script setup>
 import BaseTitle from './Base/BaseTitle.vue'
 import BaseButton from './Base/BaseButton.vue'
-import { useAxios } from '../functions'
+import { useAxios, usePaymob } from '../functions'
 import BaseError from './Base/BaseError.vue'
 import { useStore } from '../store'
 import BaseInput from './Base/BaseInput.vue'
@@ -25,6 +25,9 @@ const proceedPayment = async () => {
       { paymentMethod, arrivalAddress },
     )
     console.log(response)
+  } else {
+    let paymentLink = await usePaymob(props.order)
+    window.open(paymentLink, '_blank').focus()
   }
 }
 

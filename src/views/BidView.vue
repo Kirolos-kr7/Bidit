@@ -34,6 +34,7 @@ const router = useRouter()
 const socket = io(state.BASE_URL)
 
 let isLoading = $ref(false)
+let isLoadingNewReport = $ref(false)
 let error = $ref()
 let bid = $ref()
 let currBid = $ref({ price: 0, user: null })
@@ -250,6 +251,7 @@ const text = $ref({
 })
 
 const newReport = async () => {
+  isLoadingNewReport = true
   let body = {
     type: reportType,
     description: reportDesc,
@@ -259,6 +261,7 @@ const newReport = async () => {
   let { response } = await useAxios('post', '/report/add', body)
 
   if (response.data.ok) router.push(`/${state.lang}/account/reports`)
+  isLoadingNewReport = false
 }
 </script>
 
@@ -507,7 +510,9 @@ const newReport = async () => {
             v-model="reportDesc"
             @updateInput="(val) => (reportDesc = val)"
           />
-          <BaseButton>{{ $t(text.addReport) }} </BaseButton>
+          <BaseButton :disabled="isLoadingNewReport && 'disabled'"
+            >{{ $t(text.addReport) }}
+          </BaseButton>
         </form>
       </div>
     </transition>

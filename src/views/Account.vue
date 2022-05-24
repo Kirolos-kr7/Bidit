@@ -4,9 +4,71 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import UserLayout from '../components/UserLayout.vue'
 import BaseDialog from '../components/Base/BaseDialog.vue'
 import ProfileImage from '../components/ProfileImage.vue'
+import BaseTitle from '../components/Base/BaseTitle.vue'
+import BaseError from '../components/Base/BaseError.vue'
+import BasePhone from '../components/Base/BasePhone.vue'
+import BaseInput from '../components/Base/BaseInput.vue'
+import { onMounted } from 'vue'
+import { useAxios } from '../functions'
 const { $state: state } = $(useStore())
 
+let isLoading = $ref(false)
+let name = $ref('')
+let address = $ref('')
+let phone = $ref('')
+let error = $ref(null)
+
+onMounted(() => {
+  name = state.user.name
+  address = state.user.address
+  phone = state.user.phone
+})
+
+let editDialog = $ref(false)
 let imageDialog = $ref(false)
+
+const resetDialog = () => {
+  editDialog = false
+  imageDialog = false
+}
+
+const text = $ref({
+  namePlaceholder: {
+    ar: 'الاسم كامل',
+    en: 'Full Name',
+  },
+  addressPlaceholder: {
+    ar: 'العنوان',
+    en: 'Address',
+  },
+  phonePlaceholder: {
+    ar: 'رقم التليفون',
+    en: 'Phone Number',
+  },
+  save: {
+    ar: 'حفط',
+    en: 'Save',
+  },
+})
+
+const updateProfile = async () => {
+  isLoading = true
+
+  let { response } = await useAxios('patch', '/auth/edit-account', {
+    name,
+    address,
+    phone,
+  })
+
+  console.log(response)
+
+  if (!response.data.ok) error = response.data.message
+  else {
+    state.user = response.data.data
+    resetDialog()
+  }
+  isLoading = false
+}
 </script>
 
 <template>
@@ -106,8 +168,11 @@ let imageDialog = $ref(false)
               {{ state.user?.gender }}</span
             >
           </div>
+          <BaseButton class="mt-3" @click="editDialog = true">
+            Edit Profile
+          </BaseButton>
           <div v-if="state.user?.isAdmin">
-            <BaseButton class="mt-4">
+            <BaseButton class="mt-2 bg-teal-700 hover:bg-teal-500">
               <RouterLink :to="`/${state.lang}/admin`"
                 >To Admin Dashboard</RouterLink
               >
@@ -119,13 +184,64 @@ let imageDialog = $ref(false)
   </UserLayout>
 
   <transition name="fade">
-    <BaseDialog v-if="imageDialog" @click="imageDialog = false"> </BaseDialog>
+    <BaseDialog v-if="imageDialog || editDialog" @click="resetDialog()">
+    </BaseDialog>
   </transition>
+
   <transition name="zoom">
     <ProfileImage
       v-if="imageDialog"
       :image="state?.user?.profilePicture"
       @done="imageDialog = false"
     />
+  </transition>
+
+  <transition name="zoom">
+    <div
+      v-if="editDialog"
+      class="fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border border-neutral-200 bg-white p-5 md:min-w-prose"
+    >
+      <BaseTitle>Edit Profile</BaseTitle>
+      <form @submit.prevent="updateProfile">
+        <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.namePlaceholder)"
+            v-model="name"
+            @updateInput="(val) => (name = val)"
+            required
+          />
+          <BaseInput
+            type="text"
+            class="!w-full"
+            :placeholder="$t(text.addressPlaceholder)"
+            v-model="address"
+            @updateInput="(val) => (address = val)"
+            required
+          />
+          <div class="flex items-center gap-3 sm:col-span-2">
+            <BasePhone
+              type="tel"
+              class="!w-full"
+              :placeholder="$t(text.phonePlaceholder)"
+              v-model="phone"
+              pattern="^(00201|\+201|01)[0-2,5]{1}[0-9]{8}$"
+              @updateInput="(val) => (phone = val)"
+              required
+            />
+          </div>
+          <span>Format: 01xx xxx xxxx</span>
+        </div>
+        <transition name="fade">
+          <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
+        </transition>
+        <div class="flex flex-col items-start gap-4">
+          <BaseButton class="!w-full" :disabled="isLoading && 'disabled'">{{
+            $t(text.save)
+          }}</BaseButton>
+        </div>
+      </form>
+    </div>
   </transition>
 </template>

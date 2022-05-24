@@ -4,11 +4,13 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted } from 'vue'
 import { useAxios, getReportType, getReportStatus } from '../functions'
+import BaseEmpty from '../components/Base/BaseEmpty.vue'
 
 let resports = $ref([])
 
 onMounted(async () => {
   let { response } = await useAxios('get', '/report/user')
+  console.log(response)
 
   if (response.data.ok) resports = response.data.data
 })
@@ -52,7 +54,7 @@ const text = $ref({
       </div>
     </div>
 
-    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2">
+    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
       <div
         v-for="report in resports"
         :key="report._id"
@@ -76,5 +78,12 @@ const text = $ref({
         <span>{{ getReportStatus(report.status) }}</span>
       </div>
     </div>
+    <BaseEmpty
+      v-else
+      :msg="{
+        ar: 'لا يوجد لديك بلاغات الان!',
+        en: 'No reports available now!',
+      }"
+    />
   </UserLayout>
 </template>

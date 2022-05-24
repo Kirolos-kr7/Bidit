@@ -19,6 +19,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   removeEventListener('resize', handleResize)
+
+  document.body.style.overflow = 'auto'
 })
 
 const text = $ref({

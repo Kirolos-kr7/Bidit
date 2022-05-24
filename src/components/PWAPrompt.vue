@@ -45,7 +45,7 @@ const text = $ref({
       <div
         class="flex items-center justify-between border border-transparent border-b-slate-200 bg-gray-50 font-semibold text-black"
       >
-        <span class="px-3 font-medium">{{ $t(text.updateAv) }}</span>
+        <span class="py-2 px-3 font-medium">{{ $t(text.updateAv) }}</span>
         <button
           class="p-3 hover:bg-black/10"
           aria-label="Close"
@@ -66,7 +66,7 @@ const text = $ref({
         <BaseButton
           class="!w-full"
           @click="updateServiceWorker()"
-          v-if="needRefresh || 1"
+          v-if="needRefresh"
         >
           {{ $t(text.reload) }}</BaseButton
         >

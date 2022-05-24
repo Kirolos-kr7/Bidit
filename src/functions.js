@@ -176,3 +176,69 @@ export const useAxios = async (req, path, body) => {
 
   return { response }
 }
+
+export const usePaymob = async (order) => {
+  const { $state: state } = useStore()
+
+  let authRes = await axios({
+    method: 'post',
+    url: 'https://accept.paymob.com/api/auth/tokens',
+    data: {
+      api_key:
+        'ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6VXhNaUo5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPakUzTXpreE55d2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuYUZZWnJWRVp2NnczdlRXSDN2LS1pSjlRSUdNenVEZ3drYlVReTh5enRzUDlqQmE1bzRRb240QkpLdFItNmJOdzJIZG1jUWRnaEFnbVZURFBsTDZBdEE=',
+    },
+  })
+
+  let body = {
+    auth_token: await authRes.data.token,
+    delivery_needed: 'false',
+    amount_cents: order.price * 100,
+    currency: 'EGP',
+    items: [
+      {
+        name: order.bid.item.name,
+        amount_cents: order.price * 100,
+        description: order.bid.item.description,
+        quantity: '1',
+      },
+    ],
+  }
+
+  let orderRes = await axios({
+    method: 'post',
+    url: 'https://accept.paymob.com/api/ecommerce/orders',
+    data: body,
+  })
+
+  let body2 = {
+    auth_token: await authRes.data.token,
+    amount_cents: order.price * 100,
+    expiration: 3600,
+    order_id: await orderRes.data.id,
+    billing_data: {
+      email: state.user.email,
+      first_name: state.user.name,
+      phone_number: state.user.phone,
+      last_name: state.user.name,
+      apartment: 'NA',
+      floor: 'NA',
+      street: 'NA',
+      building: 'NA',
+      shipping_method: 'NA',
+      postal_code: 'NA',
+      city: 'NA',
+      country: 'NA',
+      state: 'NA',
+    },
+    currency: 'EGP',
+    integration_id: 2062140,
+  }
+
+  let paymentRes = await axios({
+    method: 'post',
+    url: `https://accept.paymob.com/api/acceptance/payment_keys`,
+    data: body2,
+  })
+
+  return `https://accept.paymobsolutions.com/api/acceptance/iframes/381359?payment_token=${paymentRes.data.token}`
+}

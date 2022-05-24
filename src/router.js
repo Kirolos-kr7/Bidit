@@ -163,15 +163,6 @@ const router = createRouter({
             requiresUnAuth: true,
           },
         },
-
-        {
-          path: 'checkout',
-          name: 'checkout',
-          component: () => import('./views/Checkout.vue'),
-          meta: {
-            requiresAuth: true,
-          },
-        },
         {
           path: 'payment-successful',
           name: 'paymentSuccessful',

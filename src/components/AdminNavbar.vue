@@ -11,7 +11,7 @@ let isCollapsed = $ref(true)
     :class="isCollapsed ? 'md:w-16' : 'md:w-48'"
   >
     <ul
-      class="fixed flex w-[inherit] flex-row items-center justify-around gap-x-0.5 overflow-hidden sm:items-stretch md:flex-col"
+      class="fixed flex min-h-screen w-[inherit] flex-row items-center justify-start gap-x-0.5 overflow-hidden bg-[#1C263D] sm:items-stretch md:flex-col"
     >
       <!-- <li class="h-px w-2/3 bg-gray-700 mx-auto my-3"></li> -->
       <li>
