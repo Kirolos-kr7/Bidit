@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="my-12 flex justify-center">
-    <img class="-mt-10" src="/images/AppLoader.gif" alt="" />
+  <div class="mt-5 mb-2 flex justify-center">
+    <img src="/images/AppLoader.gif" alt="" />
   </div>
 </template>
