@@ -3,7 +3,6 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Notification from '../components/Notification.vue'
 import { useAxios } from '../functions'
-import UserLayout from '../components/UserLayout.vue'
 import { useStore } from '../store'
 
 let { $state: state } = useStore()
@@ -37,17 +36,15 @@ const notificationSeen = (_id) => {
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-4">
-      <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-      <div class="my-5 flex flex-col gap-5">
-        <Notification
-          v-for="(nt, index) in nts"
-          :key="index"
-          :notification="nt"
-          @notificationSeen="notificationSeen"
-        />
-      </div>
+  <div class="px-4">
+    <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+    <div class="my-5 flex flex-col gap-5">
+      <Notification
+        v-for="(nt, index) in nts"
+        :key="index"
+        :notification="nt"
+        @notificationSeen="notificationSeen"
+      />
     </div>
-  </UserLayout>
+  </div>
 </template>

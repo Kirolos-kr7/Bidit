@@ -6,7 +6,6 @@ import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { useAxios } from '../functions'
-import UserLayout from '../components/UserLayout.vue'
 import RecentBids from '../components/RecentBids.vue'
 
 const { $state: state } = $(useStore())
@@ -55,106 +54,104 @@ const text = $ref({
 </script>
 
 <template>
-  <UserLayout>
-    <header
-      class="relative -mt-2 overflow-hidden bg-white pt-2 shadow-sm md:rounded-md"
+  <header
+    class="relative -mt-2 overflow-hidden bg-white pt-2 shadow-sm md:rounded-md"
+  >
+    <Carousel
+      :breakpoints="brp"
+      class="w-[inherit] gap-3 py-3"
+      :autoplay="4000"
+      :wrap-around="true"
+      dir="ltr"
     >
-      <Carousel
-        :breakpoints="brp"
-        class="w-[inherit] gap-3 py-3"
-        :autoplay="4000"
-        :wrap-around="true"
-        dir="ltr"
-      >
-        <Slide class="p-0.5 md:p-2" key="1">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
-        <Slide class="p-0.5 md:p-2" key="2">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
-        <Slide class="p-0.5 md:p-2" key="3">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
-        <Slide class="p-0.5 md:p-2" key="4">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
-        <Slide class="p-0.5 md:p-2" key="5">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
-        <Slide class="p-0.5 md:p-2" key="6">
-          <img
-            class="pointer-events-none"
-            :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
-          />
-        </Slide>
+      <Slide class="p-0.5 md:p-2" key="1">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
+      <Slide class="p-0.5 md:p-2" key="2">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
+      <Slide class="p-0.5 md:p-2" key="3">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
+      <Slide class="p-0.5 md:p-2" key="4">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/shipping.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
+      <Slide class="p-0.5 md:p-2" key="5">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/easyToUse.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
+      <Slide class="p-0.5 md:p-2" key="6">
+        <img
+          class="pointer-events-none"
+          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/participate.webp?tr=w-${preferedWidth}`"
+        />
+      </Slide>
 
-        <template #addons>
-          <Pagination />
-        </template>
-      </Carousel>
-    </header>
+      <template #addons>
+        <Pagination />
+      </template>
+    </Carousel>
+  </header>
 
-    <section class="my-4 p-4 md:my-6" v-if="bids">
-      <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
-      <Bids :bids="bids" :isLoading="isLoading" />
-    </section>
+  <section class="my-4 p-4 md:my-6" v-if="bids">
+    <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
+    <Bids :bids="bids" :isLoading="isLoading" />
+  </section>
 
-    <section
-      class="my-4 grid grid-cols-2 gap-2 bg-white p-3 shadow-sm md:my-6 md:grid-cols-4 md:gap-5 md:rounded-md md:p-6"
+  <section
+    class="my-4 grid grid-cols-2 gap-2 bg-white p-3 shadow-sm md:my-6 md:grid-cols-4 md:gap-5 md:rounded-md md:p-6"
+  >
+    <RouterLink
+      :to="`/${state.lang}/bids/technology`"
+      class="transition-all hover:brightness-90"
     >
-      <RouterLink
-        :to="`/${state.lang}/bids/technology`"
-        class="transition-all hover:brightness-90"
-      >
-        <img
-          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/technology.webp?tr=w-${preferedWidth}`"
-          class="cursor-pointer"
-        />
-      </RouterLink>
-      <RouterLink
-        :to="`/${state.lang}/bids/art`"
-        class="transition-all hover:brightness-90"
-      >
-        <img
-          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/art.webp?tr=w-${preferedWidth}`"
-          class="cursor-pointer"
-        />
-      </RouterLink>
-      <RouterLink
-        :to="`/${state.lang}/bids/antiques`"
-        class="transition-all hover:brightness-90"
-      >
-        <img
-          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/antiques.webp?tr=w-${preferedWidth}`"
-          class="cursor-pointer"
-        />
-      </RouterLink>
-      <RouterLink
-        :to="`/${state.lang}/bids/categories`"
-        class="transition-all hover:brightness-90"
-      >
-        <img
-          :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/cats.webp?tr=w-${preferedWidth}`"
-          class="cursor-pointer"
-        />
-      </RouterLink>
-    </section>
+      <img
+        :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/technology.webp?tr=w-${preferedWidth}`"
+        class="cursor-pointer"
+      />
+    </RouterLink>
+    <RouterLink
+      :to="`/${state.lang}/bids/art`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/art.webp?tr=w-${preferedWidth}`"
+        class="cursor-pointer"
+      />
+    </RouterLink>
+    <RouterLink
+      :to="`/${state.lang}/bids/antiques`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/antiques.webp?tr=w-${preferedWidth}`"
+        class="cursor-pointer"
+      />
+    </RouterLink>
+    <RouterLink
+      :to="`/${state.lang}/bids/categories`"
+      class="transition-all hover:brightness-90"
+    >
+      <img
+        :src="`https://ik.imagekit.io/bidit/assets/${state.lang}/cats.webp?tr=w-${preferedWidth}`"
+        class="cursor-pointer"
+      />
+    </RouterLink>
+  </section>
 
-    <RecentBids />
-  </UserLayout>
+  <RecentBids />
 </template>

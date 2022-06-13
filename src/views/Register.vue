@@ -9,7 +9,6 @@ import { useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import { useCookies } from 'vue3-cookies'
-import UserLayout from '../components/UserLayout.vue'
 const { $state: state } = $(useStore())
 const { cookies } = useCookies()
 
@@ -108,95 +107,93 @@ const registerUser = async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div
-      class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
-    >
-      <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
+  <div
+    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+  >
+    <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
-      <form @submit.prevent="registerUser">
-        <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
-          <BaseInput
-            type="text"
-            class="!w-full"
-            :placeholder="$t(text.namePlaceholder)"
-            v-model="name"
-            @updateInput="(val) => (name = val)"
-            required
-          />
-          <BaseInput
-            type="text"
-            class="!w-full"
-            :placeholder="$t(text.emailPlaceholder)"
-            v-model="email"
-            @updateInput="(val) => (email = val)"
-            required
-          />
+    <form @submit.prevent="registerUser">
+      <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
+        <BaseInput
+          type="text"
+          class="!w-full"
+          :placeholder="$t(text.namePlaceholder)"
+          v-model="name"
+          @updateInput="(val) => (name = val)"
+          required
+        />
+        <BaseInput
+          type="text"
+          class="!w-full"
+          :placeholder="$t(text.emailPlaceholder)"
+          v-model="email"
+          @updateInput="(val) => (email = val)"
+          required
+        />
 
-          <BaseInput
-            type="password"
-            class="!w-full"
-            :placeholder="$t(text.passwordPlaceholder)"
-            v-model="password"
-            @updateInput="(val) => (password = val)"
-            required
-          />
-          <BaseInput
-            type="password"
-            class="!w-full"
-            :placeholder="$t(text.confirmPasswordPlaceholder)"
-            v-model="confirmPassword"
-            @updateInput="(val) => (confirmPassword = val)"
-            required
-          />
-          <BaseInput
-            type="text"
-            class="!w-full"
-            :placeholder="$t(text.addressPlaceholder)"
-            v-model="address"
-            @updateInput="(val) => (address = val)"
-            required
-          />
+        <BaseInput
+          type="password"
+          class="!w-full"
+          :placeholder="$t(text.passwordPlaceholder)"
+          v-model="password"
+          @updateInput="(val) => (password = val)"
+          required
+        />
+        <BaseInput
+          type="password"
+          class="!w-full"
+          :placeholder="$t(text.confirmPasswordPlaceholder)"
+          v-model="confirmPassword"
+          @updateInput="(val) => (confirmPassword = val)"
+          required
+        />
+        <BaseInput
+          type="text"
+          class="!w-full"
+          :placeholder="$t(text.addressPlaceholder)"
+          v-model="address"
+          @updateInput="(val) => (address = val)"
+          required
+        />
 
-          <BaseSelect
-            v-model="gender"
+        <BaseSelect
+          v-model="gender"
+          class="!w-full"
+          @updateInput="(val) => (gender = val)"
+          :placeholder="$t(text.genderPlaceholder)"
+        >
+          <option class="capitalize" value="male">{{ $t(text.male) }}</option>
+          <option class="capitalize" value="female">
+            {{ $t(text.female) }}
+          </option>
+        </BaseSelect>
+
+        <div class="flex items-center gap-3 sm:col-span-2">
+          <BasePhone
+            type="tel"
             class="!w-full"
-            @updateInput="(val) => (gender = val)"
-            :placeholder="$t(text.genderPlaceholder)"
+            :placeholder="$t(text.phonePlaceholder)"
+            v-model="phone"
+            pattern="^(00201|\+201|01)[0-2,5]{1}[0-9]{8}$"
+            @updateInput="(val) => (phone = val)"
+            required
+          />
+        </div>
+        <span>Format: 01xx xxx xxxx</span>
+      </div>
+      <transition name="fade">
+        <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
+      </transition>
+      <div class="flex flex-col items-start gap-4">
+        <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
+        <div class="flex flex-col">
+          <RouterLink
+            :to="`/${state.lang}/login`"
+            class="text-bi-300 transition-colors hover:text-bi-400/50"
+            >{{ $t(text.account) }}</RouterLink
           >
-            <option class="capitalize" value="male">{{ $t(text.male) }}</option>
-            <option class="capitalize" value="female">
-              {{ $t(text.female) }}
-            </option>
-          </BaseSelect>
-
-          <div class="flex items-center gap-3 sm:col-span-2">
-            <BasePhone
-              type="tel"
-              class="!w-full"
-              :placeholder="$t(text.phonePlaceholder)"
-              v-model="phone"
-              pattern="^(00201|\+201|01)[0-2,5]{1}[0-9]{8}$"
-              @updateInput="(val) => (phone = val)"
-              required
-            />
-          </div>
-          <span>Format: 01xx xxx xxxx</span>
         </div>
-        <transition name="fade">
-          <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
-        </transition>
-        <div class="flex flex-col items-start gap-4">
-          <BaseButton>{{ $t(text.loginPlaceholder) }}</BaseButton>
-          <div class="flex flex-col">
-            <RouterLink
-              :to="`/${state.lang}/login`"
-              class="text-bi-300 transition-colors hover:text-bi-400/50"
-              >{{ $t(text.account) }}</RouterLink
-            >
-          </div>
-        </div>
-      </form>
-    </div>
-  </UserLayout>
+      </div>
+    </form>
+  </div>
 </template>

@@ -2,7 +2,6 @@
 import { computed } from '@vue/reactivity'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import AdminLayout from '../../components/AdminLayout.vue'
 import BaseTable from '../../components/Base/BaseTable.vue'
 import { useAxios } from '../../functions'
 import { useStore } from '../../store'
@@ -65,25 +64,23 @@ const approveRemove = async () => {
 </script>
 
 <template>
-  <AdminLayout>
-    <div class="flex items-start justify-between">
-      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Bids</h1>
-    </div>
-    <div class="w-full">
-      <BaseTable
-        :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
-        :values="['item', 'user', 'status', 'minPrice']"
-        :layout="['auto', 'auto', 'auto', 'auto']"
-        :data="formatedData"
-        :constraint="constraint"
-        :direction="direction"
-        :actions="{ open: true, edit: false, remove: true }"
-        @sortBy="sortBy"
-        @open="open"
-        @remove="remove"
-      />
-    </div>
-  </AdminLayout>
+  <div class="flex items-start justify-between">
+    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Bids</h1>
+  </div>
+  <div class="w-full">
+    <BaseTable
+      :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
+      :values="['item', 'user', 'status', 'minPrice']"
+      :layout="['auto', 'auto', 'auto', 'auto']"
+      :data="formatedData"
+      :constraint="constraint"
+      :direction="direction"
+      :actions="{ open: true, edit: false, remove: true }"
+      @sortBy="sortBy"
+      @open="open"
+      @remove="remove"
+    />
+  </div>
 
   <transition name="fade">
     <BaseDialog v-if="removeDialog" @click="removeDialog = false"> </BaseDialog>

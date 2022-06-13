@@ -1,5 +1,4 @@
 <script setup>
-import UserLayout from '../components/UserLayout.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted } from 'vue'
@@ -44,46 +43,44 @@ const text = $ref({
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-4">
-      <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
-        <BaseTitle
-          >{{ $t(text.title) }}
-          <BaseInfo>{{ $t(text.info) }} </BaseInfo>
-        </BaseTitle>
-      </div>
+  <div class="px-4">
+    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+      <BaseTitle
+        >{{ $t(text.title) }}
+        <BaseInfo>{{ $t(text.info) }} </BaseInfo>
+      </BaseTitle>
     </div>
+  </div>
 
-    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
-      <div
-        v-for="report in resports"
-        :key="report._id"
-        class="relative grid gap-x-5 gap-y-0.5 overflow-hidden rounded-md bg-white p-3 capitalize shadow-md md:grid-cols-[auto,1fr]"
-      >
-        <div class="font-semibold">
-          {{ $t(text.reportId) }}
-        </div>
-        <span>{{ report._id }}</span>
-        <div class="font-semibold">
-          {{ $t(text.type) }}
-        </div>
-        <span>{{ getReportType(report.type) }}</span>
-        <div class="font-semibold">
-          {{ $t(text.description) }}
-        </div>
-        <span>{{ report.description }}</span>
-        <div class="font-semibold">
-          {{ $t(text.status) }}
-        </div>
-        <span>{{ getReportStatus(report.status) }}</span>
+  <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
+    <div
+      v-for="report in resports"
+      :key="report._id"
+      class="relative grid gap-x-5 gap-y-0.5 overflow-hidden rounded-md bg-white p-3 capitalize shadow-md md:grid-cols-[auto,1fr]"
+    >
+      <div class="font-semibold">
+        {{ $t(text.reportId) }}
       </div>
+      <span>{{ report._id }}</span>
+      <div class="font-semibold">
+        {{ $t(text.type) }}
+      </div>
+      <span>{{ getReportType(report.type) }}</span>
+      <div class="font-semibold">
+        {{ $t(text.description) }}
+      </div>
+      <span>{{ report.description }}</span>
+      <div class="font-semibold">
+        {{ $t(text.status) }}
+      </div>
+      <span>{{ getReportStatus(report.status) }}</span>
     </div>
-    <BaseEmpty
-      v-else
-      :msg="{
-        ar: 'لا يوجد لديك بلاغات الان!',
-        en: 'No reports available now!',
-      }"
-    />
-  </UserLayout>
+  </div>
+  <BaseEmpty
+    v-else
+    :msg="{
+      ar: 'لا يوجد لديك بلاغات الان!',
+      en: 'No reports available now!',
+    }"
+  />
 </template>

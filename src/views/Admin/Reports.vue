@@ -1,6 +1,5 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
-import AdminLayout from '../../components/AdminLayout.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../../functions'
 import { reportStatuses } from '../../lang/reportstatus.json'
@@ -77,23 +76,21 @@ const resetDialog = () => {
 </script>
 
 <template>
-  <AdminLayout>
-    <div class="flex items-start justify-between">
-      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Reports</h1>
-    </div>
-    <BaseTable
-      :columns="['Report', 'Type', 'Status']"
-      :values="['_id', 'type', 'status']"
-      :layout="['auto', 'auto', 'auto']"
-      :data="formatedData"
-      :constraint="constraint"
-      :direction="direction"
-      :actions="{ open: true, edit: true }"
-      @sortBy="sortBy"
-      @open="open"
-      @edit="edit"
-    />
-  </AdminLayout>
+  <div class="flex items-start justify-between">
+    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Reports</h1>
+  </div>
+  <BaseTable
+    :columns="['Report', 'Type', 'Status']"
+    :values="['_id', 'type', 'status']"
+    :layout="['auto', 'auto', 'auto']"
+    :data="formatedData"
+    :constraint="constraint"
+    :direction="direction"
+    :actions="{ open: true, edit: true }"
+    @sortBy="sortBy"
+    @open="open"
+    @edit="edit"
+  />
 
   <transition name="fade">
     <BaseDialog v-if="reportDialog || editDialog" @click="resetDialog()">

@@ -14,7 +14,6 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
-import UserLayout from '../components/UserLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import ImageViewer from '../components/ImageViewer.vue'
@@ -267,259 +266,257 @@ const newReport = async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div
-      class="grid overflow-hidden rounded-md bg-white shadow-sm sm:grid-cols-2"
-      v-if="!isLoading"
-    >
-      <div>
-        <ImageViewer
-          v-if="bid?.item?.images"
-          :imgs="bid?.item?.images"
-          class="mx-auto block md:p-6"
-        />
-      </div>
-
-      <div class="bg-bi-800">
-        <div class="p-4 md:p-6">
-          <BaseType
-            :to="`/${state.lang}/bids/${bid?.item.type}`"
-            class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
-          >
-            {{ getType(bid?.item.type) }}
-          </BaseType>
-
-          <h2
-            class="overflow-hidden break-all text-xl font-semibold capitalize text-black md:text-[22px]"
-          >
-            {{ bid?.item.name }}
-          </h2>
-
-          <div class="my-1 flex flex-wrap items-center gap-2">
-            <div class="flex items-center gap-2">
-              <span class="text-sm font-medium text-neutral-400">{{
-                $t(text.bidBy)
-              }}</span>
-
-              <span class="font-semibold">{{ bid?.user?.name || 'N/F' }}</span>
-            </div>
-          </div>
-
-          <p class="mt-3 text-sm font-medium text-neutral-400">
-            {{ $t(text.description) }}
-          </p>
-          <p class="mb-2 font-medium text-neutral-500">
-            {{ bid?.item?.description || 'N/F' }}
-          </p>
-
-          <div
-            class="grid gap-x-5 gap-y-2 break-words pt-3"
-            :class="status !== 'soon' ? 'md:grid-cols-3' : ''"
-          >
-            <div
-              class="overflow-hidden rounded-md border-2 p-3"
-              v-if="status !== 'soon'"
-            >
-              <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
-              <div class="flex items-end gap-1">
-                <h5 class="break-all text-3xl font-bold">
-                  {{ getNumPerLang(bid?.bidsHistory.length) }}
-                </h5>
-                <span class="mb-0.5 text-sm">{{
-                  state.lang === 'ar' ? 'مزايدات' : 'Bids'
-                }}</span>
-              </div>
-            </div>
-            <div class="overflow-hidden rounded-md border-2 p-3">
-              <h4 class="text-sm text-gray-600">{{ $t(text.price) }}</h4>
-              <div class="flex items-end gap-1">
-                <h5 class="break-all text-3xl font-bold">
-                  {{ getPricePerLang(bid?.minPrice) }}
-                </h5>
-                <span class="mb-0.5 text-sm">{{
-                  state.lang === 'ar' ? 'جنيه' : 'LE'
-                }}</span>
-              </div>
-            </div>
-            <div
-              class="overflow-hidden rounded-md border-2 p-3"
-              v-if="status !== 'soon'"
-            >
-              <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
-              <div class="flex items-end gap-1">
-                <h5 class="break-all text-3xl font-bold">
-                  {{
-                    getPricePerLang(
-                      bid?.bidsHistory.length > 0 ? currBid.price : 0,
-                    )
-                  }}
-                </h5>
-                <span class="mb-0.5 text-sm">{{
-                  state.lang === 'ar' ? 'جنيه' : 'LE'
-                }}</span>
-              </div>
-            </div>
-          </div>
-
-          <BaseError v-if="error" class="mt-4">{{ error }}</BaseError>
-
-          <div
-            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
-          >
-            <h4 class="text-lg font-semibold capitalize">
-              {{ getStatus(status) }}
-              <span
-                class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
-                v-if="status === 'active'"
-              />
-            </h4>
-            <div>
-              {{ timer }}
-              &nbsp;
-              <span class="text-lg font-semibold">{{ clockPrefix }}</span>
-            </div>
-          </div>
-
-          <div
-            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
-            v-if="status === 'expired' && state?.user?._id === currBid.user"
-          >
-            {{ $t(text.youWonTheBid) }}
-          </div>
-
-          <div
-            class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
-            v-if="status === 'active' && state?.user?._id === currBid.user"
-          >
-            {{ $t(text.youAreTheHeighstBidder) }}
-          </div>
-
-          <form
-            v-if="
-              status === 'active' &&
-              bid?.user?._id !== state?.user?._id && // Creator is logged user
-              currBid.user !== state?.user?._id // Heighst Bidder is logged user
-            "
-            class="flex items-center justify-between"
-            @submit.prevent="joinBid"
-          >
-            <div class="flex w-min items-center rounded-md bg-gray-200">
-              <BaseButton
-                class="h-[40px] px-2.5"
-                @click.prevent="
-                  newPrice < currBid.price
-                    ? (newPrice = currBid.price + getOffest)
-                    : (newPrice += getOffest)
-                "
-              >
-                <svg
-                  class="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  ></path>
-                </svg>
-              </BaseButton>
-              <input
-                v-model="newPrice"
-                type="number"
-                placeholder="Your Price"
-                class="h-[40px] w-24 bg-transparent text-center font-semibold text-black focus:outline-none md:col-span-3"
-                style="-moz-appearance: textfield; -webkit-appearance: none"
-                :min="currBid.price + getOffest"
-              />
-              <BaseButton
-                class="h-[40px] px-2.5"
-                @click.prevent="
-                  newPrice > currBid.price + getOffest
-                    ? (newPrice -= getOffest)
-                    : (newPrice = currBid.price + getOffest)
-                "
-              >
-                <svg
-                  class="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M20 12H4"
-                  ></path>
-                </svg>
-              </BaseButton>
-            </div>
-
-            <BaseButton>
-              {{ $t(text.joinBid) }}
-            </BaseButton>
-          </form>
-
-          <button
-            v-if="state?.user?._id !== bid?.user?._id"
-            class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
-            @click="reportsDialog = true"
-          >
-            {{ $t(text.report) }}
-          </button>
-        </div>
-      </div>
+  <div
+    class="grid overflow-hidden rounded-md bg-white shadow-sm sm:grid-cols-2"
+    v-if="!isLoading"
+  >
+    <div>
+      <ImageViewer
+        v-if="bid?.item?.images"
+        :imgs="bid?.item?.images"
+        class="mx-auto block md:p-6"
+      />
     </div>
 
-    <transition name="fade">
-      <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
-      </BaseDialog>
-    </transition>
+    <div class="bg-bi-800">
+      <div class="p-4 md:p-6">
+        <BaseType
+          :to="`/${state.lang}/bids/${bid?.item.type}`"
+          class="mb-2 inline-block rounded-2xl bg-indigo-600 px-3 font-medium capitalize"
+        >
+          {{ getType(bid?.item.type) }}
+        </BaseType>
 
-    <transition name="zoom">
-      <div
-        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-        v-if="reportsDialog"
-      >
-        <BaseTitle> {{ $t(text.newReport) }}</BaseTitle>
-        <form @submit.prevent="newReport" class="mt-5 grid gap-5">
-          <BaseSelect
-            v-model="reportType"
-            class="!w-full"
-            @updateInput="(val) => (reportType = val)"
-            :placeholder="$t(text.typePlaceholder)"
+        <h2
+          class="overflow-hidden break-all text-xl font-semibold capitalize text-black md:text-[22px]"
+        >
+          {{ bid?.item.name }}
+        </h2>
+
+        <div class="my-1 flex flex-wrap items-center gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium text-neutral-400">{{
+              $t(text.bidBy)
+            }}</span>
+
+            <span class="font-semibold">{{ bid?.user?.name || 'N/F' }}</span>
+          </div>
+        </div>
+
+        <p class="mt-3 text-sm font-medium text-neutral-400">
+          {{ $t(text.description) }}
+        </p>
+        <p class="mb-2 font-medium text-neutral-500">
+          {{ bid?.item?.description || 'N/F' }}
+        </p>
+
+        <div
+          class="grid gap-x-5 gap-y-2 break-words pt-3"
+          :class="status !== 'soon' ? 'md:grid-cols-3' : ''"
+        >
+          <div
+            class="overflow-hidden rounded-md border-2 p-3"
+            v-if="status !== 'soon'"
           >
-            <option
-              v-for="(type, index) in reportTypes"
-              :key="index"
-              :value="type.en"
-              class="capitalize"
+            <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
+            <div class="flex items-end gap-1">
+              <h5 class="break-all text-3xl font-bold">
+                {{ getNumPerLang(bid?.bidsHistory.length) }}
+              </h5>
+              <span class="mb-0.5 text-sm">{{
+                state.lang === 'ar' ? 'مزايدات' : 'Bids'
+              }}</span>
+            </div>
+          </div>
+          <div class="overflow-hidden rounded-md border-2 p-3">
+            <h4 class="text-sm text-gray-600">{{ $t(text.price) }}</h4>
+            <div class="flex items-end gap-1">
+              <h5 class="break-all text-3xl font-bold">
+                {{ getPricePerLang(bid?.minPrice) }}
+              </h5>
+              <span class="mb-0.5 text-sm">{{
+                state.lang === 'ar' ? 'جنيه' : 'LE'
+              }}</span>
+            </div>
+          </div>
+          <div
+            class="overflow-hidden rounded-md border-2 p-3"
+            v-if="status !== 'soon'"
+          >
+            <h4 class="text-sm text-gray-600">{{ $t(text.currBid) }}</h4>
+            <div class="flex items-end gap-1">
+              <h5 class="break-all text-3xl font-bold">
+                {{
+                  getPricePerLang(
+                    bid?.bidsHistory.length > 0 ? currBid.price : 0,
+                  )
+                }}
+              </h5>
+              <span class="mb-0.5 text-sm">{{
+                state.lang === 'ar' ? 'جنيه' : 'LE'
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <BaseError v-if="error" class="mt-4">{{ error }}</BaseError>
+
+        <div
+          class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
+        >
+          <h4 class="text-lg font-semibold capitalize">
+            {{ getStatus(status) }}
+            <span
+              class="relative mx-0.5 inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-700"
+              v-if="status === 'active'"
+            />
+          </h4>
+          <div>
+            {{ timer }}
+            &nbsp;
+            <span class="text-lg font-semibold">{{ clockPrefix }}</span>
+          </div>
+        </div>
+
+        <div
+          class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
+          v-if="status === 'expired' && state?.user?._id === currBid.user"
+        >
+          {{ $t(text.youWonTheBid) }}
+        </div>
+
+        <div
+          class="my-3 flex w-full items-center justify-between rounded-md bg-gray-800 px-3 py-2 text-white"
+          v-if="status === 'active' && state?.user?._id === currBid.user"
+        >
+          {{ $t(text.youAreTheHeighstBidder) }}
+        </div>
+
+        <form
+          v-if="
+            status === 'active' &&
+            bid?.user?._id !== state?.user?._id && // Creator is logged user
+            currBid.user !== state?.user?._id // Heighst Bidder is logged user
+          "
+          class="flex items-center justify-between"
+          @submit.prevent="joinBid"
+        >
+          <div class="flex w-min items-center rounded-md bg-gray-200">
+            <BaseButton
+              class="h-[40px] px-2.5"
+              @click.prevent="
+                newPrice < currBid.price
+                  ? (newPrice = currBid.price + getOffest)
+                  : (newPrice += getOffest)
+              "
             >
-              {{ $t(type) }}
-            </option>
-          </BaseSelect>
-          <BaseTextArea
-            rows="8"
-            type="text"
-            class="col-span-2 !w-full"
-            :placeholder="$t(text.descriptionPlaceholder)"
-            v-model="reportDesc"
-            @updateInput="(val) => (reportDesc = val)"
-          />
-          <BaseButton :disabled="isLoadingNewReport && 'disabled'"
-            >{{ $t(text.addReport) }}
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                ></path>
+              </svg>
+            </BaseButton>
+            <input
+              v-model="newPrice"
+              type="number"
+              placeholder="Your Price"
+              class="h-[40px] w-24 bg-transparent text-center font-semibold text-black focus:outline-none md:col-span-3"
+              style="-moz-appearance: textfield; -webkit-appearance: none"
+              :min="currBid.price + getOffest"
+            />
+            <BaseButton
+              class="h-[40px] px-2.5"
+              @click.prevent="
+                newPrice > currBid.price + getOffest
+                  ? (newPrice -= getOffest)
+                  : (newPrice = currBid.price + getOffest)
+              "
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20 12H4"
+                ></path>
+              </svg>
+            </BaseButton>
+          </div>
+
+          <BaseButton>
+            {{ $t(text.joinBid) }}
           </BaseButton>
         </form>
-      </div>
-    </transition>
 
-    <SimilartBids />
-  </UserLayout>
+        <button
+          v-if="state?.user?._id !== bid?.user?._id"
+          class="mt-8 flex justify-end font-semibold text-bi-300 underline hover:text-bi-400"
+          @click="reportsDialog = true"
+        >
+          {{ $t(text.report) }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <transition name="fade">
+    <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
+    </BaseDialog>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="reportsDialog"
+    >
+      <BaseTitle> {{ $t(text.newReport) }}</BaseTitle>
+      <form @submit.prevent="newReport" class="mt-5 grid gap-5">
+        <BaseSelect
+          v-model="reportType"
+          class="!w-full"
+          @updateInput="(val) => (reportType = val)"
+          :placeholder="$t(text.typePlaceholder)"
+        >
+          <option
+            v-for="(type, index) in reportTypes"
+            :key="index"
+            :value="type.en"
+            class="capitalize"
+          >
+            {{ $t(type) }}
+          </option>
+        </BaseSelect>
+        <BaseTextArea
+          rows="8"
+          type="text"
+          class="col-span-2 !w-full"
+          :placeholder="$t(text.descriptionPlaceholder)"
+          v-model="reportDesc"
+          @updateInput="(val) => (reportDesc = val)"
+        />
+        <BaseButton :disabled="isLoadingNewReport && 'disabled'"
+          >{{ $t(text.addReport) }}
+        </BaseButton>
+      </form>
+    </div>
+  </transition>
+
+  <SimilartBids />
 </template>
 
 <style>

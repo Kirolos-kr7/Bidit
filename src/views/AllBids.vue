@@ -3,7 +3,6 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { useAxios } from '../functions'
-import UserLayout from '../components/UserLayout.vue'
 
 let bids = $ref([])
 let isLoading = $ref(true)
@@ -26,10 +25,8 @@ const text = $ref({
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-4">
-      <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
-      <Bids :bids="bids" :isLoading="isLoading" />
-    </div>
-  </UserLayout>
+  <div class="px-4">
+    <BaseTitle>{{ $t(text.allBids) }}</BaseTitle>
+    <Bids :bids="bids" :isLoading="isLoading" />
+  </div>
 </template>

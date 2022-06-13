@@ -5,7 +5,6 @@ import BaseError from '../components/Base/BaseError.vue'
 import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
-import UserLayout from '../components/UserLayout.vue'
 import { onMounted } from 'vue'
 const { $state: state } = $(useStore())
 
@@ -64,29 +63,27 @@ const sendVerificationEmail = async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div
-      class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
-    >
-      <BaseTitle>{{ $t(text.verifyEmail) }}</BaseTitle>
+  <div
+    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+  >
+    <BaseTitle>{{ $t(text.verifyEmail) }}</BaseTitle>
 
-      <div class="mt-6">
-        <div v-if="!verificationToken && !successfull && !error">
-          You need to verify your email to continue.
-        </div>
-        <div v-if="successfull">{{ successfull }}</div>
-        <transition name="fade">
-          <BaseError v-if="error">{{ error }}</BaseError>
-        </transition>
-
-        <BaseButton
-          v-if="!verificationToken && !successfull"
-          @click="sendVerificationEmail"
-          class="mt-2 disabled:bg-blue-300"
-          :disabled="isLoading && 'disabled'"
-          >{{ $t(text.sendMail) }}</BaseButton
-        >
+    <div class="mt-6">
+      <div v-if="!verificationToken && !successfull && !error">
+        You need to verify your email to continue.
       </div>
+      <div v-if="successfull">{{ successfull }}</div>
+      <transition name="fade">
+        <BaseError v-if="error">{{ error }}</BaseError>
+      </transition>
+
+      <BaseButton
+        v-if="!verificationToken && !successfull"
+        @click="sendVerificationEmail"
+        class="mt-2 disabled:bg-blue-300"
+        :disabled="isLoading && 'disabled'"
+        >{{ $t(text.sendMail) }}</BaseButton
+      >
     </div>
-  </UserLayout>
+  </div>
 </template>

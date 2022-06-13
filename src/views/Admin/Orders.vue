@@ -1,6 +1,5 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
-import AdminLayout from '../../components/AdminLayout.vue'
 import { onMounted } from 'vue'
 import { computed } from '@vue/reactivity'
 import { statuses } from '../../lang/orderstatus.json'
@@ -104,24 +103,22 @@ const resetDialog = () => {
 </script>
 
 <template>
-  <AdminLayout>
-    <div class="flex items-start justify-between">
-      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Orders</h1>
-    </div>
-    <BaseTable
-      :columns="['Order', 'Auctioneer', 'Bidder', 'Status', 'Total Price']"
-      :values="['_id', 'auctioneer', 'bidder', 'status', 'totalPrice']"
-      :layout="['auto', 'auto', 'auto', 'auto', 'auto', 'auto']"
-      :data="formatedData"
-      :constraint="constraint"
-      :direction="direction"
-      :actions="{ open: true, edit: true, remove: true }"
-      @sortBy="sortBy"
-      @open="open"
-      @edit="edit"
-      @remove="remove"
-    />
-  </AdminLayout>
+  <div class="flex items-start justify-between">
+    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Orders</h1>
+  </div>
+  <BaseTable
+    :columns="['Order', 'Auctioneer', 'Bidder', 'Status', 'Total Price']"
+    :values="['_id', 'auctioneer', 'bidder', 'status', 'totalPrice']"
+    :layout="['auto', 'auto', 'auto', 'auto', 'auto', 'auto']"
+    :data="formatedData"
+    :constraint="constraint"
+    :direction="direction"
+    :actions="{ open: true, edit: true, remove: true }"
+    @sortBy="sortBy"
+    @open="open"
+    @edit="edit"
+    @remove="remove"
+  />
 
   <transition name="fade">
     <BaseDialog

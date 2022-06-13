@@ -1,6 +1,5 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
-import AdminLayout from '../../components/AdminLayout.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTextArea from '../../components/Base/BaseTextArea.vue'
@@ -94,25 +93,23 @@ const broadcast = async () => {
 </script>
 
 <template>
-  <AdminLayout>
-    <div class="flex items-start justify-between">
-      <h1 class="mb-5 font-merriweather text-3xl font-extrabold">
-        Notifications
-      </h1>
-      <BaseButton @click="broadcastDialog = true">Broadcast</BaseButton>
-    </div>
-    <BaseTable
-      :columns="['Title', 'Date', 'Message']"
-      :values="['title', 'createdAt', 'message']"
-      :layout="['auto', 'auto', '60%']"
-      :data="formatedData"
-      :constraint="constraint"
-      :direction="direction"
-      :actions="{ open: true, edit: false, remove: false }"
-      @sortBy="sortBy"
-      @open="open"
-    />
-  </AdminLayout>
+  <div class="flex items-start justify-between">
+    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">
+      Notifications
+    </h1>
+    <BaseButton @click="broadcastDialog = true">Broadcast</BaseButton>
+  </div>
+  <BaseTable
+    :columns="['Title', 'Date', 'Message']"
+    :values="['title', 'createdAt', 'message']"
+    :layout="['auto', 'auto', '60%']"
+    :data="formatedData"
+    :constraint="constraint"
+    :direction="direction"
+    :actions="{ open: true, edit: false, remove: false }"
+    @sortBy="sortBy"
+    @open="open"
+  />
 
   <transition name="fade">
     <BaseDialog v-if="broadcastDialog || viewDialog" @click="resetDialog()">

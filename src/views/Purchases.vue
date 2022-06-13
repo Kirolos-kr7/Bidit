@@ -3,7 +3,6 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
-import UserLayout from '../components/UserLayout.vue'
 import Bids from '../components/Bids.vue'
 
 const text = $ref({
@@ -33,13 +32,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-4">
-      <BaseTitle
-        >{{ $t(text.title) }}
-        <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
-      >
-      <Bids :bids="bids" :isLoading="isLoading" />
-    </div>
-  </UserLayout>
+  <div class="px-4">
+    <BaseTitle
+      >{{ $t(text.title) }} <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
+    >
+    <Bids :bids="bids" :isLoading="isLoading" />
+  </div>
 </template>

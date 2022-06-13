@@ -7,10 +7,15 @@ import { useRouter } from 'vue-router'
 
 let isLoading = $ref(true)
 let router = useRouter()
+let layout = $ref(null)
 
 watchEffect(() => {
   if (isLoading) document.body && (document.body.style.overflow = 'hidden')
   else document.body && (document.body.style.overflow = 'auto')
+
+  layout = router.currentRoute.value.meta?.requiresAdmin
+    ? 'AdminLayout'
+    : 'UserLayout'
 })
 
 router.isReady().then(() => {
@@ -20,7 +25,11 @@ router.isReady().then(() => {
 
 <template>
   <AppLoader v-if="isLoading" />
-  <main><RouterView></RouterView></main>
+  <main>
+    <component :is="layout">
+      <RouterView></RouterView>
+    </component>
+  </main>
 
   <PWAPrompt />
 </template>

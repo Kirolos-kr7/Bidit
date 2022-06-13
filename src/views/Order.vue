@@ -1,5 +1,4 @@
 <script setup>
-import UserLayout from '../components/UserLayout.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted } from 'vue'
 import { useAxios } from '../functions'
@@ -41,33 +40,31 @@ const text = $ref({
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-5">
-      <BaseTitle
-        >{{ $t(text.title) }}
-        <span class="text-base font-medium">
-          {{ order?._id ? '#' + order?._id : null }}</span
-        >
-      </BaseTitle>
+  <div class="px-5">
+    <BaseTitle
+      >{{ $t(text.title) }}
+      <span class="text-base font-medium">
+        {{ order?._id ? '#' + order?._id : null }}</span
+      >
+    </BaseTitle>
 
-      <div class="mt-6">
-        <BaseLoader v-if="isLoading" />
+    <div class="mt-6">
+      <BaseLoader v-if="isLoading" />
 
-        <OrderCard :order="order" v-if="order && !isLoading" />
-        <div
-          class="col-span-2 mt-2 flex justify-end"
-          v-if="state?.user?._id === order?.bidder"
+      <OrderCard :order="order" v-if="order && !isLoading" />
+      <div
+        class="col-span-2 mt-2 flex justify-end"
+        v-if="state?.user?._id === order?.bidder"
+      >
+        <BaseButton
+          v-if="order?.status === 'pending'"
+          class="w-auto shadow-md"
+          @click="checkoutDialog = true"
+          >{{ $t(text.completeOrder) }}</BaseButton
         >
-          <BaseButton
-            v-if="order?.status === 'pending'"
-            class="w-auto shadow-md"
-            @click="checkoutDialog = true"
-            >{{ $t(text.completeOrder) }}</BaseButton
-          >
-        </div>
       </div>
     </div>
-  </UserLayout>
+  </div>
 
   <transition name="fade">
     <BaseDialog v-if="checkoutDialog" @click="checkoutDialog = false">

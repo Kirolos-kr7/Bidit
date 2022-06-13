@@ -16,7 +16,6 @@ import BaseSelect from '../components/Base/BaseSelect.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
-import UserLayout from '../components/UserLayout.vue'
 import BaseInputFile from '../components/Base/BaseInputFile.vue'
 
 const { $state: state } = $(useStore())
@@ -214,175 +213,165 @@ const deleteItem = async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div class="px-4">
-      <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
-        <BaseTitle
-          >{{ $t(text.title) }}
-          <BaseInfo>{{ $t(text.info) }} </BaseInfo>
-        </BaseTitle>
-        <BaseButton @click="itemsDialog = true">{{
-          $t(text.addItem)
-        }}</BaseButton>
-      </div>
-      <div v-if="!isLoading">
-        <BaseEmpty
-          v-if="items.length === 0"
-          :msg="{
-            ar: 'لا يوجد لديك عناصر حتى الان!',
-            en: `You Don't have any items yet!`,
-          }"
+  <div class="px-4">
+    <div class="flex flex-wrap items-start justify-between gap-x-10 gap-y-3">
+      <BaseTitle
+        >{{ $t(text.title) }}
+        <BaseInfo>{{ $t(text.info) }} </BaseInfo>
+      </BaseTitle>
+      <BaseButton @click="itemsDialog = true">{{
+        $t(text.addItem)
+      }}</BaseButton>
+    </div>
+    <div v-if="!isLoading">
+      <BaseEmpty
+        v-if="items.length === 0"
+        :msg="{
+          ar: 'لا يوجد لديك عناصر حتى الان!',
+          en: `You Don't have any items yet!`,
+        }"
+      />
+      <div
+        v-else
+        class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      >
+        <InventoryItem
+          v-for="(item, index) in items"
+          :key="index"
+          :item="item"
+          @editItem="showEditItem"
+          @newBid="showNewBidDialog(item)"
+          @deleteItem="showDeleteDialog(item)"
+          @showItemView="showItemViewDialog(item)"
         />
-        <div
-          v-else
-          class="mt-6 grid items-start gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-        >
-          <InventoryItem
-            v-for="(item, index) in items"
-            :key="index"
-            :item="item"
-            @editItem="showEditItem"
-            @newBid="showNewBidDialog(item)"
-            @deleteItem="showDeleteDialog(item)"
-            @showItemView="showItemViewDialog(item)"
-          />
-        </div>
       </div>
     </div>
+  </div>
 
-    <transition name="fade">
-      <BaseDialog
-        v-if="itemsDialog || bidDialog || deleteDialog || itemViewDialog"
-        @click="resetDialog"
+  <transition name="fade">
+    <BaseDialog
+      v-if="itemsDialog || bidDialog || deleteDialog || itemViewDialog"
+      @click="resetDialog"
+    >
+    </BaseDialog>
+  </transition>
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="itemsDialog"
+    >
+      <BaseTitle>
+        {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
       >
-      </BaseDialog>
-    </transition>
-    <transition name="zoom">
-      <div
-        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-        v-if="itemsDialog"
-      >
-        <BaseTitle>
-          {{ isEditing ? $t(text.editItem) : $t(text.newItem) }}</BaseTitle
-        >
-        <form @submit.prevent="" class="mt-5 grid gap-5">
-          <BaseInput
-            type="text"
-            class="!w-full"
-            :placeholder="$t(text.namePlaceholder)"
-            v-model="itemName"
-            @updateInput="(val) => (itemName = val)"
-          />
-          <div class="relative">
-            <BaseSelect
-              v-model="itemType"
-              class="!w-full capitalize"
-              @updateInput="(val) => (itemType = val)"
-              :placeholder="$t(text.typePlaceholder)"
-            >
-              <option
-                v-for="(category, index) in categories.items"
-                :key="index"
-                :value="category.en"
-                :selected="index === 0"
-              >
-                {{ $t(category) }}
-              </option>
-            </BaseSelect>
-          </div>
-          <BaseTextArea
-            rows="8"
-            type="text"
-            class="col-span-2 !w-full"
-            :placeholder="$t(text.descriptionPlaceholder)"
-            v-model="itemDesc"
-            @updateInput="(val) => (itemDesc = val)"
-          />
-          <div
-            class="relative rounded-md border-2 border-dashed border-neutral-200 p-5 text-center"
-            v-if="isEditing && !newImages"
+      <form @submit.prevent="" class="mt-5 grid gap-5">
+        <BaseInput
+          type="text"
+          class="!w-full"
+          :placeholder="$t(text.namePlaceholder)"
+          v-model="itemName"
+          @updateInput="(val) => (itemName = val)"
+        />
+        <div class="relative">
+          <BaseSelect
+            v-model="itemType"
+            class="!w-full capitalize"
+            @updateInput="(val) => (itemType = val)"
+            :placeholder="$t(text.typePlaceholder)"
           >
-            <div :class="`flex flex-wrap items-start justify-around gap-3`">
-              <div
-                v-for="image in selectedItem?.images"
-                :key="image"
-                class="relative"
-              >
-                <img
-                  :src="`https://ik.imagekit.io/bidit/${image}?tr=w-128,h-128`"
-                  class="h-28 w-28 object-cover"
-                />
-              </div>
-            </div>
-            <button
-              @click=";(newImages = true), (itemImages = [])"
-              class="mt-2 inline-block rounded-md bg-red-200 px-2.5 py-1 font-medium hover:bg-red-300"
+            <option
+              v-for="(category, index) in categories.items"
+              :key="index"
+              :value="category.en"
+              :selected="index === 0"
             >
-              Upload New Images
-            </button>
-          </div>
-          <BaseInputFile
-            v-if="!isEditing || (isEditing && newImages)"
-            placeholder="Click to Add Images MAX [5]"
-            class="!w-full"
-            @updateInput="(images) => (itemImages = images)"
-          />
-          <transition name="fade">
-            <BaseError v-if="error">{{ error }}</BaseError>
-          </transition>
-          <BaseButton @click="editItem" v-if="isEditing"
-            >{{ $t(text.save) }}
-          </BaseButton>
-          <BaseButton @click="addItem" v-else
-            >{{ $t(text.newItem) }}
-          </BaseButton>
-        </form>
-      </div>
-    </transition>
-    <transition name="zoom">
-      <div
-        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-        v-if="itemViewDialog"
-      >
-        <ImageViewer :imgs="selectedItem?.images" />
-        <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
-          selectedItem.type
-        }}</BaseType>
-        <h2
-          class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
-        >
-          {{ selectedItem.name }}
-        </h2>
-        <p class="my-1 overflow-hidden text-neutral-600">
-          {{ selectedItem.description }}
-        </p>
-      </div>
-    </transition>
-    <transition name="zoom">
-      <div
-        class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
-        v-if="deleteDialog"
-      >
-        <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
-        <p class="my-3">{{ $t(text.doneProcess) }}</p>
-        <BaseError v-if="error" class="mb-3">{{ error }}</BaseError>
-        <div class="flex justify-end gap-2">
-          <BaseButton
-            class="!bg-red-600 hover:!bg-red-700"
-            @click="deleteItem"
-            >{{ $t(text.yes) }}</BaseButton
-          >
-          <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
+              {{ $t(category) }}
+            </option>
+          </BaseSelect>
         </div>
+        <BaseTextArea
+          rows="8"
+          type="text"
+          class="col-span-2 !w-full"
+          :placeholder="$t(text.descriptionPlaceholder)"
+          v-model="itemDesc"
+          @updateInput="(val) => (itemDesc = val)"
+        />
+        <div
+          class="relative rounded-md border-2 border-dashed border-neutral-200 p-5 text-center"
+          v-if="isEditing && !newImages"
+        >
+          <div :class="`flex flex-wrap items-start justify-around gap-3`">
+            <div
+              v-for="image in selectedItem?.images"
+              :key="image"
+              class="relative"
+            >
+              <img
+                :src="`https://ik.imagekit.io/bidit/${image}?tr=w-128,h-128`"
+                class="h-28 w-28 object-cover"
+              />
+            </div>
+          </div>
+          <button
+            @click=";(newImages = true), (itemImages = [])"
+            class="mt-2 inline-block rounded-md bg-red-200 px-2.5 py-1 font-medium hover:bg-red-300"
+          >
+            Upload New Images
+          </button>
+        </div>
+        <BaseInputFile
+          v-if="!isEditing || (isEditing && newImages)"
+          placeholder="Click to Add Images MAX [5]"
+          class="!w-full"
+          @updateInput="(images) => (itemImages = images)"
+        />
+        <transition name="fade">
+          <BaseError v-if="error">{{ error }}</BaseError>
+        </transition>
+        <BaseButton @click="editItem" v-if="isEditing"
+          >{{ $t(text.save) }}
+        </BaseButton>
+        <BaseButton @click="addItem" v-else>{{ $t(text.newItem) }} </BaseButton>
+      </form>
+    </div>
+  </transition>
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="itemViewDialog"
+    >
+      <ImageViewer :imgs="selectedItem?.images" />
+      <BaseType :to="`/${state.lang}/bids/${selectedItem.type}`">{{
+        selectedItem.type
+      }}</BaseType>
+      <h2
+        class="mb-2 overflow-hidden break-all text-lg font-semibold capitalize text-black"
+      >
+        {{ selectedItem.name }}
+      </h2>
+      <p class="my-1 overflow-hidden text-neutral-600">
+        {{ selectedItem.description }}
+      </p>
+    </div>
+  </transition>
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="deleteDialog"
+    >
+      <BaseTitle>{{ $t(text.deleteItem) }}</BaseTitle>
+      <p class="my-3">{{ $t(text.doneProcess) }}</p>
+      <BaseError v-if="error" class="mb-3">{{ error }}</BaseError>
+      <div class="flex justify-end gap-2">
+        <BaseButton class="!bg-red-600 hover:!bg-red-700" @click="deleteItem">{{
+          $t(text.yes)
+        }}</BaseButton>
+        <BaseButton @click="resetDialog">{{ $t(text.no) }}</BaseButton>
       </div>
-    </transition>
+    </div>
+  </transition>
 
-    <transition name="zoom">
-      <NewBid
-        v-if="bidDialog"
-        @resetDialog="resetDialog"
-        :item="selectedItem"
-      />
-    </transition>
-  </UserLayout>
+  <transition name="zoom">
+    <NewBid v-if="bidDialog" @resetDialog="resetDialog" :item="selectedItem" />
+  </transition>
 </template>

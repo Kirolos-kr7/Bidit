@@ -6,7 +6,6 @@ import BaseError from '../components/Base/BaseError.vue'
 import { useStore } from '../store'
 import { useAxios } from '../functions'
 import { useRouter } from 'vue-router'
-import UserLayout from '../components/UserLayout.vue'
 import { onMounted } from 'vue'
 const { $state: state } = $(useStore())
 
@@ -76,47 +75,45 @@ const resetPassword = async () => {
 </script>
 
 <template>
-  <UserLayout>
-    <div
-      class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
-    >
-      <BaseTitle>{{ $t(text.resetPassword) }}</BaseTitle>
-      <form @submit.prevent="resetPassword">
-        <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
-          <BaseInput
-            type="password"
-            class="!w-full"
-            :placeholder="$t(text.passwordPlaceholder)"
-            v-model="password"
-            @updateInput="(val) => (password = val)"
-            required
-          /><BaseInput
-            type="password"
-            class="!w-full"
-            :placeholder="$t(text.confirmPasswordPlaceholder)"
-            v-model="confirmPassword"
-            @updateInput="(val) => (confirmPassword = val)"
-            required
-          />
-        </div>
-        <transition name="fade">
-          <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
-        </transition>
-        <div class="flex flex-col items-start gap-4">
-          <BaseButton
-            class="disabled:bg-blue-300"
-            :disabled="isLoading && 'disabled'"
-            >{{ $t(text.resetPassword) }}</BaseButton
+  <div
+    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+  >
+    <BaseTitle>{{ $t(text.resetPassword) }}</BaseTitle>
+    <form @submit.prevent="resetPassword">
+      <div class="mt-6 mb-4 grid items-start gap-4 sm:grid-cols-2">
+        <BaseInput
+          type="password"
+          class="!w-full"
+          :placeholder="$t(text.passwordPlaceholder)"
+          v-model="password"
+          @updateInput="(val) => (password = val)"
+          required
+        /><BaseInput
+          type="password"
+          class="!w-full"
+          :placeholder="$t(text.confirmPasswordPlaceholder)"
+          v-model="confirmPassword"
+          @updateInput="(val) => (confirmPassword = val)"
+          required
+        />
+      </div>
+      <transition name="fade">
+        <BaseError class="mb-3" v-if="error">{{ error }}</BaseError>
+      </transition>
+      <div class="flex flex-col items-start gap-4">
+        <BaseButton
+          class="disabled:bg-blue-300"
+          :disabled="isLoading && 'disabled'"
+          >{{ $t(text.resetPassword) }}</BaseButton
+        >
+        <div class="flex flex-col">
+          <RouterLink
+            :to="`/${state.lang}/login`"
+            class="text-bi-300 transition-colors hover:text-bi-400/50"
+            >{{ $t(text.haveAccount) }}</RouterLink
           >
-          <div class="flex flex-col">
-            <RouterLink
-              :to="`/${state.lang}/login`"
-              class="text-bi-300 transition-colors hover:text-bi-400/50"
-              >{{ $t(text.haveAccount) }}</RouterLink
-            >
-          </div>
         </div>
-      </form>
-    </div>
-  </UserLayout>
+      </div>
+    </form>
+  </div>
 </template>
