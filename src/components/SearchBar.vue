@@ -1,6 +1,6 @@
 <script setup>
 import { useStore } from '../store'
-import { watch, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { useAxios, useDebounce } from '../functions'
 import router from '../router'
 
@@ -12,10 +12,11 @@ let searchText = $ref('')
 let isLoading = $ref(false)
 let results = $ref([])
 
-watch(
-  $$(searchText),
-  useDebounce(async () => {
-    isLoading = true
+const search = (e) => {
+  searchText = e.target.value
+  isLoading = true
+
+  let debounce = useDebounce(async () => {
     currRes = 0
 
     if (searchText.trim() === '') {
@@ -28,8 +29,10 @@ watch(
     if (response.data.data) results = response.data.data
     else results = []
     isLoading = false
-  }),
-)
+  })
+
+  debounce()
+}
 
 const changeCurr = (i) => {
   currRes = i
@@ -103,11 +106,7 @@ const text = $ref({
         <input
           ref="inputSearch"
           :value="searchText"
-          @input="
-            (e) => {
-              searchText = e.target.value
-            }
-          "
+          @input="search($event)"
           type="text"
           class="bg-bi-800 w-full rounded-sm border border-bi-200 px-3 py-2.5 font-medium text-black outline-none ring-2 ring-indigo-400 focus:ring-indigo-700"
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
@@ -130,7 +129,6 @@ const text = $ref({
           ></path>
         </svg>
       </div>
-      {{ searchText }}
     </div>
 
     <ul
