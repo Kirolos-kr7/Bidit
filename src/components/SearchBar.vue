@@ -108,6 +108,7 @@ const text = $ref({
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
           :placeholder="$t(text.placeholder)"
         />
+
         <svg
           class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-black"
           :class="state.lang === 'ar' ? 'right-3' : 'left-3'"
@@ -124,6 +125,7 @@ const text = $ref({
           ></path>
         </svg>
       </div>
+      {{ searchText }}
     </div>
 
     <ul
