@@ -12,17 +12,17 @@ import BaseDDL from './Base/BaseDDL.vue'
 import BaseDialog from './Base/BaseDialog.vue'
 import SearchBar from './SearchBar.vue'
 import DropDownNav from './DropDownNav.vue'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useCookies } from 'vue3-cookies'
 
 const { $state: state } = useStore()
 const store = useStore()
 const router = useRouter()
 let activeMenu = $ref(null)
-let searchDialog = ref(false)
+let searchDialog = $ref(false)
 let hamburgerMenu = $ref(false)
 
-watch(searchDialog, () => {
+watch($$(searchDialog), () => {
   if (searchDialog.value === true)
     document.documentElement.style.overflow = 'hidden'
   else document.documentElement.style.overflow = 'auto'

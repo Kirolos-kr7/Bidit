@@ -14,7 +14,8 @@ let results = $ref([])
 
 const search = async () => {
   currRes = 0
-  if (searchText === '' && searchText.trim() === '') {
+
+  if (searchText.trim() === '') {
     results = []
     return
   }
@@ -74,6 +75,14 @@ const text = $ref({
     ar: 'للاختيار',
     en: 'to select',
   },
+  typeToSearch: {
+    ar: 'ابدأ بالكتابة للبحث',
+    en: 'Start typing something to search',
+  },
+  noSearchRes: {
+    ar: 'للأسف لا توجد نتيجة ل ',
+    en: 'Oops, No Results for ',
+  },
 })
 </script>
 
@@ -93,7 +102,7 @@ const text = $ref({
           class="bg-bi-800 w-full rounded-sm border border-bi-200 px-3 py-2.5 font-medium text-black outline-none ring-2 ring-indigo-400 focus:ring-indigo-700"
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
           :placeholder="$t(text.placeholder)"
-          @keyup="search"
+          @input="search"
         />
         <svg
           class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-black"
@@ -143,9 +152,11 @@ const text = $ref({
       </transition-group>
     </ul>
     <div class="p-5 py-10 text-center" v-else>
-      <div v-if="searchText === ''">Start typing something to search</div>
-      <div v-if="!isLoading && searchText !== ''">
-        Oops, No Results for "<b>{{ searchText }}</b
+      <div v-if="searchText.trim() === ''">
+        {{ $t(text.typeToSearch) }}
+      </div>
+      <div v-if="!isLoading && searchText.trim() !== ''">
+        {{ $t(text.noSearchRes) }} "<b>{{ searchText }}</b
         >"
       </div>
       <div v-if="isLoading" class="text-white">hidden text</div>

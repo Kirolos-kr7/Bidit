@@ -16,6 +16,7 @@ module.exports = {
   },
   globals: {
     $: 'readonly',
+    $$: 'readonly',
     $ref: 'readonly',
   },
   rules: {
