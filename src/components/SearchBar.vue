@@ -102,7 +102,12 @@ const text = $ref({
       <div class="relative">
         <input
           ref="inputSearch"
-          v-model="searchText"
+          :value="searchText"
+          @input="
+            (e) => {
+              searchText = e.target.value
+            }
+          "
           type="text"
           class="bg-bi-800 w-full rounded-sm border border-bi-200 px-3 py-2.5 font-medium text-black outline-none ring-2 ring-indigo-400 focus:ring-indigo-700"
           :class="state.lang === 'ar' ? 'pr-11' : 'pl-11'"
