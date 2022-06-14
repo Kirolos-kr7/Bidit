@@ -242,3 +242,14 @@ export const usePaymob = async (order) => {
 
   return `https://accept.paymobsolutions.com/api/acceptance/iframes/381359?payment_token=${paymentRes.data.token}`
 }
+
+export const useDebounce = (cb, delay = 300) => {
+  let timeout
+
+  return (...args) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      cb(args)
+    }, delay)
+  }
+}
