@@ -10,14 +10,17 @@ import {
   $t,
 } from '../functions'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
+import BaseLoader from '../components/Base/BaseLoader.vue'
 
 let resports = $ref([])
+let isLoading = $ref(false)
 
 onMounted(async () => {
+  isLoading = true
   let { response } = await useAxios('get', '/report/user')
-  console.log(response)
 
   if (response.data.ok) resports = response.data.data
+  isLoading = false
 })
 
 const text = $ref({
@@ -60,35 +63,39 @@ useMeta({ title: $t(text.title), base: true })
     </div>
   </div>
 
-  <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
-    <div
-      v-for="report in resports"
-      :key="report._id"
-      class="relative grid gap-x-5 gap-y-0.5 overflow-hidden rounded-md bg-white p-3 capitalize shadow-md md:grid-cols-[auto,1fr]"
-    >
-      <div class="font-semibold">
-        {{ $t(text.reportId) }}
+  <div v-if="!isLoading">
+    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
+      <div
+        v-for="report in resports"
+        :key="report._id"
+        class="relative grid gap-x-5 gap-y-0.5 overflow-hidden rounded-md bg-white p-3 capitalize shadow-md md:grid-cols-[auto,1fr]"
+      >
+        <div class="font-semibold">
+          {{ $t(text.reportId) }}
+        </div>
+        <span>{{ report._id }}</span>
+        <div class="font-semibold">
+          {{ $t(text.type) }}
+        </div>
+        <span>{{ getReportType(report.type) }}</span>
+        <div class="font-semibold">
+          {{ $t(text.description) }}
+        </div>
+        <span>{{ report.description }}</span>
+        <div class="font-semibold">
+          {{ $t(text.status) }}
+        </div>
+        <span>{{ getReportStatus(report.status) }}</span>
       </div>
-      <span>{{ report._id }}</span>
-      <div class="font-semibold">
-        {{ $t(text.type) }}
-      </div>
-      <span>{{ getReportType(report.type) }}</span>
-      <div class="font-semibold">
-        {{ $t(text.description) }}
-      </div>
-      <span>{{ report.description }}</span>
-      <div class="font-semibold">
-        {{ $t(text.status) }}
-      </div>
-      <span>{{ getReportStatus(report.status) }}</span>
     </div>
+    <BaseEmpty
+      v-else
+      :msg="{
+        ar: 'لا يوجد لديك بلاغات الان!',
+        en: 'No reports available now!',
+      }"
+    />
   </div>
-  <BaseEmpty
-    v-else
-    :msg="{
-      ar: 'لا يوجد لديك بلاغات الان!',
-      en: 'No reports available now!',
-    }"
-  />
+
+  <BaseLoader v-else />
 </template>

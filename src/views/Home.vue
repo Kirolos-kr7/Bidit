@@ -51,6 +51,10 @@ const text = $ref({
     ar: `أفضل الاختيارات لك`,
     en: `Top Bids For You`,
   },
+  viewAllBids: {
+    ar: `عرض جميع المزادات`,
+    en: `View All Bids`,
+  },
 })
 
 useMeta({
@@ -166,7 +170,7 @@ useMeta({
 
   <div class="text-center">
     <RouterLink :to="`/${state.lang}/bids`">
-      <BaseButton> View All Bids </BaseButton>
+      <BaseButton> {{ $t(text.viewAllBids) }} </BaseButton>
     </RouterLink>
   </div>
 </template>
