@@ -5,12 +5,12 @@
       {
         "ar": "تواصل معنا",
         "en": "Contact",
-        "to": ""
+        "to": "contact"
       },
       {
         "ar": "من نحن؟",
         "en": "Who are we?",
-        "to": ""
+        "to": "about"
       }
     ]
   }
