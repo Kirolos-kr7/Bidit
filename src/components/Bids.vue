@@ -22,7 +22,7 @@ const emits = defineEmits(['deleteBid'])
 </script>
 
 <template>
-  <div v-if="!isLoading">
+  <div v-if="!isLoading || bids.length > 0">
     <BaseEmpty
       v-if="bids.length === 0"
       :msg="{
