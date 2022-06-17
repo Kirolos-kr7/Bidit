@@ -5,8 +5,9 @@ import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import RecentBids from '../components/RecentBids.vue'
+import BaseButton from '../components/Base/BaseButton.vue'
 
 const { $state: state } = $(useStore())
 
@@ -50,6 +51,14 @@ const text = $ref({
     ar: `أفضل الاختيارات لك`,
     en: `Top Bids For You`,
   },
+})
+
+useMeta({
+  title: $t({
+    en: 'Bidit - Online Auction Platform 🔥',
+    ar: 'Bidit - منصة المزادات الالكترونية 🔥',
+  }),
+  base: true,
 })
 </script>
 
@@ -154,4 +163,10 @@ const text = $ref({
   </section>
 
   <RecentBids />
+
+  <div class="text-center">
+    <RouterLink :to="`/${state.lang}/bids`">
+      <BaseButton> View All Bids </BaseButton>
+    </RouterLink>
+  </div>
 </template>

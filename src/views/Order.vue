@@ -1,7 +1,7 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted } from 'vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
 import BaseLoader from '../components/Base/BaseLoader.vue'
@@ -37,6 +37,8 @@ const text = $ref({
     en: 'Complete Order',
   },
 })
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

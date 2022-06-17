@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Notification from '../components/Notification.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useStore } from '../store'
 
 let { $state: state } = useStore()
@@ -21,6 +21,12 @@ onMounted(async () => {
   }
 })
 
+const notificationSeen = (_id) => {
+  nts.forEach((nt) => {
+    if (nt._id === _id) nt.seen = true
+  })
+}
+
 const text = $ref({
   title: {
     ar: 'الاشعارات',
@@ -28,11 +34,7 @@ const text = $ref({
   },
 })
 
-const notificationSeen = (_id) => {
-  nts.forEach((nt) => {
-    if (nt._id === _id) nt.seen = true
-  })
-}
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

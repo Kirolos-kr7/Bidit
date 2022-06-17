@@ -4,7 +4,7 @@ import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
 import { useStore } from '../store'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 const { $state: state } = $(useStore())
@@ -30,25 +30,6 @@ onMounted(async () => {
   }
 })
 
-const text = $ref({
-  resetPassword: {
-    ar: 'اعادة تعيين كلمة المرور',
-    en: 'Reset Password',
-  },
-  passwordPlaceholder: {
-    ar: 'كلمه السر',
-    en: 'Password',
-  },
-  confirmPasswordPlaceholder: {
-    ar: 'تأكيد كلمه السر',
-    en: 'Confirm Password',
-  },
-  haveAccount: {
-    ar: 'لدي حساب؟',
-    en: `Already Have an Account?`,
-  },
-})
-
 const resetPassword = async () => {
   isLoading = true
   let body = {
@@ -72,6 +53,27 @@ const resetPassword = async () => {
 
   isLoading = false
 }
+
+const text = $ref({
+  resetPassword: {
+    ar: 'اعادة تعيين كلمة المرور',
+    en: 'Reset Password',
+  },
+  passwordPlaceholder: {
+    ar: 'كلمه السر',
+    en: 'Password',
+  },
+  confirmPasswordPlaceholder: {
+    ar: 'تأكيد كلمه السر',
+    en: 'Confirm Password',
+  },
+  haveAccount: {
+    ar: 'لدي حساب؟',
+    en: `Already Have an Account?`,
+  },
+})
+
+useMeta({ title: $t(text.resetPassword), base: true })
 </script>
 
 <template>

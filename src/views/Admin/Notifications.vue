@@ -5,7 +5,7 @@ import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTextArea from '../../components/Base/BaseTextArea.vue'
 import BaseInput from '../../components/Base/BaseInput.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 import BaseError from '../../components/Base/BaseError.vue'
 import { onMounted } from 'vue'
 import { computed } from '@vue/reactivity'
@@ -90,6 +90,8 @@ const broadcast = async () => {
     error = response.data.message
   }
 }
+
+useMeta({ title: 'Notifications', base: true })
 </script>
 
 <template>

@@ -2,19 +2,8 @@
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import { onMounted } from 'vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import Bids from '../components/Bids.vue'
-
-const text = $ref({
-  title: {
-    ar: 'المشتريات',
-    en: 'Purchases',
-  },
-  info: {
-    ar: 'المزادات الموجودة هنا انت شاركت فيها سواء كسبتها أو لم تكسبها.',
-    en: 'Bids here are ones you joined whether you won or not.',
-  },
-})
 
 let bids = $ref([])
 let isLoading = $ref(false)
@@ -29,6 +18,19 @@ onMounted(async () => {
   }
   isLoading = false
 })
+
+const text = $ref({
+  title: {
+    ar: 'المشتريات',
+    en: 'Purchases',
+  },
+  info: {
+    ar: 'المزادات الموجودة هنا انت شاركت فيها سواء كسبتها أو لم تكسبها.',
+    en: 'Bids here are ones you joined whether you won or not.',
+  },
+})
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

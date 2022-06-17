@@ -2,32 +2,14 @@
 import { useStore } from '../store'
 import { list } from '../lang/navigation.json'
 import { categories } from '../lang/categories.json'
-import BaseTitle from './Base/BaseTitle.vue'
-import BaseButton from './Base/BaseButton.vue'
 
 const { $state: state } = $(useStore())
 
 const text = $ref({
-  title: {
-    ar: 'النشرة الإخبارية',
-    en: 'News Letter',
-  },
-  subTitle: {
-    ar: 'احصل علي المزادات الاسبوعيه',
-    en: 'Get Notified With Weekly New Bids',
-  },
-  emailplaceholder: {
-    ar: 'ادخل البريد الالكتروني',
-    en: 'Leave Your Email',
-  },
   by: {
     ar: 'تصميم وبرمجة',
     en: 'Designed and Developed by',
     logo: 'Bid!T',
-  },
-  cta: {
-    ar: 'اشترك',
-    en: 'Subscribe',
   },
 })
 </script>
@@ -35,28 +17,12 @@ const text = $ref({
 <template>
   <footer class="mt-6 bg-bi-200 p-5 pt-6">
     <div class="mx-auto flex max-w-atreus flex-col gap-5 bg-bi-200">
-      <div class="grid gap-x-20 gap-y-10 md:grid-cols-[50%,1fr]">
-        <div class="!w-full">
-          <BaseTitle class="mb-3 !text-2xl">{{ $t(text.title) }}</BaseTitle>
-          <p class="mb-3 font-medium text-black/80">{{ $t(text.subTitle) }}</p>
-          <div class="grid gap-y-2 md:grid-cols-[1fr,min-content]">
-            <input
-              type="email"
-              :placeholder="$t(text.emailplaceholder)"
-              class="px-3 py-2 font-medium text-black focus:outline-none"
-            />
-            <BaseButton
-              class="w-[max-content] justify-self-end rounded-none border-none px-3 py-2"
-            >
-              {{ $t(text.cta) }}
-            </BaseButton>
-          </div>
-        </div>
-        <div class="flex flex-wrap items-start gap-x-20 gap-y-5 capitalize">
-          <ul>
-            <li class="mb-2 text-lg font-extrabold text-bi-300">
-              {{ $t(categories.name) }}
-            </li>
+      <div class="grid-cols-3 capitalize sm:grid">
+        <div class="col-span-2">
+          <h2 class="col-span-2 mb-2 text-lg font-extrabold text-bi-300">
+            {{ $t(categories.name) }}
+          </h2>
+          <ul class="flex h-[calc(28px*5)] flex-col flex-wrap">
             <li>
               <RouterLink
                 :to="`/${state.lang}/bids`"
@@ -72,10 +38,12 @@ const text = $ref({
               </RouterLink>
             </li>
           </ul>
-          <ul>
-            <li class="mb-2 text-lg font-extrabold text-bi-300">
-              {{ $t(list.name) }}
-            </li>
+        </div>
+        <div>
+          <h2 class="mb-2 text-lg font-extrabold text-bi-300">
+            {{ $t(list.name) }}
+          </h2>
+          <ul class="flex h-[calc(28px*5)] flex-col flex-wrap gap-x-40">
             <li v-for="(item, index) in list.items" :key="index">
               <RouterLink
                 :to="`/${state.lang}/${item.to}`"

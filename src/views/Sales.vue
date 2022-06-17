@@ -4,10 +4,43 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import Bids from '../components/Bids.vue'
 import BaseDialog from '../components/Base/BaseDialog.vue'
 const { $state: state } = $(useStore())
+
+let bids = $ref([])
+let isLoading = $ref(false)
+let deleteDialog = $ref(false)
+let selectedBid = $ref(null)
+
+onMounted(async () => {
+  getSlaes()
+})
+
+const getSlaes = async () => {
+  isLoading = true
+
+  let { response } = await useAxios('get', '/bid/sales')
+
+  if (response.data.ok) {
+    bids = response.data.data
+  }
+  isLoading = false
+}
+
+const deleteBid = (val) => {
+  selectedBid = val
+  deleteDialog = true
+}
+
+const approveDelete = async () => {
+  let { response } = await useAxios('delete', `/bid/delete/${selectedBid._id}`)
+  if (response.data.ok) {
+    getSlaes()
+    deleteDialog = false
+  }
+}
 
 const text = $ref({
   title: {
@@ -44,38 +77,7 @@ const text = $ref({
   },
 })
 
-let bids = $ref([])
-let isLoading = $ref(false)
-let deleteDialog = $ref(false)
-let selectedBid = $ref(null)
-
-onMounted(async () => {
-  getSlaes()
-})
-
-const getSlaes = async () => {
-  isLoading = true
-
-  let { response } = await useAxios('get', '/bid/sales')
-
-  if (response.data.ok) {
-    bids = response.data.data
-  }
-  isLoading = false
-}
-
-const deleteBid = (val) => {
-  selectedBid = val
-  deleteDialog = true
-}
-
-const approveDelete = async () => {
-  let { response } = await useAxios('delete', `/bid/delete/${selectedBid._id}`)
-  if (response.data.ok) {
-    getSlaes()
-    deleteDialog = false
-  }
-}
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

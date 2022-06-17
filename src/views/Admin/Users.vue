@@ -1,6 +1,6 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 import { onMounted } from 'vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
@@ -87,6 +87,8 @@ const approveRemove = async () => {
     fetchUsers()
   }
 }
+
+useMeta({ title: 'Users', base: true })
 </script>
 
 <template>

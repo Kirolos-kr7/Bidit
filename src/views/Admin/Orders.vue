@@ -8,7 +8,7 @@ import BaseSelect from '../../components/Base/BaseSelect.vue'
 import BaseError from '../../components/Base/BaseError.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 import BaseImg from '../../components/Base/BaseImg.vue'
 import BaseType from '../../components/Base/BaseType.vue'
 import dayjs from 'dayjs'
@@ -100,6 +100,8 @@ const resetDialog = () => {
   removeDialog = false
   selectedOrder = null
 }
+
+useMeta({ title: 'Orders', base: true })
 </script>
 
 <template>

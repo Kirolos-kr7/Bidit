@@ -2,7 +2,13 @@
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted } from 'vue'
-import { useAxios, getReportType, getReportStatus } from '../functions'
+import {
+  useAxios,
+  getReportType,
+  getReportStatus,
+  useMeta,
+  $t,
+} from '../functions'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 
 let resports = $ref([])
@@ -40,6 +46,8 @@ const text = $ref({
     en: "These are reports that you've made.",
   },
 })
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

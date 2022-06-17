@@ -4,7 +4,7 @@ import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
 import BaseSelect from '../components/Base/BaseSelect.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
@@ -12,6 +12,7 @@ import { useCookies } from 'vue3-cookies'
 const { $state: state } = $(useStore())
 const { cookies } = useCookies()
 
+useMeta({ title: 'Register', base: true })
 const router = useRouter()
 let name = $ref('')
 let email = $ref('')
@@ -21,6 +22,30 @@ let confirmPassword = $ref('')
 let phone = $ref('')
 let gender = $ref('male')
 let error = $ref(null)
+
+const registerUser = async () => {
+  let body = {
+    name,
+    email,
+    address,
+    password,
+    confirmPassword,
+    phone: phone.replaceAll(' ', ''),
+    gender,
+  }
+
+  let { response } = await useAxios('post', '/auth/register', body)
+
+  if (response.data.ok) {
+    let data = response.data.data
+    state.user = data.user
+    cookies.set('authToken', data.token, '3d')
+    cookies.set('isLoggedIn', true, '3d')
+    router.replace(`/${state.lang}/`)
+  } else {
+    error = response.data.message
+  }
+}
 
 const text = $ref({
   myAccount: {
@@ -81,29 +106,7 @@ const text = $ref({
   },
 })
 
-const registerUser = async () => {
-  let body = {
-    name,
-    email,
-    address,
-    password,
-    confirmPassword,
-    phone: phone.replaceAll(' ', ''),
-    gender,
-  }
-
-  let { response } = await useAxios('post', '/auth/register', body)
-
-  if (response.data.ok) {
-    let data = response.data.data
-    state.user = data.user
-    cookies.set('authToken', data.token, '3d')
-    cookies.set('isLoggedIn', true, '3d')
-    router.replace(`/${state.lang}/`)
-  } else {
-    error = response.data.message
-  }
-}
+useMeta({ title: $t(text.myAccount), base: true })
 </script>
 
 <template>

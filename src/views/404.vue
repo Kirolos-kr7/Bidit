@@ -1,5 +1,6 @@
 <script setup>
 import BaseButton from '../components/Base/BaseButton.vue'
+import { $t, useMeta } from '../functions'
 import { useStore } from '../store'
 
 const { $state: state } = useStore()
@@ -17,6 +18,8 @@ const text = $ref({
     en: 'To Homepage',
   },
 })
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { computed } from '@vue/reactivity'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseTable from '../../components/Base/BaseTable.vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 import { useStore } from '../../store'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
@@ -61,6 +61,8 @@ const approveRemove = async () => {
     fetchBids()
   }
 }
+
+useMeta({ title: 'Bids', base: true })
 </script>
 
 <template>

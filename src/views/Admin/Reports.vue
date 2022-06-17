@@ -1,7 +1,7 @@
 <script setup>
 import BaseTable from '../../components/Base/BaseTable.vue'
 import { onMounted } from 'vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 import { reportStatuses } from '../../lang/reportstatus.json'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
@@ -73,6 +73,8 @@ const resetDialog = () => {
   editDialog = false
   selectedReport = null
 }
+
+useMeta({ title: 'Reports', base: true })
 </script>
 
 <template>

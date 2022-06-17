@@ -1,5 +1,5 @@
 <script setup>
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { categories } from '../lang/categories.json'
 import { onMounted } from 'vue'
 import { useStore } from '../store'
@@ -30,65 +30,6 @@ let itemsDialog = $ref(false),
   itemType = $ref(),
   itemDesc = $ref(''),
   itemImages = $ref([])
-
-const text = $ref({
-  title: {
-    ar: 'المخزون',
-    en: 'Inventory',
-  },
-  addItem: {
-    ar: 'أضافه عنصر',
-    en: 'Add item',
-  },
-  editItem: {
-    ar: 'تعديل عنصر',
-    en: 'Edit item',
-  },
-  newItem: {
-    ar: 'عنصر جديد',
-    en: 'New item',
-  },
-  namePlaceholder: {
-    ar: 'الاسم',
-    en: 'Name',
-  },
-  typePlaceholder: {
-    ar: 'النوع',
-    en: 'Type',
-  },
-  descriptionPlaceholder: {
-    ar: 'الوصف',
-    en: 'Description',
-  },
-  add: {
-    ar: 'أًضافه',
-    en: 'Add',
-  },
-  save: {
-    ar: 'حفظ',
-    en: 'Save',
-  },
-  deleteItem: {
-    ar: 'حذف العنصر',
-    en: 'Delete Item',
-  },
-  doneProcess: {
-    ar: 'هذا العنصر سوف يتم حذفه فقط اذا كان لا يوجد مزاد نشط, انتهى أو الغى مرتبط به. هل تريد الاستمرار؟',
-    en: 'This item will only be deleted if there is no active, expired or canceled bids linked to it. Are you sure you want to proceed?',
-  },
-  yes: {
-    ar: 'نعم',
-    en: 'Yes',
-  },
-  no: {
-    ar: 'لا',
-    en: 'No',
-  },
-  info: {
-    ar: 'العناصر الموجودة هنا يمكنك وحدك رؤيتها.',
-    en: 'Only you can see the items here.',
-  },
-})
 
 let items = $ref([])
 let isLoading = $ref(false)
@@ -210,6 +151,67 @@ const deleteItem = async () => {
     resetDialog()
   }
 }
+
+const text = $ref({
+  title: {
+    ar: 'المخزون',
+    en: 'Inventory',
+  },
+  addItem: {
+    ar: 'أضافه عنصر',
+    en: 'Add item',
+  },
+  editItem: {
+    ar: 'تعديل عنصر',
+    en: 'Edit item',
+  },
+  newItem: {
+    ar: 'عنصر جديد',
+    en: 'New item',
+  },
+  namePlaceholder: {
+    ar: 'الاسم',
+    en: 'Name',
+  },
+  typePlaceholder: {
+    ar: 'النوع',
+    en: 'Type',
+  },
+  descriptionPlaceholder: {
+    ar: 'الوصف',
+    en: 'Description',
+  },
+  add: {
+    ar: 'أًضافه',
+    en: 'Add',
+  },
+  save: {
+    ar: 'حفظ',
+    en: 'Save',
+  },
+  deleteItem: {
+    ar: 'حذف العنصر',
+    en: 'Delete Item',
+  },
+  doneProcess: {
+    ar: 'هذا العنصر سوف يتم حذفه فقط اذا كان لا يوجد مزاد نشط, انتهى أو الغى مرتبط به. هل تريد الاستمرار؟',
+    en: 'This item will only be deleted if there is no active, expired or canceled bids linked to it. Are you sure you want to proceed?',
+  },
+  yes: {
+    ar: 'نعم',
+    en: 'Yes',
+  },
+  no: {
+    ar: 'لا',
+    en: 'No',
+  },
+  info: {
+    ar: 'العناصر الموجودة هنا يمكنك وحدك رؤيتها.',
+    en: 'Only you can see the items here.',
+  },
+})
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

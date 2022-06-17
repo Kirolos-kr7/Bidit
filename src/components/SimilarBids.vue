@@ -10,20 +10,25 @@ let bids = $ref([])
 let isLoading = $ref(false)
 
 onMounted(async () => {
-  isLoading = true
-  let { response } = await useAxios('get', `/bid/similar/${route.query.bidID}`)
+  if (route.params?.bidID?.length === 24) {
+    isLoading = true
+    let { response } = await useAxios(
+      'get',
+      `/bid/similar/${route.params?.bidID}`,
+    )
 
-  if (response.data.ok) {
-    bids = response.data.data
+    if (response.data.ok) {
+      bids = response.data.data
+    }
+
+    isLoading = false
   }
-
-  isLoading = false
 })
 
 const text = $ref({
   youRecentlyViewed: {
-    ar: `شاهدت مؤخراً`,
-    en: `You Recently Viewed`,
+    ar: `مزادات مشابهة`,
+    en: `Similar Bids`,
   },
 })
 </script>

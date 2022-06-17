@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { onMounted, onUnmounted } from 'vue'
-import { useAxios } from '../../functions'
+import { useAxios, useMeta } from '../../functions'
 
 dayjs.extend(localizedFormat)
 let dt = $ref(dayjs().format('LL | LTS'))
@@ -19,6 +19,8 @@ let dtInterval = setInterval(() => {
 }, 1000)
 
 onUnmounted(() => clearInterval(dtInterval))
+
+useMeta({ title: 'Admin Dashboard', base: true })
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { $t, useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 import Bids from '../components/Bids.vue'
@@ -45,6 +45,7 @@ const cats = () => {
       if (cat.en.toLowerCase() === category) {
         isFound = true
         title = cat
+        useMeta({ title: $t(title), base: true })
       }
     })
 

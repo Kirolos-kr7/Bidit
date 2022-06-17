@@ -5,7 +5,7 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
 import BaseWarn from '../components/Base/BaseWarn.vue'
 import { useStore } from '../store'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useRouter } from 'vue-router'
 import { useCookies } from 'vue3-cookies'
 const { $state: state } = $(useStore())
@@ -16,6 +16,26 @@ let email = $ref('kiroloskr7@gmail.com')
 let password = $ref('k123456')
 let isLoading = $ref(false)
 let error = $ref('')
+
+const loginUser = async () => {
+  isLoading = true
+  let body = { email, password }
+
+  let { response } = await useAxios('post', '/auth/login', body)
+
+  if (response.data.ok) {
+    let data = response.data.data
+    state.user = data.user
+    cookies.set('authToken', data.token, '3d')
+    cookies.set('isLoggedIn', true, '3d')
+
+    if (router.currentRoute.value.query.ref === `login_to_join`) router.go(-1)
+    else router.replace(`/${state.lang}/`)
+  } else {
+    error = response.data.message
+  }
+  isLoading = false
+}
 
 const text = $ref({
   myAccount: {
@@ -44,25 +64,7 @@ const text = $ref({
   },
 })
 
-const loginUser = async () => {
-  isLoading = true
-  let body = { email, password }
-
-  let { response } = await useAxios('post', '/auth/login', body)
-
-  if (response.data.ok) {
-    let data = response.data.data
-    state.user = data.user
-    cookies.set('authToken', data.token, '3d')
-    cookies.set('isLoggedIn', true, '3d')
-
-    if (router.currentRoute.value.query.ref === `login_to_join`) router.go(-1)
-    else router.replace(`/${state.lang}/`)
-  } else {
-    error = response.data.message
-  }
-  isLoading = false
-}
+useMeta({ title: $t(text.myAccount), base: true })
 </script>
 
 <template>

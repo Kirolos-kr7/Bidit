@@ -8,7 +8,7 @@ import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import BaseInput from '../components/Base/BaseInput.vue'
 import { onMounted } from 'vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 const { $state: state } = $(useStore())
 
 let isLoading = $ref(false)
@@ -31,25 +31,6 @@ const resetDialog = () => {
   imageDialog = false
 }
 
-const text = $ref({
-  namePlaceholder: {
-    ar: 'الاسم كامل',
-    en: 'Full Name',
-  },
-  addressPlaceholder: {
-    ar: 'العنوان',
-    en: 'Address',
-  },
-  phonePlaceholder: {
-    ar: 'رقم التليفون',
-    en: 'Phone Number',
-  },
-  save: {
-    ar: 'حفط',
-    en: 'Save',
-  },
-})
-
 const updateProfile = async () => {
   isLoading = true
 
@@ -68,6 +49,31 @@ const updateProfile = async () => {
   }
   isLoading = false
 }
+
+const text = $ref({
+  title: {
+    ar: 'الحساب',
+    en: 'Account',
+  },
+  namePlaceholder: {
+    ar: 'الاسم كامل',
+    en: 'Full Name',
+  },
+  addressPlaceholder: {
+    ar: 'العنوان',
+    en: 'Address',
+  },
+  phonePlaceholder: {
+    ar: 'رقم التليفون',
+    en: 'Phone Number',
+  },
+  save: {
+    ar: 'حفط',
+    en: 'Save',
+  },
+})
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 
 let bids = $ref([])
 let isLoading = $ref(true)
@@ -22,6 +22,8 @@ const text = $ref({
     en: 'All Bids',
   },
 })
+
+useMeta({ title: $t(text.allBids), base: true })
 </script>
 
 <template>

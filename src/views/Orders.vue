@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import OrderCard from '../components/OrderCard.vue'
 import { useStore } from '../store'
 let { $state: state } = useStore()
@@ -19,6 +19,8 @@ const text = $ref({
     en: 'Orders',
   },
 })
+
+useMeta({ title: $t(text.title), base: true })
 </script>
 
 <template>

@@ -39,8 +39,10 @@ export const routerLang = (state, to, next) => {
 
   if (state.lang === 'ar') {
     document.body.dir = 'rtl'
+    document.querySelector('html').lang = state.lang
   } else {
     document.body.dir = 'ltr'
+    document.querySelector('html').lang = state.lang
   }
 }
 
@@ -252,4 +254,10 @@ export const useDebounce = (cb, delay = 300) => {
       cb(args)
     }, delay)
   }
+}
+
+export const useMeta = ({ title, base }) => {
+  let str
+  if (base) str = ' - Bidit'
+  document.title = title + str
 }

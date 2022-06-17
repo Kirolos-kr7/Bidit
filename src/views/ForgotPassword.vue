@@ -4,13 +4,28 @@ import BaseInput from '../components/Base/BaseInput.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
 import { useStore } from '../store'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 const { $state: state } = $(useStore())
 
 let email = $ref('kiroloskr7@gmail.com')
 let isLoading = $ref(false)
 let error = $ref('')
 let successful = $ref('')
+
+const sendRecoveryEmail = async () => {
+  isLoading = true
+  let { response } = await useAxios(
+    'get',
+    `/auth/forgot-password?email=${email}`,
+  )
+  if (!response.data.ok) {
+    error = response.data.message
+  } else {
+    error = ''
+    successful = response.data.message
+  }
+  isLoading = false
+}
 
 const text = $ref({
   forgotPassword: {
@@ -31,20 +46,7 @@ const text = $ref({
   },
 })
 
-const sendRecoveryEmail = async () => {
-  isLoading = true
-  let { response } = await useAxios(
-    'get',
-    `/auth/forgot-password?email=${email}`,
-  )
-  if (!response.data.ok) {
-    error = response.data.message
-  } else {
-    error = ''
-    successful = response.data.message
-  }
-  isLoading = false
-}
+useMeta({ title: $t(text.forgotPassword), base: true })
 </script>
 
 <template>

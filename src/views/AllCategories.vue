@@ -1,5 +1,6 @@
 <script setup>
 import BaseTitle from '../components/Base/BaseTitle.vue'
+import { $t, useMeta } from '../functions'
 import { useStore } from '../store'
 
 const { $state: state } = useStore()
@@ -10,6 +11,8 @@ const text = $ref({
     en: 'All Categories',
   },
 })
+
+useMeta({ title: $t(text.allCategories), base: true })
 </script>
 
 <template>

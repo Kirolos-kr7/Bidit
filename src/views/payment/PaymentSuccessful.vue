@@ -1,5 +1,11 @@
 <script setup>
 import BaseTitle from '../../components/Base/BaseTitle.vue'
+import { $t, useMeta } from '../../functions'
+
+useMeta({
+  title: $t({ ar: 'دفعة ناجحة', en: 'Successful Payment' }),
+  base: true,
+})
 </script>
 
 <template>

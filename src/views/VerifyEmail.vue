@@ -3,7 +3,7 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseError from '../components/Base/BaseError.vue'
 import { useStore } from '../store'
-import { useAxios } from '../functions'
+import { $t, useAxios, useMeta } from '../functions'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 const { $state: state } = $(useStore())
@@ -31,6 +31,17 @@ onMounted(async () => {
   }
 })
 
+const sendVerificationEmail = async () => {
+  isLoading = true
+  let { response } = await useAxios('get', '/auth/send-verification-link')
+  if (response.data.ok) {
+    successfull = response.data.message
+    isLoading = true
+  } else {
+    error = response.data.message
+  }
+}
+
 const text = $ref({
   verifyEmail: {
     ar: 'نسيت كلمة المرور',
@@ -50,16 +61,7 @@ const text = $ref({
   },
 })
 
-const sendVerificationEmail = async () => {
-  isLoading = true
-  let { response } = await useAxios('get', '/auth/send-verification-link')
-  if (response.data.ok) {
-    successfull = response.data.message
-    isLoading = true
-  } else {
-    error = response.data.message
-  }
-}
+useMeta({ title: $t(text.verifyEmail), base: true })
 </script>
 
 <template>
