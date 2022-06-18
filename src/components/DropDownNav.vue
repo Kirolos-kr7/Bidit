@@ -67,7 +67,7 @@ const changeLang = (lang) => {
         <li class="col-span-2 mb-3 px-3 text-xl font-extrabold text-bi-300">
           {{ $t(categories.name) }}
         </li>
-        <li>
+        <li @click="hideNav">
           <RouterLink
             class="block py-2 px-3 text-center text-lg font-semibold capitalize hover:bg-bi-100"
             :to="`/${state.lang}/bids`"

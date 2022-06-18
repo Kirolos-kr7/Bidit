@@ -7,7 +7,7 @@ let isHovering = $ref(false)
 
 <template>
   <div
-    class="absolute top-1/2 z-10 -translate-y-1/2"
+    class="absolute top-1/2 z-[4] -translate-y-1/2"
     :class="state.lang === 'ar' ? '-left-8' : '-right-8'"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"

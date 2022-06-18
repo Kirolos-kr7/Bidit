@@ -50,7 +50,7 @@ useMeta({ title: $t(text.allBids), base: true })
       :curr="curr"
       :max="max"
       :isLoading="isLoading"
-      @click="getMore"
+      @more="getMore"
     />
   </div>
 </template>
