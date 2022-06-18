@@ -168,7 +168,9 @@ const text = $ref({
         {{ $t(text.noSearchRes) }} "<b>{{ searchText }}</b
         >"
       </div>
-      <div v-if="isLoading" class="text-white">hidden text</div>
+      <div v-if="isLoading && searchText.trim() !== ''">
+        {{ $t({ ar: 'بحث ...', en: 'Searching ...' }) }}
+      </div>
     </div>
 
     <ul
