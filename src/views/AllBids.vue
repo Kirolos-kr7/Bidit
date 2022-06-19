@@ -12,19 +12,10 @@ let max = $ref(0)
 let isLoading = $ref(true)
 
 onMounted(async () => {
-  isLoading = true
-  let { response } = await useAxios('get', `/bid/all?limit=${limit}`)
-
-  if (response.data.ok) {
-    bids = response.data.data.bids
-    max = response.data.data.count
-    curr = bids.length
-  }
-
-  isLoading = false
+  getBids()
 })
 
-const getMore = async () => {
+const getBids = async () => {
   isLoading = true
 
   let { response } = await useAxios(
@@ -64,7 +55,7 @@ useMeta({ title: $t(text.allBids), base: true })
       :curr="curr"
       :max="max"
       :isLoading="isLoading"
-      @more="getMore"
+      @more="getBids"
     />
   </div>
 </template>

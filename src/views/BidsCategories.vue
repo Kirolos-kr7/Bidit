@@ -6,6 +6,7 @@ import { $t, useAxios, useMeta } from '../functions'
 import { categories } from '../lang/categories.json'
 import { useStore } from '../store'
 import Bids from '../components/Bids.vue'
+import Paginate from '../components/Paginate.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -13,16 +14,26 @@ const { $state: state } = useStore()
 
 let title = $ref()
 let bids = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
 let isLoading = $ref(true)
 
 const getBids = async () => {
   isLoading = true
+
   let { response } = await useAxios(
     'get',
-    `/bid/category/${route.params.cat.toLowerCase()}`,
+    `/bid/category/${route.params.cat.toLowerCase()}?limit=${limit}&skip=${curr}`,
   )
-
-  if (response.data.ok) bids = response.data.data
+  console.log(response)
+  if (response.data.ok) {
+    response.data.data.bids.forEach((bid) => {
+      bids.push(bid)
+    })
+    max = response.data.data.count
+    curr = bids.length
+  }
 
   isLoading = false
 }
@@ -33,6 +44,9 @@ onMounted(() => {
 
 watch(route, () => {
   if (route.params.cat) {
+    bids = []
+    curr = 0
+    max = 0
     getBids()
   }
 })
@@ -62,5 +76,13 @@ watch(route, cats)
   <div class="px-4">
     <BaseTitle class="capitalize" v-if="title">{{ $t(title) }}</BaseTitle>
     <Bids :bids="bids" :isLoading="isLoading" />
+
+    <Paginate
+      v-if="bids.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getBids"
+    />
   </div>
 </template>
