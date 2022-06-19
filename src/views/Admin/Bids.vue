@@ -8,8 +8,13 @@ import { useStore } from '../../store'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
+import Paginate from '../../components/Paginate.vue'
 
 let data = $ref([])
+let limit = $ref(4)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
 let router = useRouter()
 let { $state: state } = useStore()
 
@@ -18,13 +23,29 @@ let direction = $ref('asc')
 let selectedBid = $ref(null)
 let removeDialog = $ref(false)
 
-const fetchBids = async () => {
+const getBids = async (reset = false) => {
+  if (reset) {
+    data = []
+    curr = 0
+    max = 0
+  }
+
+  isLoading = true
+
   let { response } = await useAxios(
     'get',
-    `/admin/bids?sortBy=${constraint}&dir=${direction}`,
+    `/admin/bids?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
   )
 
-  if (response.data.ok) data = response.data.data
+  if (response.data.ok) {
+    response.data.data.bids.forEach((bid) => {
+      data.push(bid)
+    })
+    max = response.data.data.count
+    curr = data.length
+  }
+
+  isLoading = false
 }
 
 let formatedData = computed(() => {
@@ -33,13 +54,13 @@ let formatedData = computed(() => {
   })
 })
 
-onMounted(async () => fetchBids())
+onMounted(async () => getBids())
 
 const sortBy = (value, dir) => {
   constraint = value
   direction = dir
 
-  fetchBids()
+  getBids(true)
 }
 
 const open = (val) => {
@@ -58,7 +79,7 @@ const approveRemove = async () => {
   if (response.data.ok) {
     removeDialog = false
     selectedBid = null
-    fetchBids()
+    getBids(true)
   }
 }
 
@@ -81,6 +102,14 @@ useMeta({ title: 'Bids', base: true })
       @sortBy="sortBy"
       @open="open"
       @remove="remove"
+    />
+
+    <Paginate
+      v-if="data.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getBids"
     />
   </div>
 

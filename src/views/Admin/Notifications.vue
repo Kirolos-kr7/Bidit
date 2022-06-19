@@ -12,34 +12,46 @@ import { computed } from '@vue/reactivity'
 import Notification from '../../components/Notification.vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import Paginate from '../../components/Paginate.vue'
 
 dayjs.extend(localizedFormat)
 
 let data = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
+
+const getNotifications = async (reset = false) => {
+  if (reset) {
+    data = []
+    curr = 0
+    max = 0
+  }
+
+  isLoading = true
+
+  let { response } = await useAxios(
+    'get',
+    `/admin/notifications?limit=${limit}&skip=${curr}`,
+  )
+
+  if (response.data.ok) {
+    response.data.data.notifications.forEach((notification) => {
+      data.push(notification)
+    })
+    max = response.data.data.count
+    curr = data.length
+  }
+
+  isLoading = false
+}
 
 onMounted(async () => {
-  let { response } = await useAxios('get', '/admin/notifications')
-  if (response.data.ok) {
-    data = response.data.data
-  }
+  getNotifications()
 })
 
-let formatedData = computed(() => {
-  return data.map((x) => {
-    return {
-      ...x,
-      title: x.title.en,
-      message: x.message.en,
-      createdAt: dayjs(x.createdAt).format('ddd, D MMMM, YYYY | hh:mm'),
-    }
-  })
-})
-
-let constraint = $ref('title')
-let direction = $ref('asc')
-let selectedNt = $ref({})
 let broadcastDialog = $ref(false)
-let viewDialog = $ref(false)
 let error = $ref('')
 let titleAr = $ref('')
 let titleEn = $ref('')
@@ -47,20 +59,7 @@ let messageAr = $ref('')
 let messageEn = $ref('')
 let redirect = $ref('')
 
-const sortBy = (value, dir) => {
-  constraint = value
-  direction = dir
-}
-
-const open = (value) => {
-  viewDialog = true
-  data.forEach((x) => {
-    if (x._id === value._id) selectedNt = x
-  })
-}
-
 const resetDialog = () => {
-  viewDialog = false
   broadcastDialog = false
 }
 
@@ -79,6 +78,7 @@ const broadcast = async () => {
 
   let { response } = await useAxios('post', '/admin/broadcast', nt)
   if (response.data.ok) {
+    getNotifications(true)
     broadcastDialog = false
     error = ''
     titleAr = ''
@@ -101,21 +101,26 @@ useMeta({ title: 'Notifications', base: true })
     </h1>
     <BaseButton @click="broadcastDialog = true">Broadcast</BaseButton>
   </div>
-  <BaseTable
-    :columns="['Title', 'Date', 'Message']"
-    :values="['title', 'createdAt', 'message']"
-    :layout="['auto', 'auto', '60%']"
-    :data="formatedData"
-    :constraint="constraint"
-    :direction="direction"
-    :actions="{ open: true, edit: false, remove: false }"
-    @sortBy="sortBy"
-    @open="open"
+
+  <div class="flex flex-col gap-3">
+    <Notification
+      v-for="nt in data"
+      :key="nt._id"
+      class="rounded-md bg-white p-3"
+      :notification="nt"
+    />
+  </div>
+
+  <Paginate
+    v-if="data.length != 0"
+    :curr="curr"
+    :max="max"
+    :isLoading="isLoading"
+    @more="getNotifications"
   />
 
   <transition name="fade">
-    <BaseDialog v-if="broadcastDialog || viewDialog" @click="resetDialog()">
-    </BaseDialog>
+    <BaseDialog v-if="broadcastDialog" @click="resetDialog()"> </BaseDialog>
   </transition>
   <transition name="zoom">
     <div
@@ -163,15 +168,6 @@ useMeta({ title: 'Notifications', base: true })
         <BaseError v-if="error">{{ error }}</BaseError>
         <BaseButton>Send Message</BaseButton>
       </form>
-    </div>
-  </transition>
-
-  <transition name="zoom">
-    <div
-      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white font-medium text-black md:min-w-prose"
-      v-if="viewDialog"
-    >
-      <Notification :notification="selectedNt"></Notification>
     </div>
   </transition>
 </template>

@@ -10,9 +10,14 @@ import BaseError from '../../components/Base/BaseError.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
 import { useStore } from '../../store'
+import Paginate from '../../components/Paginate.vue'
 
 let { $state: state } = useStore()
 let data = $ref([])
+let limit = $ref(2)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
 let reportDialog = $ref(false)
 let editDialog = $ref(false)
 let selectedReport = $ref(false)
@@ -20,16 +25,32 @@ let error = $ref(null)
 let constraint = $ref('_id')
 let direction = $ref('asc')
 
-const fetchReports = async () => {
+const getReports = async (reset = false) => {
+  if (reset) {
+    data = []
+    curr = 0
+    max = 0
+  }
+
+  isLoading = true
+
   let { response } = await useAxios(
     'get',
-    `/admin/reports?sortBy=${constraint}&dir=${direction}`,
+    `/admin/reports?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
   )
+  console.log(response.data)
+  if (response.data.ok) {
+    response.data.data.reports.forEach((report) => {
+      data.push(report)
+    })
+    max = response.data.data.count
+    curr = data.length
+  }
 
-  if (response.data.ok) data = response.data.data
+  isLoading = false
 }
 
-onMounted(async () => fetchReports())
+onMounted(async () => getReports())
 
 let formatedData = computed(() => {
   return data.map((x) => {
@@ -45,7 +66,7 @@ const sortBy = (value, dir) => {
   constraint = value
   direction = dir
 
-  fetchReports()
+  getReports(true)
 }
 const open = (val) => {
   reportDialog = true
@@ -66,7 +87,7 @@ const saveEdit = async () => {
   if (!response.data.ok) error = response.data.message
   else {
     resetDialog()
-    fetchReports()
+    getReports(true)
   }
 }
 
@@ -94,6 +115,14 @@ useMeta({ title: 'Reports', base: true })
     @sortBy="sortBy"
     @open="open"
     @edit="edit"
+  />
+
+  <Paginate
+    v-if="data.length != 0"
+    :curr="curr"
+    :max="max"
+    :isLoading="isLoading"
+    @more="getReports"
   />
 
   <transition name="fade">

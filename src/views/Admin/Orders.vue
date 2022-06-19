@@ -13,8 +13,14 @@ import BaseImg from '../../components/Base/BaseImg.vue'
 import BaseType from '../../components/Base/BaseType.vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import Paginate from '../../components/Paginate.vue'
 dayjs.extend(localizedFormat)
+
 let data = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
 let orderDialog = $ref(false)
 let editDialog = $ref(false)
 let removeDialog = $ref(false)
@@ -24,13 +30,29 @@ let error = $ref(null)
 let constraint = $ref('_id')
 let direction = $ref('asc')
 
-const fetchOrders = async () => {
+const getOrders = async (reset = false) => {
+  if (reset) {
+    data = []
+    curr = 0
+    max = 0
+  }
+
+  isLoading = true
+
   let { response } = await useAxios(
     'get',
-    `/admin/orders?sortBy=${constraint}&dir=${direction}`,
+    `/admin/orders?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
   )
 
-  if (response.data.ok) data = response.data.data
+  if (response.data.ok) {
+    response.data.data.orders.forEach((order) => {
+      data.push(order)
+    })
+    max = response.data.data.count
+    curr = data.length
+  }
+
+  isLoading = false
 }
 
 let formatedData = computed(() => {
@@ -44,13 +66,13 @@ let formatedData = computed(() => {
   })
 })
 
-onMounted(async () => fetchOrders())
+onMounted(async () => getOrders())
 
 const sortBy = (value, dir) => {
   constraint = value
   direction = dir
 
-  fetchOrders()
+  getOrders(true)
 }
 
 const open = (val) => {
@@ -72,7 +94,7 @@ const saveEdit = async () => {
   if (!response.data.ok) error = response.data.message
   else {
     resetDialog()
-    fetchOrders()
+    getOrders(true)
   }
 }
 
@@ -90,7 +112,7 @@ const approveRemove = async () => {
   if (response.data.ok) {
     removeDialog = false
     selectedOrder = null
-    fetchOrders()
+    getOrders(true)
   }
 }
 
@@ -120,6 +142,14 @@ useMeta({ title: 'Orders', base: true })
     @open="open"
     @edit="edit"
     @remove="remove"
+  />
+
+  <Paginate
+    v-if="data.length != 0"
+    :curr="curr"
+    :max="max"
+    :isLoading="isLoading"
+    @more="getOrders"
   />
 
   <transition name="fade">

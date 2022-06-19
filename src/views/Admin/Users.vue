@@ -6,8 +6,13 @@ import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
+import Paginate from '../../components/Paginate.vue'
 
 let data = $ref([])
+let limit = $ref(8)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
 let userDialog = $ref(false)
 let removeDialog = $ref(false)
 let adminDialog = $ref(false)
@@ -15,16 +20,32 @@ let selectedUser = $ref(null)
 let constraint = $ref('name')
 let direction = $ref('asc')
 
-const fetchUsers = async () => {
+const getUsers = async (reset = false) => {
+  if (reset) {
+    data = []
+    curr = 0
+    max = 0
+  }
+
+  isLoading = true
+
   let { response } = await useAxios(
     'get',
-    `/admin/users?sortBy=${constraint}&dir=${direction}`,
+    `/admin/users?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
   )
 
-  if (response.data.ok) data = response.data.data
+  if (response.data.ok) {
+    response.data.data.users.forEach((user) => {
+      data.push(user)
+    })
+    max = response.data.data.count
+    curr = data.length
+  }
+
+  isLoading = false
 }
 
-onMounted(async () => fetchUsers())
+onMounted(async () => getUsers())
 
 let formatedData = computed(() => {
   return data.map((x) => {
@@ -39,7 +60,7 @@ const sortBy = (value, dir) => {
   constraint = value
   direction = dir
 
-  fetchUsers()
+  getUsers(true)
 }
 
 const resetDialog = () => {
@@ -66,7 +87,7 @@ const changePrivlages = async () => {
 
   if (response.data.ok) {
     adminDialog = false
-    fetchUsers()
+    getUsers(true)
   }
 }
 
@@ -84,7 +105,7 @@ const approveRemove = async () => {
   if (response.data.ok) {
     removeDialog = false
     selectedUser = null
-    fetchUsers()
+    getUsers(true)
   }
 }
 
@@ -107,6 +128,14 @@ useMeta({ title: 'Users', base: true })
     @open="open"
     @edit="edit"
     @remove="remove"
+  />
+
+  <Paginate
+    v-if="data.length != 0"
+    :curr="curr"
+    :max="max"
+    :isLoading="isLoading"
+    @more="getUsers"
   />
 
   <transition name="fade">
