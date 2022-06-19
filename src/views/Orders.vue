@@ -3,15 +3,34 @@ import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import { $t, useAxios, useMeta } from '../functions'
 import OrderCard from '../components/OrderCard.vue'
+import Paginate from '../components/Paginate.vue'
 import { useStore } from '../store'
 let { $state: state } = useStore()
+
 let orders = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
+let isLoading = $ref(false)
 
 onMounted(async () => {
-  let { response } = await useAxios('get', '/order/user')
-
-  if (response.data.ok) orders = response.data.data
+  getOrders()
 })
+
+const getOrders = async () => {
+  let { response } = await useAxios(
+    'get',
+    `/order/user?limit=${limit}&skip${curr}`,
+  )
+
+  if (response.data.ok) {
+    response.data.data.orders.forEach((order) => {
+      orders.push(order)
+    })
+    max = response.data.data.count
+    curr = orders.length
+  }
+}
 
 const text = $ref({
   title: {
@@ -33,5 +52,13 @@ useMeta({ title: $t(text.title), base: true })
         </router-link>
       </template>
     </div>
+
+    <Paginate
+      v-if="orders.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getOrders"
+    />
   </div>
 </template>
