@@ -9,7 +9,9 @@ import BaseSelect from '../../components/Base/BaseSelect.vue'
 import BaseError from '../../components/Base/BaseError.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
+import { useStore } from '../../store'
 
+let { $state: state } = useStore()
 let data = $ref([])
 let reportDialog = $ref(false)
 let editDialog = $ref(false)
@@ -117,6 +119,30 @@ useMeta({ title: 'Reports', base: true })
         <span>{{ selectedReport.description }}</span>
         <div class="font-semibold">Status</div>
         <span>{{ selectedReport.status }}</span>
+      </div>
+      <div class="flex justify-end px-3">
+        <router-link
+          class="flex items-center gap-2 text-indigo-700 hover:text-indigo-400"
+          :to="`/${state.lang}/bid/${selectedReport.for}`"
+          target="_blank"
+        >
+          <span>View Reported Bid</span>
+
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            ></path>
+          </svg>
+        </router-link>
       </div>
     </div>
   </transition>

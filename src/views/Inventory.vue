@@ -17,6 +17,8 @@ import ImageViewer from '../components/ImageViewer.vue'
 import BaseInfo from '../components/Base/BaseInfo.vue'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import BaseInputFile from '../components/Base/BaseInputFile.vue'
+import Paginate from '../components/Paginate.vue'
+import BaseLoader from '../components/Base/BaseLoader.vue'
 
 const { $state: state } = $(useStore())
 let itemsDialog = $ref(false),
@@ -29,7 +31,10 @@ let itemsDialog = $ref(false),
   itemName = $ref(''),
   itemType = $ref(),
   itemDesc = $ref(''),
-  itemImages = $ref([])
+  itemImages = $ref([]),
+  limit = $ref(1),
+  curr = $ref(0),
+  max = $ref(66)
 
 let items = $ref([])
 let isLoading = $ref(false)
@@ -38,10 +43,34 @@ let selectedItem = $ref(null)
 const getAllItems = async () => {
   isLoading = true
   items = []
-  let { response } = await useAxios('get', '/item/all', null)
+  let { response } = await useAxios(
+    'get',
+    `/item/all?limit=${limit}&skip=${curr}`,
+    null,
+  )
 
   if (response.data.ok) {
-    items = response.data.data
+    items = response.data.data.items
+    max = response.data.data.count
+    curr = items.length
+  }
+  isLoading = false
+}
+
+const getMore = async () => {
+  isLoading = true
+
+  let { response } = await useAxios(
+    'get',
+    `/item/all?limit=${limit}&skip=${curr}`,
+    null,
+  )
+
+  if (response.data.ok) {
+    response.data.data.items.forEach((item) => {
+      items.push(item)
+    })
+    curr = items.length
   }
   isLoading = false
 }
@@ -194,8 +223,8 @@ const text = $ref({
     en: 'Delete Item',
   },
   doneProcess: {
-    ar: 'هذا العنصر سوف يتم حذفه فقط اذا كان لا يوجد مزاد نشط, انتهى أو الغى مرتبط به. هل تريد الاستمرار؟',
-    en: 'This item will only be deleted if there is no active, expired or canceled bids linked to it. Are you sure you want to proceed?',
+    ar: 'هذا العنصر سوف يتم حذفه فقط اذا كان المزاد المرتبط به لم يبدأ بعد. هل تريد الاستمرار؟',
+    en: 'This item will only be deleted if bids linked to it have not started yet. Are you sure you want to proceed?',
   },
   yes: {
     ar: 'نعم',
@@ -225,7 +254,7 @@ useMeta({ title: $t(text.title), base: true })
         $t(text.addItem)
       }}</BaseButton>
     </div>
-    <div v-if="!isLoading">
+    <div v-if="items.length > 0">
       <BaseEmpty
         v-if="items.length === 0"
         :msg="{
@@ -248,6 +277,16 @@ useMeta({ title: $t(text.title), base: true })
         />
       </div>
     </div>
+
+    <BaseLoader v-if="isLoading && items.length === 0" />
+
+    <Paginate
+      v-if="items.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getMore"
+    />
   </div>
 
   <transition name="fade">

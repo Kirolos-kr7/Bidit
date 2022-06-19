@@ -6,28 +6,42 @@ import Paginate from '../components/Paginate.vue'
 import { $t, useAxios, useMeta } from '../functions'
 
 let bids = $ref([])
+let limit = $ref(4)
 let curr = $ref(0)
-let max = $ref(66)
+let max = $ref(0)
 let isLoading = $ref(true)
 
 onMounted(async () => {
   isLoading = true
-  let { response } = await useAxios('get', '/bid/all')
+  let { response } = await useAxios('get', `/bid/all?limit=${limit}`)
 
   if (response.data.ok) {
-    bids = response.data.data
-    curr += response.data.data.length
+    bids = response.data.data.bids
+    max = response.data.data.count
+    curr = bids.length
   }
 
   isLoading = false
 })
 
-const getMore = () => {
+const getMore = async () => {
   isLoading = true
 
-  setTimeout(() => {
-    isLoading = false
-  }, 1000)
+  let { response } = await useAxios(
+    'get',
+    `/bid/all?limit=${limit}&skip=${curr}`,
+  )
+
+  if (response.data.ok) {
+    response.data.data.bids.forEach((bid) => {
+      bids.push(bid)
+    })
+
+    max = response.data.data.count
+    curr = bids.length
+  }
+
+  isLoading = false
 }
 
 const text = $ref({

@@ -6,8 +6,9 @@ import 'vue3-carousel/dist/carousel.css'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import Bids from '../components/Bids.vue'
 import { $t, useAxios, useMeta } from '../functions'
-import RecentBids from '../components/RecentBids.vue'
+import RecentlyViewedBids from '../components/RecentlyViewedBids.vue'
 import BaseButton from '../components/Base/BaseButton.vue'
+import RecommendedBids from '../components/RecommendedBids.vue'
 
 const { $state: state } = $(useStore())
 
@@ -20,7 +21,7 @@ onMounted(async () => {
   let { response } = await useAxios('get', '/bid/all?limit=4')
 
   if (response.data.ok) {
-    bids = response.data.data
+    bids = response.data.data.bids
   }
 
   isLoading = false
@@ -47,9 +48,9 @@ const setPreferedWidth = () => {
 }
 
 const text = $ref({
-  forYou: {
-    ar: `أفضل الاختيارات لك`,
-    en: `Top Bids For You`,
+  latest: {
+    ar: `اخر المزادات`,
+    en: `Latest Bids`,
   },
   viewAllBids: {
     ar: `عرض جميع المزادات`,
@@ -121,7 +122,7 @@ useMeta({
   </header>
 
   <section class="my-4 p-4 md:my-6" v-if="bids">
-    <BaseTitle>{{ $t(text.forYou) }}</BaseTitle>
+    <BaseTitle>{{ $t(text.latest) }}</BaseTitle>
     <Bids :bids="bids" :isLoading="isLoading" />
   </section>
 
@@ -166,7 +167,9 @@ useMeta({
     </RouterLink>
   </section>
 
-  <RecentBids />
+  <RecentlyViewedBids />
+
+  <RecommendedBids />
 
   <div class="text-center">
     <RouterLink :to="`/${state.lang}/bids`">

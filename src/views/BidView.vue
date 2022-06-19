@@ -254,6 +254,7 @@ const newReport = async () => {
   isLoadingNewReport = true
   let body = {
     type: reportType,
+    for: bidID,
     description: reportDesc,
     recipient: bid?.user?._id,
   }
@@ -474,6 +475,8 @@ const newReport = async () => {
     </div>
   </div>
 
+  <SimilarBids v-if="!isLoading" />
+
   <transition name="fade">
     <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
     </BaseDialog>
@@ -515,8 +518,6 @@ const newReport = async () => {
       </form>
     </div>
   </transition>
-
-  <SimilarBids />
 </template>
 
 <style>

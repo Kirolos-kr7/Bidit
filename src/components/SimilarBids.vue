@@ -34,7 +34,7 @@ const text = $ref({
 </script>
 
 <template>
-  <section class="my-4 p-4 md:my-6" v-if="bids.length > 0">
+  <section class="my-4 p-4 md:my-6">
     <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
     <Bids :bids="bids" :isLoading="isLoading" />
   </section>
