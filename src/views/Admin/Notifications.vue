@@ -1,5 +1,4 @@
 <script setup>
-import BaseTable from '../../components/Base/BaseTable.vue'
 import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import BaseTextArea from '../../components/Base/BaseTextArea.vue'
@@ -8,7 +7,6 @@ import BaseButton from '../../components/Base/BaseButton.vue'
 import { useAxios, useMeta } from '../../functions'
 import BaseError from '../../components/Base/BaseError.vue'
 import { onMounted } from 'vue'
-import { computed } from '@vue/reactivity'
 import Notification from '../../components/Notification.vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
