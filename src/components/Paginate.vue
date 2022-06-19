@@ -43,8 +43,9 @@ const text = $ref({
       ></span>
     </div>
     <button
+      v-if="curr < max"
       class="w-auto rounded-md border-2 border-black bg-slate-50 px-3 py-2 text-sm font-semibold hover:enabled:bg-slate-200 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-300"
-      :disabled="isLoading || curr >= max"
+      :disabled="isLoading"
       @click="$emit('more')"
     >
       {{ $t(text.btn) }}

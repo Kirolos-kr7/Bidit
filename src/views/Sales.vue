@@ -7,24 +7,35 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import { $t, useAxios, useMeta } from '../functions'
 import Bids from '../components/Bids.vue'
 import BaseDialog from '../components/Base/BaseDialog.vue'
+import Paginate from '../components/Paginate.vue'
 const { $state: state } = $(useStore())
 
 let bids = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
 let isLoading = $ref(false)
 let deleteDialog = $ref(false)
 let selectedBid = $ref(null)
 
 onMounted(async () => {
-  getSlaes()
+  getBids()
 })
 
-const getSlaes = async () => {
+const getBids = async () => {
   isLoading = true
 
-  let { response } = await useAxios('get', '/bid/sales')
+  let { response } = await useAxios(
+    'get',
+    `/bid/sales?limit=${limit}&skip=${curr}`,
+  )
 
   if (response.data.ok) {
-    bids = response.data.data
+    response.data.data.bids.forEach((bid) => {
+      bids.push(bid)
+    })
+    max = response.data.data.count
+    curr = bids.length
   }
   isLoading = false
 }
@@ -37,7 +48,10 @@ const deleteBid = (val) => {
 const approveDelete = async () => {
   let { response } = await useAxios('delete', `/bid/delete/${selectedBid._id}`)
   if (response.data.ok) {
-    getSlaes()
+    bids = []
+    curr = 0
+    max = 0
+    getBids()
     deleteDialog = false
   }
 }
@@ -99,6 +113,14 @@ useMeta({ title: $t(text.title), base: true })
       :isLoading="isLoading"
       :actions="true"
       @deleteBid="deleteBid"
+    />
+
+    <Paginate
+      v-if="bids.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getBids"
     />
   </div>
 

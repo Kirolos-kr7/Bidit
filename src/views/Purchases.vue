@@ -4,20 +4,35 @@ import BaseInfo from '../components/Base/BaseInfo.vue'
 import { onMounted } from 'vue'
 import { $t, useAxios, useMeta } from '../functions'
 import Bids from '../components/Bids.vue'
+import Paginate from '../components/Paginate.vue'
 
 let bids = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
 let isLoading = $ref(false)
 
 onMounted(async () => {
+  getBids()
+})
+
+const getBids = async () => {
   isLoading = true
 
-  let { response } = await useAxios('get', '/bid/purchases')
+  let { response } = await useAxios(
+    'get',
+    `/bid/purchases?limit=${limit}&skip=${curr}`,
+  )
 
   if (response.data.ok) {
-    bids = response.data.data
+    response.data.data.bids.forEach((bid) => {
+      bids.push(bid)
+    })
+    max = response.data.data.count
+    curr = bids.length
   }
   isLoading = false
-})
+}
 
 const text = $ref({
   title: {
@@ -39,5 +54,13 @@ useMeta({ title: $t(text.title), base: true })
       >{{ $t(text.title) }} <BaseInfo>{{ $t(text.info) }} </BaseInfo></BaseTitle
     >
     <Bids :bids="bids" :isLoading="isLoading" />
+
+    <Paginate
+      v-if="bids.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getBids"
+    />
   </div>
 </template>
