@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted } from 'vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
+import BaseEmpty from '../components/Base/BaseEmpty.vue'
+import BaseLoader from '../components/Base/BaseLoader.vue'
 import { $t, useAxios, useMeta } from '../functions'
 import OrderCard from '../components/OrderCard.vue'
 import Paginate from '../components/Paginate.vue'
@@ -18,6 +20,8 @@ onMounted(async () => {
 })
 
 const getOrders = async () => {
+  isLoading = true
+
   let { response } = await useAxios(
     'get',
     `/order/user?limit=${limit}&skip${curr}`,
@@ -30,6 +34,8 @@ const getOrders = async () => {
     max = response.data.data.count
     curr = orders.length
   }
+
+  isLoading = false
 }
 
 const text = $ref({
@@ -45,7 +51,17 @@ useMeta({ title: $t(text.title), base: true })
 <template>
   <div class="px-5">
     <BaseTitle>{{ $t(text.title) }}</BaseTitle>
-    <div class="mt-6 grid gap-3 md:grid-cols-2">
+  </div>
+  <div v-if="!isLoading || orders.length > 0">
+    <BaseEmpty
+      v-if="orders.length === 0"
+      :msg="{
+        ar: 'لا يوجد لديك طلبات الان!',
+        en: 'No orders available now!',
+      }"
+    />
+
+    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-else>
       <template v-for="order in orders" :key="order._id">
         <router-link :to="`/${state.lang}/account/order/${order._id}`">
           <OrderCard :order="order" />
@@ -61,4 +77,6 @@ useMeta({ title: $t(text.title), base: true })
       @more="getOrders"
     />
   </div>
+
+  <BaseLoader v-else />
 </template>
