@@ -11,17 +11,34 @@ import {
 } from '../functions'
 import BaseEmpty from '../components/Base/BaseEmpty.vue'
 import BaseLoader from '../components/Base/BaseLoader.vue'
+import Paginate from '../components/Paginate.vue'
 
-let resports = $ref([])
+let reports = $ref([])
+let limit = $ref(1)
+let curr = $ref(0)
+let max = $ref(0)
 let isLoading = $ref(false)
 
 onMounted(async () => {
-  isLoading = true
-  let { response } = await useAxios('get', '/report/user')
-
-  if (response.data.ok) resports = response.data.data
-  isLoading = false
+  getReports()
 })
+
+const getReports = async () => {
+  isLoading = true
+  let { response } = await useAxios(
+    'get',
+    `/report/user?limit=${limit}&skip${curr}`,
+  )
+
+  if (response.data.ok) {
+    response.data.data.reports.forEach((order) => {
+      reports.push(order)
+    })
+    max = response.data.data.count
+    curr = reports.length
+  }
+  isLoading = false
+}
 
 const text = $ref({
   title: {
@@ -63,10 +80,17 @@ useMeta({ title: $t(text.title), base: true })
     </div>
   </div>
 
-  <div v-if="!isLoading">
-    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-if="resports.length > 0">
+  <div v-if="!isLoading || reports.length > 0">
+    <BaseEmpty
+      v-if="reports.length === 0"
+      :msg="{
+        ar: 'لا يوجد لديك بلاغات الان!',
+        en: 'No reports available now!',
+      }"
+    />
+    <div class="mt-6 grid gap-3 px-5 md:grid-cols-2" v-else>
       <div
-        v-for="report in resports"
+        v-for="report in reports"
         :key="report._id"
         class="relative grid gap-x-5 gap-y-0.5 overflow-hidden rounded-md bg-white p-3 capitalize shadow-md md:grid-cols-[auto,1fr]"
       >
@@ -88,12 +112,13 @@ useMeta({ title: $t(text.title), base: true })
         <span>{{ getReportStatus(report.status) }}</span>
       </div>
     </div>
-    <BaseEmpty
-      v-else
-      :msg="{
-        ar: 'لا يوجد لديك بلاغات الان!',
-        en: 'No reports available now!',
-      }"
+
+    <Paginate
+      v-if="reports.length != 0"
+      :curr="curr"
+      :max="max"
+      :isLoading="isLoading"
+      @more="getReports"
     />
   </div>
 
