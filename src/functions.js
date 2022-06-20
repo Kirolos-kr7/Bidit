@@ -13,12 +13,12 @@ export const $t = (x) => {
 }
 
 export const routerLang = (state, to, next) => {
-  if (to.params.lang === 'ar') {
-    state.lang = 'ar'
-    localStorage.setItem('lang', 'ar')
-  } else if (to.params.lang === 'en') {
+  if (to.params.lang === 'en' || to.meta.requiresAdmin) {
     state.lang = 'en'
     localStorage.setItem('lang', 'en')
+  } else if (to.params.lang === 'ar') {
+    state.lang = 'ar'
+    localStorage.setItem('lang', 'ar')
   } else {
     const currentLang = localStorage.getItem('lang')
 
