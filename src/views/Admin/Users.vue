@@ -7,6 +7,7 @@ import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
 import Paginate from '../../components/Paginate.vue'
+import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 
 let data = $ref([])
 let limit = $ref(8)
@@ -19,6 +20,7 @@ let adminDialog = $ref(false)
 let selectedUser = $ref(null)
 let constraint = $ref('name')
 let direction = $ref('asc')
+let searchValue = $ref('')
 
 const getUsers = async (reset = false) => {
   if (reset) {
@@ -27,12 +29,14 @@ const getUsers = async (reset = false) => {
     max = 0
   }
 
+  let url = `/admin/users?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
+  if (searchValue.trim() !== '')
+    url = `/admin/searchUsers/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
   isLoading = true
 
-  let { response } = await useAxios(
-    'get',
-    `/admin/users?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
-  )
+  let { response } = await useAxios('get', url)
 
   if (response.data.ok) {
     response.data.data.users.forEach((user) => {
@@ -109,12 +113,28 @@ const approveRemove = async () => {
   }
 }
 
+const search = async (val) => {
+  searchValue = val
+
+  getUsers(true)
+}
+
 useMeta({ title: 'Users', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between">
+  <div class="flex items-start justify-between gap-3">
     <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Users</h1>
+
+    <BaseSearchBox
+      @search="(val) => search(val)"
+      @clear="
+        () => {
+          searchValue = ''
+          getUsers(true)
+        }
+      "
+    />
   </div>
   <BaseTable
     :columns="['User', 'Email', 'Admin']"

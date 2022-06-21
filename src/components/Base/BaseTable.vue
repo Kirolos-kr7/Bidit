@@ -82,15 +82,11 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
       class="border-b last-of-type:border-b-0"
     >
       <td
-        v-for="(value, index) in values"
+        v-for="value in values"
         :key="value"
         class="clamp-2 px-3 py-2"
         :class="value === 'status' && 'capitalize'"
       >
-        <input
-          type="checkbox"
-          v-if="index === 0 && columns[0] === 'User' && values[0] === 'name'"
-        />
         {{ item[value] || 'N/F' }}
       </td>
       <td class="flex items-center justify-end p-2">

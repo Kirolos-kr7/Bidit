@@ -9,6 +9,7 @@ import BaseTitle from '../../components/Base/BaseTitle.vue'
 import BaseButton from '../../components/Base/BaseButton.vue'
 import BaseDialog from '../../components/Base/BaseDialog.vue'
 import Paginate from '../../components/Paginate.vue'
+import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 
 let data = $ref([])
 let limit = $ref(4)
@@ -17,9 +18,9 @@ let max = $ref(0)
 let isLoading = $ref(false)
 let router = useRouter()
 let { $state: state } = useStore()
-
 let constraint = $ref('item')
 let direction = $ref('asc')
+let searchValue = $ref('')
 let selectedBid = $ref(null)
 let removeDialog = $ref(false)
 
@@ -30,12 +31,14 @@ const getBids = async (reset = false) => {
     max = 0
   }
 
+  let url = `/admin/bids?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
+  if (searchValue.trim() !== '')
+    url = `/admin/searchBids/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
   isLoading = true
 
-  let { response } = await useAxios(
-    'get',
-    `/admin/bids?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
-  )
+  let { response } = await useAxios('get', url)
 
   if (response.data.ok) {
     response.data.data.bids.forEach((bid) => {
@@ -83,12 +86,28 @@ const approveRemove = async () => {
   }
 }
 
+const search = async (val) => {
+  searchValue = val
+
+  getBids(true)
+}
+
 useMeta({ title: 'Bids', base: true })
 </script>
 
 <template>
   <div class="flex items-start justify-between">
     <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Bids</h1>
+
+    <BaseSearchBox
+      @search="(val) => search(val)"
+      @clear="
+        () => {
+          searchValue = ''
+          getBids(true)
+        }
+      "
+    />
   </div>
   <div class="w-full">
     <BaseTable

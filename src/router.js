@@ -232,6 +232,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'admin/logs',
+          name: 'logsAdmin',
+          component: () => import('./views/Admin/Logs.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
           path: '404',
           name: '404',
           component: () => import('./views/404.vue'),

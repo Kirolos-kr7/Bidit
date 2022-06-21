@@ -11,6 +11,7 @@ import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
 import { useStore } from '../../store'
 import Paginate from '../../components/Paginate.vue'
+import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 
 let { $state: state } = useStore()
 let data = $ref([])
@@ -24,6 +25,7 @@ let selectedReport = $ref(false)
 let error = $ref(null)
 let constraint = $ref('_id')
 let direction = $ref('asc')
+let searchValue = $ref('')
 
 const getReports = async (reset = false) => {
   if (reset) {
@@ -32,12 +34,14 @@ const getReports = async (reset = false) => {
     max = 0
   }
 
+  let url = `/admin/reports?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
+  if (searchValue.trim() !== '')
+    url = `/admin/searchReports/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
   isLoading = true
 
-  let { response } = await useAxios(
-    'get',
-    `/admin/reports?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
-  )
+  let { response } = await useAxios('get', url)
   console.log(response.data)
   if (response.data.ok) {
     response.data.data.reports.forEach((report) => {
@@ -97,12 +101,28 @@ const resetDialog = () => {
   selectedReport = null
 }
 
+const search = async (val) => {
+  searchValue = val
+
+  getReports(true)
+}
+
 useMeta({ title: 'Reports', base: true })
 </script>
 
 <template>
   <div class="flex items-start justify-between">
     <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Reports</h1>
+
+    <BaseSearchBox
+      @search="(val) => search(val)"
+      @clear="
+        () => {
+          searchValue = ''
+          getReports(true)
+        }
+      "
+    />
   </div>
   <BaseTable
     :columns="['Report', 'Type', 'Status']"

@@ -28,7 +28,7 @@ useMeta({ title: 'Admin Dashboard', base: true })
   <span class="mb-5 block font-merriweather text-gray-500">{{ dt }}</span>
   <h2 class="mb-5 font-merriweather text-xl font-semibold">Analytics</h2>
 
-  <div class="grid grid-cols-4 gap-5">
+  <div class="grid grid-cols-2 gap-5 md:grid-cols-4">
     <router-link
       to="admin/users"
       class="flex flex-col gap-1 rounded-lg bg-[#fef6e1] bg-opacity-60 p-5 shadow-md"

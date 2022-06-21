@@ -11,7 +11,7 @@ let isCollapsed = $ref(true)
     :class="isCollapsed ? 'md:w-16' : 'md:w-48'"
   >
     <ul
-      class="fixed flex min-h-screen w-[inherit] flex-row items-center justify-start gap-x-0.5 overflow-hidden bg-[#1C263D] sm:items-stretch md:flex-col"
+      class="fixed flex w-[inherit] flex-row items-center justify-between gap-x-0.5 overflow-hidden bg-[#1C263D] sm:min-h-screen sm:items-stretch md:flex-col md:justify-start"
     >
       <!-- <li class="h-px w-2/3 bg-gray-700 mx-auto my-3"></li> -->
       <li>
@@ -231,70 +231,32 @@ let isCollapsed = $ref(true)
           </transition>
         </RouterLink>
       </li>
-      <!-- <li>
-          <RouterLink
-            to="/chat"
-            class=" flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
-            title="Chat"
+      <li>
+        <RouterLink
+          :to="`/${state.lang}/admin/logs`"
+          class="flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
+          title="Logs"
+        >
+          <svg
+            class="pointer-events-none mx-[10px] w-5 flex-shrink-0 select-none"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              class="pointer-events-none mx-[10px] w-5 flex-shrink-0 select-none"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 6.5C6 4.567 7.567 3 9.5 3H19C21.7614 3 24 5.23858 24 8V10H9.5C7.567 10 6 8.433 6 6.5V6.5Z"
-                fill="#425165"
-              />
-              <path
-                d="M0 19C0 16.2386 2.23858 14 5 14H14.5C16.433 14 18 15.567 18 17.5V17.5C18 19.433 16.433 21 14.5 21H0V19Z"
-                fill="#8291A5"
-              />
-            </svg>
+            <path
+              d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+            ></path>
+          </svg>
 
-            <transition name="fade">
-              <span
-                v-show="!isCollapsed"
-                class="hidden translate-y-px font-normal transition-all md:block"
-                >Messages</span
-              >
-            </transition>
-          </RouterLink>
-        </li> -->
-      <!-- <li>
-          <RouterLink
-            to="/settings"
-            class=" flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
-            title="Settings"
-          >
-            <svg
-              class="pointer-events-none mx-[10px] w-5 flex-shrink-0 select-none"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <transition name="fade">
+            <span
+              v-show="!isCollapsed"
+              class="hidden translate-y-px font-normal transition-all md:block"
+              >Logs</span
             >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M14.0488 2.6088C13.5263 0.463733 10.4737 0.463733 9.95119 2.6088C9.87318 2.93113 9.72016 3.23049 9.5046 3.48252C9.28904 3.73454 9.01702 3.93212 8.71068 4.05915C8.40434 4.18619 8.07234 4.23911 7.74168 4.2136C7.41103 4.18809 7.09107 4.08487 6.80784 3.91234C4.92128 2.76281 2.76246 4.92162 3.912 6.80818C4.65452 8.02647 3.99587 9.61602 2.60983 9.9529C0.46339 10.474 0.46339 13.528 2.60983 14.0478C2.93225 14.1259 3.23166 14.279 3.48369 14.4948C3.73571 14.7105 3.93323 14.9827 4.06014 15.2892C4.18706 15.5957 4.2398 15.9279 4.21405 16.2586C4.18831 16.5893 4.08481 16.9093 3.912 17.1925C2.76246 19.0791 4.92128 21.2379 6.80784 20.0883C7.09101 19.9155 7.411 19.812 7.74175 19.7863C8.07249 19.7605 8.40464 19.8133 8.71114 19.9402C9.01765 20.0671 9.28985 20.2646 9.50557 20.5167C9.7213 20.7687 9.87445 21.0681 9.95256 21.3905C10.4737 23.537 13.5277 23.537 14.0474 21.3905C14.1258 21.0683 14.2791 20.7691 14.4949 20.5172C14.7107 20.2654 14.9828 20.068 15.2892 19.9411C15.5956 19.8142 15.9277 19.7614 16.2583 19.787C16.589 19.8126 16.9089 19.9158 17.1922 20.0883C19.0787 21.2379 21.2375 19.0791 20.088 17.1925C19.9155 16.9093 19.8122 16.5893 19.7867 16.2587C19.7611 15.928 19.8139 15.596 19.9407 15.2896C20.0676 14.9832 20.265 14.711 20.5169 14.4952C20.7687 14.2795 21.0679 14.1262 21.3902 14.0478C23.5366 13.5266 23.5366 10.4727 21.3902 9.9529C21.0678 9.87479 20.7683 9.72164 20.5163 9.50592C20.2643 9.29019 20.0668 9.01799 19.9399 8.71149C19.8129 8.40498 19.7602 8.07283 19.7859 7.74209C19.8117 7.41135 19.9152 7.09136 20.088 6.80818C21.2375 4.92162 19.0787 2.76281 17.1922 3.91234C16.909 4.08516 16.589 4.18865 16.2583 4.2144C15.9275 4.24014 15.5954 4.18741 15.2889 4.06049C14.9823 3.93357 14.7102 3.73606 14.4944 3.48403C14.2787 3.232 14.1255 2.93259 14.0474 2.61018L14.0488 2.6088ZM12 16.1255C13.0941 16.1255 14.1433 15.6909 14.9169 14.9173C15.6905 14.1436 16.1251 13.0944 16.1251 12.0003C16.1251 10.9063 15.6905 9.85705 14.9169 9.08344C14.1433 8.30983 13.0941 7.87521 12 7.87521C10.9059 7.87521 9.85671 8.30983 9.08309 9.08344C8.30948 9.85705 7.87487 10.9063 7.87487 12.0003C7.87487 13.0944 8.30948 14.1436 9.08309 14.9173C9.85671 15.6909 10.9059 16.1255 12 16.1255V16.1255Z"
-                fill="#8291A5"
-              />
-            </svg>
-
-            <transition name="fade">
-              <span
-                v-show="!isCollapsed"
-                class="hidden translate-y-px font-normal transition-all md:block"
-                >Settings</span
-              >
-            </transition>
-          </RouterLink>
-        </li> -->
+          </transition>
+        </RouterLink>
+      </li>
       <li>
         <RouterLink
           :to="`/${state.lang}`"

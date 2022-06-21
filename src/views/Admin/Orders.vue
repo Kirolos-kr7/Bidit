@@ -14,6 +14,7 @@ import BaseType from '../../components/Base/BaseType.vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import Paginate from '../../components/Paginate.vue'
+import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 dayjs.extend(localizedFormat)
 
 let data = $ref([])
@@ -29,6 +30,7 @@ let error = $ref(null)
 
 let constraint = $ref('_id')
 let direction = $ref('asc')
+let searchValue = $ref('')
 
 const getOrders = async (reset = false) => {
   if (reset) {
@@ -37,12 +39,14 @@ const getOrders = async (reset = false) => {
     max = 0
   }
 
+  let url = `/admin/orders?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
+  if (searchValue.trim() !== '')
+    url = `/admin/searchOrders/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+
   isLoading = true
 
-  let { response } = await useAxios(
-    'get',
-    `/admin/orders?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`,
-  )
+  let { response } = await useAxios('get', url)
 
   if (response.data.ok) {
     response.data.data.orders.forEach((order) => {
@@ -123,12 +127,28 @@ const resetDialog = () => {
   selectedOrder = null
 }
 
+const search = async (val) => {
+  searchValue = val
+
+  getOrders(true)
+}
+
 useMeta({ title: 'Orders', base: true })
 </script>
 
 <template>
   <div class="flex items-start justify-between">
     <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Orders</h1>
+
+    <BaseSearchBox
+      @search="(val) => search(val)"
+      @clear="
+        () => {
+          searchValue = ''
+          getOrders(true)
+        }
+      "
+    />
   </div>
   <BaseTable
     :columns="['Order', 'Auctioneer', 'Bidder', 'Status', 'Total Price']"
