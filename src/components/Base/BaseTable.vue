@@ -34,7 +34,7 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove'])
 </script>
 
 <template>
-  <table class="w-full overflow-hidden rounded-md bg-white">
+  <table class="w-full overflow-hidden rounded-md rounded-b-none bg-white">
     <tr class="bg-gray-300">
       <th
         v-for="(column, i) in columns"

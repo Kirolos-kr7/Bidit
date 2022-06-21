@@ -96,8 +96,10 @@ useMeta({ title: 'Bids', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between">
-    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Bids</h1>
+  <div
+    class="mb-5 flex w-full flex-col items-start justify-between gap-3 sm:flex-row"
+  >
+    <h1 class="font-merriweather text-3xl font-extrabold">Bids</h1>
 
     <BaseSearchBox
       @search="(val) => search(val)"
@@ -109,7 +111,8 @@ useMeta({ title: 'Bids', base: true })
       "
     />
   </div>
-  <div class="w-full">
+
+  <div class="overflow-x-auto">
     <BaseTable
       :columns="['Bid', 'Auctioneer', 'Status', 'Start Price']"
       :values="['item', 'user', 'status', 'minPrice']"
@@ -122,15 +125,15 @@ useMeta({ title: 'Bids', base: true })
       @open="open"
       @remove="remove"
     />
-
-    <Paginate
-      v-if="data.length != 0"
-      :curr="curr"
-      :max="max"
-      :isLoading="isLoading"
-      @more="getBids"
-    />
   </div>
+
+  <Paginate
+    v-if="data.length != 0"
+    :curr="curr"
+    :max="max"
+    :isLoading="isLoading"
+    @more="getBids"
+  />
 
   <transition name="fade">
     <BaseDialog v-if="removeDialog" @click="removeDialog = false"> </BaseDialog>

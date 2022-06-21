@@ -137,8 +137,10 @@ useMeta({ title: 'Orders', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between">
-    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Orders</h1>
+  <div
+    class="mb-5 flex w-full flex-col items-start justify-between gap-3 sm:flex-row"
+  >
+    <h1 class="font-merriweather text-3xl font-extrabold">Orders</h1>
 
     <BaseSearchBox
       @search="(val) => search(val)"
@@ -150,19 +152,22 @@ useMeta({ title: 'Orders', base: true })
       "
     />
   </div>
-  <BaseTable
-    :columns="['Order', 'Auctioneer', 'Bidder', 'Status', 'Total Price']"
-    :values="['_id', 'auctioneer', 'bidder', 'status', 'totalPrice']"
-    :layout="['auto', 'auto', 'auto', 'auto', 'auto', 'auto']"
-    :data="formatedData"
-    :constraint="constraint"
-    :direction="direction"
-    :actions="{ open: true, edit: true, remove: true }"
-    @sortBy="sortBy"
-    @open="open"
-    @edit="edit"
-    @remove="remove"
-  />
+
+  <div class="overflow-x-auto">
+    <BaseTable
+      :columns="['Order', 'Auctioneer', 'Bidder', 'Status', 'Total Price']"
+      :values="['_id', 'auctioneer', 'bidder', 'status', 'totalPrice']"
+      :layout="['auto', 'auto', 'auto', 'auto', 'auto', 'auto']"
+      :data="formatedData"
+      :constraint="constraint"
+      :direction="direction"
+      :actions="{ open: true, edit: true, remove: true }"
+      @sortBy="sortBy"
+      @open="open"
+      @edit="edit"
+      @remove="remove"
+    />
+  </div>
 
   <Paginate
     v-if="data.length != 0"

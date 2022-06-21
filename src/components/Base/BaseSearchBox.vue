@@ -18,11 +18,14 @@ watch($$(searchValue), () => {
 </script>
 
 <template>
-  <form @submit.prevent="$emit('search', searchValue)" class="flex">
+  <form
+    @submit.prevent="$emit('search', searchValue)"
+    class="flex w-full sm:w-auto"
+  >
     <input
       type="search"
       v-model="searchValue"
-      class="w-[300px] rounded-l-md py-2 px-3 focus:outline-none"
+      class="w-full rounded-l-md py-2 px-3 focus:outline-none sm:w-[300px]"
       :placeholder="placeholder"
     />
     <button class="rounded-r-md bg-indigo-600 p-2 hover:bg-indigo-500">

@@ -111,8 +111,10 @@ useMeta({ title: 'Reports', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between">
-    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Reports</h1>
+  <div
+    class="mb-5 flex w-full flex-col items-start justify-between gap-3 sm:flex-row"
+  >
+    <h1 class="font-merriweather text-3xl font-extrabold">Reports</h1>
 
     <BaseSearchBox
       @search="(val) => search(val)"
@@ -124,18 +126,21 @@ useMeta({ title: 'Reports', base: true })
       "
     />
   </div>
-  <BaseTable
-    :columns="['Report', 'Type', 'Status']"
-    :values="['_id', 'type', 'status']"
-    :layout="['auto', 'auto', 'auto']"
-    :data="formatedData"
-    :constraint="constraint"
-    :direction="direction"
-    :actions="{ open: true, edit: true }"
-    @sortBy="sortBy"
-    @open="open"
-    @edit="edit"
-  />
+
+  <div class="overflow-x-auto">
+    <BaseTable
+      :columns="['Report', 'Type', 'Status']"
+      :values="['_id', 'type', 'status']"
+      :layout="['auto', 'auto', 'auto']"
+      :data="formatedData"
+      :constraint="constraint"
+      :direction="direction"
+      :actions="{ open: true, edit: true }"
+      @sortBy="sortBy"
+      @open="open"
+      @edit="edit"
+    />
+  </div>
 
   <Paginate
     v-if="data.length != 0"

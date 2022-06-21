@@ -48,8 +48,10 @@ useMeta({ title: 'Logs', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
-    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Logs</h1>
+  <div
+    class="mb-5 flex w-full flex-col items-start justify-between gap-3 sm:flex-row"
+  >
+    <h1 class="font-merriweather text-3xl font-extrabold">Logs</h1>
 
     <BaseSearchBox
       @search="(val) => search(val)"
@@ -62,9 +64,16 @@ useMeta({ title: 'Logs', base: true })
     />
   </div>
 
-  <div class="flex flex-col rounded-md bg-white p-3" v-if="data.length > 0">
-    <span v-for="log in data" :key="log._id"> [ - ] {{ log.message }} </span>
-  </div>
+  <ul class="flex flex-col rounded-md bg-white p-3" v-if="data.length > 0">
+    <li
+      v-for="log in data"
+      :key="log._id"
+      class="relative break-words py-1 pl-8"
+    >
+      <span class="absolute left-0">[ - ]</span>
+      {{ log.message }}
+    </li>
+  </ul>
 
   <Paginate
     v-if="data.length != 0"

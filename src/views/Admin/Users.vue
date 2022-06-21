@@ -123,8 +123,10 @@ useMeta({ title: 'Users', base: true })
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-3">
-    <h1 class="mb-5 font-merriweather text-3xl font-extrabold">Users</h1>
+  <div
+    class="mb-5 flex w-full flex-col items-start justify-between gap-3 sm:flex-row"
+  >
+    <h1 class="font-merriweather text-3xl font-extrabold">Users</h1>
 
     <BaseSearchBox
       @search="(val) => search(val)"
@@ -136,20 +138,22 @@ useMeta({ title: 'Users', base: true })
       "
     />
   </div>
-  <BaseTable
-    :columns="['User', 'Email', 'Admin']"
-    :values="['name', 'email', 'isAdmin']"
-    :layout="['auto', 'auto', 'auto']"
-    :data="formatedData"
-    :constraint="constraint"
-    :direction="direction"
-    :actions="{ open: true, edit: true, remove: true }"
-    @sortBy="sortBy"
-    @open="open"
-    @edit="edit"
-    @remove="remove"
-  />
 
+  <div class="overflow-x-auto">
+    <BaseTable
+      :columns="['User', 'Email', 'Admin']"
+      :values="['name', 'email', 'isAdmin']"
+      :layout="['auto', 'auto', 'auto']"
+      :data="formatedData"
+      :constraint="constraint"
+      :direction="direction"
+      :actions="{ open: true, edit: true, remove: true }"
+      @sortBy="sortBy"
+      @open="open"
+      @edit="edit"
+      @remove="remove"
+    />
+  </div>
   <Paginate
     v-if="data.length != 0"
     :curr="curr"
