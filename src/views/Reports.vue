@@ -27,7 +27,7 @@ const getReports = async () => {
   isLoading = true
   let { response } = await useAxios(
     'get',
-    `/report/user?limit=${limit}&skip${curr}`,
+    `/report/user?limit=${limit}&skip=${curr}`,
   )
 
   if (response.data.ok) {

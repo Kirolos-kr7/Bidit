@@ -21,10 +21,11 @@ let max = $ref(0)
 let isLoading = $ref(false)
 let reportDialog = $ref(false)
 let editDialog = $ref(false)
-let selectedReport = $ref(false)
+let selectedReport = $ref(null)
+let reportAction = $ref('')
 let error = $ref(null)
-let constraint = $ref('_id')
-let direction = $ref('asc')
+let constraint = $ref('createdAt')
+let direction = $ref('desc')
 let searchValue = $ref('')
 
 const getReports = async (reset = false) => {
@@ -86,7 +87,13 @@ const saveEdit = async () => {
   let { response } = await useAxios(
     'patch',
     `/report/feedback/${selectedReport._id}`,
-    { status: selectedReport.status },
+    {
+      status: selectedReport.status,
+      action: reportAction,
+      recipient: selectedReport.recipient,
+      message: selectedReport.type,
+      bidID: selectedReport.for,
+    },
   )
   if (!response.data.ok) error = response.data.message
   else {
@@ -106,6 +113,15 @@ const search = async (val) => {
 
   getReports(true)
 }
+
+let reportActions = $ref([
+  {
+    en: 'ban user for a week and remove bid',
+  },
+  {
+    en: 'ban user forever and remove bid',
+  },
+])
 
 useMeta({ title: 'Reports', base: true })
 </script>
@@ -220,6 +236,21 @@ useMeta({ title: 'Reports', base: true })
             :value="status.en"
           >
             {{ status.en }}
+          </option>
+        </BaseSelect>
+        <BaseSelect
+          v-if="selectedReport.status === 'took the appropriate action'"
+          v-model="reportAction"
+          class="!w-full capitalize"
+          @updateInput="(val) => (reportAction = val)"
+          placeholder="Action"
+        >
+          <option
+            v-for="action in reportActions"
+            :key="action.en"
+            :value="action.en"
+          >
+            {{ action.en }}
           </option>
         </BaseSelect>
         <BaseError v-if="error">{{ error }}</BaseError>

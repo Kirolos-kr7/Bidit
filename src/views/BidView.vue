@@ -252,6 +252,7 @@ const text = $ref({
 
 const newReport = async () => {
   isLoadingNewReport = true
+
   let body = {
     type: reportType,
     for: bidID,
@@ -261,7 +262,8 @@ const newReport = async () => {
 
   let { response } = await useAxios('post', '/report/add', body)
 
-  if (response.data.ok) router.push(`/${state.lang}/account/reports`)
+  if (!response.data.ok) error = response.data.message
+  else router.push(`/${state.lang}/account/reports`)
   isLoadingNewReport = false
 }
 </script>
@@ -512,6 +514,7 @@ const newReport = async () => {
           v-model="reportDesc"
           @updateInput="(val) => (reportDesc = val)"
         />
+        <BaseError v-if="error">{{ error }}</BaseError>
         <BaseButton :disabled="isLoadingNewReport && 'disabled'"
           >{{ $t(text.addReport) }}
         </BaseButton>

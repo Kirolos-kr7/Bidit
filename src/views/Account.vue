@@ -71,6 +71,22 @@ const text = $ref({
     ar: 'حفط',
     en: 'Save',
   },
+  male: {
+    ar: 'ذكر',
+    en: 'Male',
+  },
+  female: {
+    ar: 'انثى',
+    en: 'Female',
+  },
+  editAccount: {
+    ar: 'تعديل الحساب',
+    en: 'Edit Account',
+  },
+  toAdmin: {
+    ar: 'الى منصة الادمن',
+    en: 'To Admin Dashboard',
+  },
 })
 
 useMeta({ title: $t(text.title), base: true })
@@ -169,17 +185,19 @@ useMeta({ title: $t(text.title), base: true })
             ></path>
           </svg>
           <span class="font-medium capitalize text-neutral-600">
-            {{ state.user?.gender }}</span
+            {{
+              state.user?.gender === 'male' ? $t(text.male) : $t(text.female)
+            }}</span
           >
         </div>
         <BaseButton class="mt-3" @click="editDialog = true">
-          Edit Profile
+          {{ $t(text.editAccount) }}
         </BaseButton>
         <div v-if="state.user?.isAdmin">
           <BaseButton class="mt-2 bg-teal-700 hover:bg-teal-500">
-            <RouterLink :to="`/${state.lang}/admin`"
-              >To Admin Dashboard</RouterLink
-            >
+            <RouterLink :to="`/${state.lang}/admin`">
+              {{ $t(text.toAdmin) }}
+            </RouterLink>
           </BaseButton>
         </div>
       </div>

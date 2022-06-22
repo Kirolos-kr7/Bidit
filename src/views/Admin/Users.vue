@@ -8,12 +8,15 @@ import BaseButton from '../../components/Base/BaseButton.vue'
 import { computed } from '@vue/reactivity'
 import Paginate from '../../components/Paginate.vue'
 import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
+import BaseError from '../../components/Base/BaseError.vue'
 
 let data = $ref([])
 let limit = $ref(8)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)
+let error = $ref(false)
+let isBanLoading = $ref(false)
 let userDialog = $ref(false)
 let removeDialog = $ref(false)
 let adminDialog = $ref(false)
@@ -100,17 +103,25 @@ const remove = (val) => {
   selectedUser = val
 }
 
-const approveRemove = async () => {
-  let { response } = await useAxios(
-    'delete',
-    `/admin/user-account/${selectedUser._id}`,
-  )
+const approveBan = async (days = 0) => {
+  isBanLoading = true
 
-  if (response.data.ok) {
+  let body = {
+    email: selectedUser.email,
+    message: 'normal ban',
+    days,
+  }
+
+  let { response } = await useAxios('delete', `/admin/user-account`, body)
+  console.log(response)
+  if (!response.data.ok) error = response.data.message
+  else {
     removeDialog = false
     selectedUser = null
     getUsers(true)
   }
+
+  isBanLoading = false
 }
 
 const search = async (val) => {
@@ -208,15 +219,25 @@ useMeta({ title: 'Users', base: true })
       class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
       v-if="removeDialog"
     >
-      <BaseTitle>Remove User</BaseTitle>
+      <BaseTitle>Ban User</BaseTitle>
       <p class="my-3">Are you sure you want to proceed?</p>
-      <div class="flex justify-end gap-2">
+      <BaseError v-if="error"> {{ error }}</BaseError>
+      <div class="mt-3 flex justify-end gap-2">
         <BaseButton
-          class="!bg-red-600 hover:!bg-red-700"
-          @click="approveRemove()"
-          >Yes</BaseButton
+          class="!bg-red-600 hover:!bg-red-700 disabled:!bg-red-200"
+          @click="approveBan(7)"
+          :disabled="isBanLoading"
+          >7 Days</BaseButton
         >
-        <BaseButton @click="removeDialog = false">No</BaseButton>
+        <BaseButton
+          class="!bg-red-600 hover:!bg-red-700 disabled:!bg-red-200"
+          @click="approveBan(0)"
+          :disabled="isBanLoading"
+          >Forever</BaseButton
+        >
+        <BaseButton :disabled="isBanLoading" @click="removeDialog = false"
+          >No</BaseButton
+        >
       </div>
     </div>
   </transition>
