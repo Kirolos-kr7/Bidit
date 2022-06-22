@@ -8,15 +8,15 @@ const text = $ref({
   },
   paragraph1: {
     ar: 'نظام المزاد عبر الإنترنت هو عبارة عن منصة تهدف إلى خدمة مزادات المزاد لإظهار سلعهم الفريدة من أجل جذب المزايدين للانضمام إلى مسابقة لشرائها عبر الإنترنت والتغلب على القيود الجغرافية وشراء أو بيع العناصر على الإنترنت من أي مكان وفي أي وقت .',
-    en: 'Online Auction System is an online auction platform aimed at servicing the auctioneers to show their unique items in order to attract bidders to join a competition to purchase them on the internet and  overcome geographical constraints and purchase or sell items on the internet from anywhere at any time.',
+    en: 'Bid!t is an online auction platform aimed at servicing the auctioneers to show their unique items in order to attract bidders into a competition to purchase them on the internet and overcome geographical constraints and purchase or sell items on the internet from anywhere at any time.',
   },
   paragraph2: {
     ar: 'تم تصميم النظام بحيث يحتوي على العديد من الفئات للعناصر المعروضة والتي يمكن لمقدم العطاء الاختيار من بينها: الفن والأثاث والتحف والتكنولوجيا والملابس والسيارات والحيوانات وأخيراً أشياء أخرى',
     en: 'The system designed to have many categories for the viewed items that bidder can choose from like: art, furniture, antiques, technology, clothes, cars, animals and finally others.',
   },
   Header: {
-    ar: 'يقدم النظام:',
-    en: 'The system offers:',
+    ar: 'ماذا نقدم؟',
+    en: 'What are we offering?',
   },
   paragraph3: {
     ar: 'يسمح للمزاد العلني بإنشاء ملفات تعريف خاصة بهم وإضافة عناصر إلى مخزونهم والتي يمكن استخدامها لاحقًا لإنشاء عطاء لفترة محددة.',
@@ -42,14 +42,14 @@ const text = $ref({
 </script>
 
 <template>
-  <BaseTitle>{{ $t(text.title) }}</BaseTitle>
+  <BaseTitle class="mx-5">{{ $t(text.title) }}</BaseTitle>
 
-  <div class="my-5 font-semibold capitalize">
+  <div class="m-5 font-semibold capitalize">
     <p>{{ $t(text.paragraph1) }}</p>
     <p class="my-5">{{ $t(text.paragraph2) }}</p>
-    <p class="font-bold text-bi-300">{{ $t(text.Header) }}</p>
-    <p>{{ $t(text.paragraph3) }}</p>
-    <p>{{ $t(text.paragraph4) }}</p>
+    <p class="mb-2 text-2xl font-bold">{{ $t(text.Header) }}</p>
+    <p class="my-5">{{ $t(text.paragraph3) }}</p>
+    <p class="my-5">{{ $t(text.paragraph4) }}</p>
     <p class="my-5">{{ $t(text.paragraph5) }}</p>
     <p class="my-5">{{ $t(text.paragraph6) }}</p>
     <p class="my-5">{{ $t(text.paragraph7) }}</p>
