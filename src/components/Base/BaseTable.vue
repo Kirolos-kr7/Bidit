@@ -21,7 +21,7 @@ defineProps({
     required: true,
   },
   direction: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   actions: {

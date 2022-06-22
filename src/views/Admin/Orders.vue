@@ -28,8 +28,8 @@ let removeDialog = $ref(false)
 let selectedOrder = $ref({})
 let error = $ref(null)
 
-let constraint = $ref('_id')
-let direction = $ref('asc')
+let constraint = $ref('createdAt')
+let direction = $ref(-1)
 let searchValue = $ref('')
 
 const getOrders = async (reset = false) => {
@@ -39,10 +39,7 @@ const getOrders = async (reset = false) => {
     max = 0
   }
 
-  let url = `/admin/orders?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
-
-  if (searchValue.trim() !== '')
-    url = `/admin/searchOrders/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+  let url = `/admin/orders?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}&s=${searchValue}`
 
   isLoading = true
 

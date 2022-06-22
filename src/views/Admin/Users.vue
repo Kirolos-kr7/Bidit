@@ -32,10 +32,7 @@ const getUsers = async (reset = false) => {
     max = 0
   }
 
-  let url = `/admin/users?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
-
-  if (searchValue.trim() !== '')
-    url = `/admin/searchUsers/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+  let url = `/admin/users?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}&s=${searchValue}`
 
   isLoading = true
 
@@ -112,8 +109,8 @@ const approveBan = async (days = 0) => {
     days,
   }
 
-  let { response } = await useAxios('delete', `/admin/user-account`, body)
-  console.log(response)
+  let { response } = await useAxios('delete', `/admin/ban-account`, body)
+
   if (!response.data.ok) error = response.data.message
   else {
     removeDialog = false

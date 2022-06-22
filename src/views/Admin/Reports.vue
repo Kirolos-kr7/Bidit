@@ -35,15 +35,11 @@ const getReports = async (reset = false) => {
     max = 0
   }
 
-  let url = `/admin/reports?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
-
-  if (searchValue.trim() !== '')
-    url = `/admin/searchReports/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
-
+  let url = `/admin/reports?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}&s=${searchValue}`
   isLoading = true
 
   let { response } = await useAxios('get', url)
-  console.log(response.data)
+
   if (response.data.ok) {
     response.data.data.reports.forEach((report) => {
       data.push(report)

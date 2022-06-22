@@ -31,10 +31,7 @@ const getBids = async (reset = false) => {
     max = 0
   }
 
-  let url = `/admin/bids?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
-
-  if (searchValue.trim() !== '')
-    url = `/admin/searchBids/${searchValue}?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}`
+  let url = `/admin/bids?sortBy=${constraint}&dir=${direction}&limit=${limit}&skip=${curr}&s=${searchValue}`
 
   isLoading = true
 
