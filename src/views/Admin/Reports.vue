@@ -82,7 +82,7 @@ const edit = (val) => {
 const saveEdit = async () => {
   let { response } = await useAxios(
     'patch',
-    `/report/feedback/${selectedReport._id}`,
+    `/admin/report/feedback/${selectedReport._id}`,
     {
       status: selectedReport.status,
       action: reportAction,
