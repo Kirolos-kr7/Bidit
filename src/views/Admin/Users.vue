@@ -85,7 +85,7 @@ const edit = (val) => {
 }
 
 const changePrivlages = async () => {
-  let { response } = await useAxios('patch', `/auth/user-role`, {
+  let { response } = await useAxios('patch', `/admin/user-role`, {
     email: selectedUser.email,
   })
 
