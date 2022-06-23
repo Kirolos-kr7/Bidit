@@ -200,6 +200,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'admin/bannedusers',
+          name: 'bannedUserAdmin',
+          component: () => import('./views/Admin/BannedUsers.vue'),
+          meta: {
+            requiresAdmin: true,
+          },
+        },
+        {
           path: 'admin/bids',
           name: 'bidsAdmin',
           component: () => import('./views/Admin/Bids.vue'),

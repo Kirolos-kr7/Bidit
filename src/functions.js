@@ -171,6 +171,7 @@ export const useAxios = async (req, path, body) => {
       url: state.BASE_URL + path,
       data: body,
       headers,
+      validateStatus: () => true,
     })
   } catch (err) {
     console.log(err)
@@ -189,6 +190,7 @@ export const usePaymob = async (order) => {
       api_key:
         'ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6VXhNaUo5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPakUzTXpreE55d2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuYUZZWnJWRVp2NnczdlRXSDN2LS1pSjlRSUdNenVEZ3drYlVReTh5enRzUDlqQmE1bzRRb240QkpLdFItNmJOdzJIZG1jUWRnaEFnbVZURFBsTDZBdEE=',
     },
+    validateStatus: () => true,
   })
 
   let body = {
@@ -210,6 +212,7 @@ export const usePaymob = async (order) => {
     method: 'post',
     url: 'https://accept.paymob.com/api/ecommerce/orders',
     data: body,
+    validateStatus: () => true,
   })
 
   let body2 = {
@@ -240,6 +243,7 @@ export const usePaymob = async (order) => {
     method: 'post',
     url: `https://accept.paymob.com/api/acceptance/payment_keys`,
     data: body2,
+    validateStatus: () => true,
   })
 
   return `https://accept.paymobsolutions.com/api/acceptance/iframes/381359?payment_token=${paymentRes.data.token}`

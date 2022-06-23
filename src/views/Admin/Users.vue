@@ -95,7 +95,7 @@ const changePrivlages = async () => {
   }
 }
 
-const remove = (val) => {
+const ban = (val) => {
   removeDialog = true
   selectedUser = val
 }
@@ -109,13 +109,18 @@ const approveBan = async (days = 0) => {
     days,
   }
 
-  let { response } = await useAxios('delete', `/admin/ban-account`, body)
-
-  if (!response.data.ok) error = response.data.message
-  else {
-    removeDialog = false
-    selectedUser = null
-    getUsers(true)
+  try {
+    let { response } = await useAxios('delete', `/admin/ban-account`, body)
+    console.log(response)
+    if (!response.data.ok) error = response.data.message
+    else {
+      removeDialog = false
+      selectedUser = null
+      error = null
+      getUsers(true)
+    }
+  } catch (err) {
+    error = err
   }
 
   isBanLoading = false
@@ -155,11 +160,11 @@ useMeta({ title: 'Users', base: true })
       :data="formatedData"
       :constraint="constraint"
       :direction="direction"
-      :actions="{ open: true, edit: true, remove: true }"
+      :actions="{ open: true, edit: true, ban: true }"
       @sortBy="sortBy"
       @open="open"
       @edit="edit"
-      @remove="remove"
+      @ban="ban"
     />
   </div>
   <Paginate

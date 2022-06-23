@@ -96,6 +96,46 @@ let isCollapsed = $ref(true)
       </li>
       <li>
         <RouterLink
+          :to="`/${state.lang}/admin/bannedusers`"
+          class="flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
+          title="Banned Users"
+        >
+          <svg
+            class="pointer-events-none mx-[10px] w-5 flex-shrink-0 select-none"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M15.5992 6.24298C12.8543 6.95997 10.7222 9.19312 10.1512 11.9941C10.0625 11.998 9.97316 12 9.88338 12C6.72324 12 4.16144 9.53757 4.16144 6.5C4.16144 3.46243 6.72324 1 9.88338 1C12.9539 1 15.4595 3.32474 15.5992 6.24298Z"
+              fill="#425165"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M10.0171 14.0108C9.80107 14.0036 9.58301 14 9.36317 14C4.19203 14 0 16.0147 0 18.5C0 20.9853 4.19203 23 9.36317 23C12.6163 23 15.4819 22.2027 17.1602 20.9924C13.3456 20.8223 10.2722 17.8027 10.0171 14.0108Z"
+              fill="#8190A4"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M20.3251 17.4731C19.3861 18.1405 18.2411 18.4539 17.0931 18.3576C15.9452 18.2613 14.8684 17.7615 14.0538 16.947C13.2391 16.1324 12.7393 15.0557 12.6428 13.9078C12.5464 12.7598 12.8596 11.6148 13.5269 10.6758L20.3251 17.4747V17.4731ZM21.4739 16.3242L14.6758 9.52688C15.6148 8.85901 16.76 8.54535 17.9083 8.64155C19.0565 8.73775 20.1336 9.23759 20.9484 10.0524C21.7632 10.8672 22.2631 11.9443 22.3593 13.0925C22.4555 14.2408 22.1418 15.3852 21.4739 16.3242ZM24 13.5C24 15.2239 23.3152 16.8772 22.0962 18.0962C20.8772 19.3152 19.2239 20 17.5 20C15.7761 20 14.1228 19.3152 12.9038 18.0962C11.6848 16.8772 11 15.2239 11 13.5C11 11.7761 11.6848 10.1228 12.9038 8.90381C14.1228 7.68482 15.7761 7 17.5 7C19.2239 7 20.8772 7.68482 22.0962 8.90381C23.3152 10.1228 24 11.7761 24 13.5Z"
+              fill="#8190A4"
+            />
+          </svg>
+
+          <transition name="fade">
+            <span
+              v-show="!isCollapsed"
+              class="hidden translate-y-px font-normal transition-all md:block"
+              >Banned Users</span
+            >
+          </transition>
+        </RouterLink>
+      </li>
+      <li>
+        <RouterLink
           :to="`/${state.lang}/admin/bids`"
           class="flex w-full gap-1 bg-[#1C263D] py-6 font-medium text-[#8291A5] ring-inset transition-all hover:bg-[#273146] focus:ring-1 md:px-3 md:py-3"
           title="Bids"
