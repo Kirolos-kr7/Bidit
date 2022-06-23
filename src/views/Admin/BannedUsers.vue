@@ -17,7 +17,9 @@ let max = $ref(0)
 let isLoading = $ref(false)
 let error = $ref(false)
 let isBanLoading = $ref(false)
+let userDialog = $ref(false)
 let unbanDialog = $ref(false)
+let selectedUser = $ref(null)
 let selectedBan = $ref(null)
 let constraint = $ref('name')
 let direction = $ref('asc')
@@ -63,6 +65,16 @@ const sortBy = (value, dir) => {
   direction = dir
 
   getBannedUsers(true)
+}
+
+const open = async (val) => {
+  userDialog = true
+
+  let { response } = await useAxios('get', `/admin/user/info/${val.user}`)
+  let user = response.data.data
+  user.isAdmin = String(user?.isAdmin)
+
+  selectedUser = user
 }
 
 const cancel = (val) => {
@@ -124,8 +136,9 @@ useMeta({ title: 'Banned Users', base: true })
       :data="formatedData"
       :constraint="constraint"
       :direction="direction"
-      :actions="{ cancel: true }"
+      :actions="{ open: true, cancel: true }"
       @sortBy="sortBy"
+      @open="open"
       @cancel="cancel"
     />
   </div>
@@ -138,7 +151,16 @@ useMeta({ title: 'Banned Users', base: true })
   />
 
   <transition name="fade">
-    <BaseDialog v-if="unbanDialog" @click="unbanDialog = false"> </BaseDialog>
+    <BaseDialog
+      v-if="unbanDialog || userDialog"
+      @click="
+        () => {
+          userDialog = false
+          unbanDialog = false
+        }
+      "
+    >
+    </BaseDialog>
   </transition>
 
   <transition name="zoom">
@@ -159,6 +181,39 @@ useMeta({ title: 'Banned Users', base: true })
         <BaseButton :disabled="isBanLoading" @click="unbanDialog = false"
           >No</BaseButton
         >
+      </div>
+    </div>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="userDialog"
+    >
+      <BaseTitle
+        >User
+        <span class="break-words text-lg font-normal"
+          >#{{ selectedUser?._id }}</span
+        ></BaseTitle
+      >
+      <div class="mt-4 grid grid-cols-[auto,1fr] gap-x-3 gap-y-1">
+        <div class="font-semibold">Name</div>
+        <span class="text-gray-500">{{ selectedUser?.name || 'N/F' }}</span>
+        <div class="font-semibold">Email</div>
+        <span class="text-gray-500">{{ selectedUser?.email || 'N/F' }}</span>
+        <div class="font-semibold">isAdmin</div>
+        <span class="text-gray-500">{{ selectedUser?.isAdmin || 'N/F' }}</span>
+        <div class="font-semibold">Gender</div>
+        <span class="text-gray-500">{{ selectedUser?.gender || 'N/F' }}</span>
+        <div class="font-semibold">Phone</div>
+        <span class="text-gray-500">{{ selectedUser?.phone || 'N/F' }}</span>
+        <div class="font-semibold">Address</div>
+        <span class="text-gray-500">{{ selectedUser?.address || 'N/F' }}</span>
+        <div class="font-semibold">JoinedAt</div>
+        <span class="text-gray-500">{{
+          selectedUser?.createdAt || 'N/F'
+        }}</span>
+        <!-- <div>isPremium: </div> <span>{{ selectedUser.premium }}</span> -->
       </div>
     </div>
   </transition>
