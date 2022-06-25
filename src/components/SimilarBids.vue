@@ -4,13 +4,15 @@ import { useAxios } from '../functions'
 import Bids from '../components/Bids.vue'
 import BaseTitle from './Base/BaseTitle.vue'
 import { useRoute } from 'vue-router'
+import { useStore } from '../store'
 
+let { $state: state } = useStore()
 let route = useRoute()
 let bids = $ref([])
 let isLoading = $ref(false)
 
 onMounted(async () => {
-  if (route.params?.bidID?.length === 24) {
+  if (route.params?.bidID?.length === 24 && state.user) {
     isLoading = true
     let { response } = await useAxios(
       'get',

@@ -167,9 +167,9 @@ useMeta({
     </RouterLink>
   </section>
 
-  <RecentlyViewedBids />
+  <RecentlyViewedBids v-if="state.user" />
 
-  <RecommendedBids />
+  <RecommendedBids v-if="state.user" />
 
   <div class="text-center">
     <RouterLink :to="`/${state.lang}/bids`">

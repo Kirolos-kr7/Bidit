@@ -3,11 +3,14 @@ import { onMounted } from 'vue'
 import { useAxios } from '../functions'
 import Bids from '../components/Bids.vue'
 import BaseTitle from './Base/BaseTitle.vue'
+import { useStore } from '../store'
 
+let { $state: state } = useStore()
 let bids = $ref([])
 let isLoading = $ref(false)
 
 onMounted(async () => {
+  if (!state.user) return
   isLoading = true
   let { response } = await useAxios('get', '/bid/recommended')
   console.log(response)
