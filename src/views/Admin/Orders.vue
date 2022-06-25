@@ -18,7 +18,7 @@ import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 dayjs.extend(localizedFormat)
 
 let data = $ref([])
-let limit = $ref(1)
+let limit = $ref(8)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)

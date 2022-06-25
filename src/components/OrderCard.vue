@@ -76,7 +76,7 @@ const text = $ref({
         <BaseType :to="`/${state.lang}/bids/${order?.bid?.item?.type}`">{{
           order?.bid?.item?.type || 'N/F'
         }}</BaseType>
-        <h3 class="font-semibold">{{ order.bid.item.name }}</h3>
+        <h3 class="font-semibold">{{ order.bid?.item?.name }}</h3>
       </div>
     </div>
     <div class="relative grid gap-x-5 gap-y-0.5 p-3 md:grid-cols-[auto,1fr]">

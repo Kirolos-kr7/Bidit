@@ -10,7 +10,7 @@ import { useStore } from '../store'
 let { $state: state } = useStore()
 
 let orders = $ref([])
-let limit = $ref(1)
+let limit = $ref(6)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)
