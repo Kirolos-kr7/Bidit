@@ -11,6 +11,7 @@ const props = defineProps({
     required: true,
   },
 })
+const emits = defineEmits(['done'])
 let { $state: state } = useStore()
 
 let error = $ref('')
@@ -24,7 +25,9 @@ const proceedPayment = async () => {
       `/order/activate/${props.order._id}`,
       { paymentMethod, arrivalAddress },
     )
-    console.log(response)
+
+    if (!response.data.ok) error = response.data.message
+    else emits('done')
   } else {
     let paymentLink = await usePaymob(props.order)
     window.open(paymentLink, '_blank').focus()
