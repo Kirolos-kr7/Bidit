@@ -9,7 +9,7 @@ import {
   useAxios,
 } from '../functions'
 import { reportTypes } from '../lang/reportTypes.json'
-import { onMounted, onUnmounted, watchEffect } from 'vue'
+import { onMounted, onUnmounted, watch, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
 import BaseType from '../components/Base/BaseType.vue'
 import { io } from 'socket.io-client'
@@ -36,13 +36,64 @@ const socket = io(state.BASE_URL)
 let isLoading = $ref(false)
 let isLoadingNewReport = $ref(false)
 let error = $ref()
-let bid = $ref()
+let bid = $ref(null)
 let currBid = $ref({ price: 0, user: null })
 let newPrice = $ref(0)
 let timer = $ref('')
 let status = $ref('')
 let clockPrefix = $ref('')
 let bidID = route.params.bidID
+
+const initConnection = async () => {
+  isLoading = true
+
+  if (!route.params.bidID) router.replace(`/${state.lang}/404`)
+  bidID = route.params.bidID
+  if (socket.connected) {
+    bid = null
+    currBid = { price: 0, user: null }
+    newPrice = 0
+    timer = ''
+    status = ''
+    clockPrefix = ''
+    socket.emit(
+      'pageLoaded',
+      route.params.bidID,
+      state?.user?._id ? state?.user?._id : null,
+    )
+  }
+}
+
+onMounted(async () => {
+  initConnection()
+
+  socket.on('connect', () => {
+    socket.emit(
+      'pageLoaded',
+      route.params.bidID,
+      state?.user?._id ? state?.user?._id : null,
+    )
+
+    socket.on('bidFound', (data) => {
+      bid = data
+      isLoading = false
+      calcDiff()
+      setInterval(calcDiff, 1000)
+    })
+
+    socket.on('bidNotFound', () => router.replace(`/${state.lang}/404`))
+    socket.on('bidError', (err) => {
+      console.log(err)
+      error = err
+    })
+  })
+})
+
+watch(route, () => {
+  if (route.params.bidID) {
+    initConnection()
+  }
+})
 
 watchEffect(() => {
   if (bid) {
@@ -57,28 +108,6 @@ watchEffect(() => {
         }
       })
   }
-})
-
-onMounted(async () => {
-  isLoading = true
-
-  if (!route.params.bidID) router.replace(`/${state.lang}/404`)
-
-  socket.on('connect', () => {
-    socket.emit('pageLoaded', bidID, state?.user?._id ? state?.user?._id : null)
-
-    socket.on('bidFound', (data) => {
-      bid = data
-      isLoading = false
-      calcDiff()
-      setInterval(calcDiff, 1000)
-    })
-
-    socket.on('bidNotFound', () => router.replace(`/${state.lang}/404`))
-    socket.on('bidError', (err) => {
-      error = err
-    })
-  })
 })
 
 onUnmounted(async () => {
