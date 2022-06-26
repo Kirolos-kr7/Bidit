@@ -44,7 +44,7 @@ const sendVerificationEmail = async () => {
 
 const text = $ref({
   verifyEmail: {
-    ar: 'نسيت كلمة المرور',
+    ar: 'تأكيد البريد الالكتروني',
     en: 'Verify  Email',
   },
   emailPlaceholder: {
