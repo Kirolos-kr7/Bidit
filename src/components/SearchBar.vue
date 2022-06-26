@@ -41,8 +41,10 @@ const changeCurr = (i) => {
 const handleKeys = (e) => {
   e.preventDefault()
 
-  if (e.keyCode === 13)
+  if (e.keyCode === 13) {
     router.replace(`/${state.lang}/bid/${results[currRes]?._id}`)
+    emits('exitSearch')
+  }
   if (e.keyCode === 27) emits('exitSearch')
 
   if (e.keyCode === 38) {
@@ -147,6 +149,7 @@ const text = $ref({
           <RouterLink
             :to="`/${state.lang}/bid/${result?._id}`"
             class="flex gap-3"
+            @click="emits('exitSearch')"
           >
             <img
               :src="`https://ik.imagekit.io/bidit/${result?.item?.images[0]}`"
