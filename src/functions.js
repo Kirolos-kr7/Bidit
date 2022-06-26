@@ -128,27 +128,9 @@ export const getStatus = (val) => {
 }
 
 export const getPricePerLang = (val) => {
-  const { $state: state } = useStore()
-
-  if (state.lang === 'ar') {
-    return new Intl.NumberFormat('ar-EG', {
-      maximumFractionDigits: 0,
-    }).format(val)
-  } else {
-    return new Intl.NumberFormat('en-EG', {
-      maximumFractionDigits: 0,
-    }).format(val)
-  }
-}
-
-export const getNumPerLang = (val) => {
-  const { $state: state } = useStore()
-
-  if (state.lang === 'ar') {
-    return new Intl.NumberFormat('ar-EG').format(val)
-  } else {
-    return new Intl.NumberFormat('en-EG').format(val)
-  }
+  return new Intl.NumberFormat('en-EG', {
+    maximumFractionDigits: 0,
+  }).format(val)
 }
 
 export const useAxios = async (req, path, body) => {
