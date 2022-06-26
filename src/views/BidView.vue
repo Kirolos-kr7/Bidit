@@ -1,13 +1,6 @@
 <script setup>
 import { useStore } from '../store'
-import {
-  getType,
-  getStatus,
-  getPricePerLang,
-  getNumPerLang,
-  $t,
-  useAxios,
-} from '../functions'
+import { getType, getStatus, getPricePerLang, $t, useAxios } from '../functions'
 import { reportTypes } from '../lang/reportTypes.json'
 import { onMounted, onUnmounted, watch, watchEffect } from 'vue'
 import BaseButton from '../components/Base/BaseButton.vue'
@@ -127,6 +120,7 @@ const joinBid = () => {
 
 const getOffest = computed(() => {
   let base = currBid.price
+  if (base === 0) base = bid.minPrice
 
   if (base <= 10) return 1
   if (base <= 20) return 2
@@ -141,7 +135,7 @@ const getOffest = computed(() => {
   if (base <= 5000) return getNumWOZeros(Math.floor((base * 10) / 100))
   if (base <= 10000) return getNumWOZeros(Math.floor((base * 5) / 100))
   if (base <= 1000000) return getNumWOZeros(Math.floor((base * 2) / 100))
-  else return getNumWOZeros(Math.floor((base * 1) / 100))
+  else return getNumWOZeros(Math.floor((base * 0.5) / 100))
 })
 
 const getNumWOZeros = (num) => {
@@ -353,7 +347,7 @@ const newReport = async () => {
             <h4 class="text-sm text-gray-600">{{ $t(text.bidsMade) }}</h4>
             <div class="flex items-end gap-1">
               <h5 class="break-all text-3xl font-bold">
-                {{ getNumPerLang(bid?.bidsHistory.length) }}
+                {{ bid?.bidsHistory.length }}
               </h5>
               <span class="mb-0.5 text-sm">{{
                 state.lang === 'ar' ? 'مزايدات' : 'Bids'
