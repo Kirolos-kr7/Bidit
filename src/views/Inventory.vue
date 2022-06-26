@@ -32,17 +32,23 @@ let itemsDialog = $ref(false),
   itemType = $ref(),
   itemDesc = $ref(''),
   itemImages = $ref([]),
-  limit = $ref(1),
+  limit = $ref(4),
   curr = $ref(0),
-  max = $ref(66)
+  max = $ref(0)
 
 let items = $ref([])
 let isLoading = $ref(false)
 let selectedItem = $ref(null)
 
-const getAllItems = async () => {
+const getAllItems = async (reset = false) => {
   isLoading = true
-  items = []
+
+  if (reset) {
+    items = []
+    curr = 0
+    max = 0
+  }
+
   let { response } = await useAxios(
     'get',
     `/item/all?limit=${limit}&skip=${curr}`,
@@ -50,7 +56,9 @@ const getAllItems = async () => {
   )
 
   if (response.data.ok) {
-    items = response.data.data.items
+    response.data.data.items.forEach((item) => {
+      items.push(item)
+    })
     max = response.data.data.count
     curr = items.length
   }
@@ -105,7 +113,8 @@ const addItem = async () => {
 
   if (!response.data.ok) error = response.data.message
   else {
-    items.push(response.data.data)
+    error = null
+    getAllItems(true)
 
     resetDialog()
   }
@@ -138,11 +147,8 @@ const editItem = async () => {
 
   if (!response.data.ok) error = response.data.message
   else {
-    items.forEach((item, i) => {
-      if (item._id === selectedItem._id) {
-        items[i] = response.data.data
-      }
-    })
+    error = null
+    getAllItems(true)
 
     resetDialog()
   }
@@ -171,11 +177,8 @@ const deleteItem = async () => {
 
   if (!response.data.ok) error = response.data.message
   else {
-    items.forEach((item, i) => {
-      if (item._id === selectedItem._id) {
-        items.splice(i, 1)
-      }
-    })
+    error = null
+    getAllItems(true)
 
     resetDialog()
   }
