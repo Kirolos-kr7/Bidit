@@ -30,7 +30,15 @@ defineProps({
   },
 })
 
-const emits = defineEmits(['sortBy', 'open', 'edit', 'remove', 'ban', 'cancel'])
+const emits = defineEmits([
+  'sortBy',
+  'open',
+  'edit',
+  'remove',
+  'ban',
+  'cancel',
+  'switch',
+])
 </script>
 
 <template>
@@ -160,6 +168,21 @@ const emits = defineEmits(['sortBy', 'open', 'edit', 'remove', 'ban', 'cancel'])
               fill-rule="evenodd"
               d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clip-rule="evenodd"
+            ></path>
+          </svg>
+        </button>
+        <button
+          @click="emits('switch', item)"
+          v-if="actions.switch && item.switch"
+        >
+          <svg
+            class="h-6 w-6 rounded-md p-1 text-red-600 hover:bg-black/5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z"
             ></path>
           </svg>
         </button>
