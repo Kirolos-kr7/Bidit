@@ -24,6 +24,7 @@ let max = $ref(0)
 let isLoading = $ref(false)
 let orderDialog = $ref(false)
 let editDialog = $ref(false)
+let switchDialog = $ref(false)
 let removeDialog = $ref(false)
 let selectedOrder = $ref({})
 let error = $ref(null)
@@ -63,6 +64,7 @@ let formatedData = computed(() => {
       auctioneer: x.auctioneer.email,
       bidder: x.bidder.email,
       totalPrice: x.price + x.shipping,
+      switch: x.status === 'pending' ? true : false,
     }
   })
 })
@@ -117,9 +119,28 @@ const approveRemove = async () => {
   }
 }
 
+const switchIt = (val) => {
+  switchDialog = true
+  selectedOrder = val
+}
+
+const approveSwitch = async () => {
+  let { response } = await useAxios(
+    'patch',
+    `/admin/retract/${selectedOrder._id}`,
+  )
+
+  if (response.data.ok) {
+    switchDialog = false
+
+    getOrders(true)
+  }
+}
+
 const resetDialog = () => {
   orderDialog = false
   editDialog = false
+  switchDialog = false
   removeDialog = false
   selectedOrder = null
 }
@@ -158,11 +179,12 @@ useMeta({ title: 'Orders', base: true })
       :data="formatedData"
       :constraint="constraint"
       :direction="direction"
-      :actions="{ open: true, edit: true, remove: true }"
+      :actions="{ open: true, edit: true, remove: true, switch: true }"
       @sortBy="sortBy"
       @open="open"
       @edit="edit"
       @remove="remove"
+      @switch="switchIt"
     />
   </div>
 
@@ -176,7 +198,7 @@ useMeta({ title: 'Orders', base: true })
 
   <transition name="fade">
     <BaseDialog
-      v-if="editDialog || orderDialog || removeDialog"
+      v-if="editDialog || orderDialog || removeDialog || switchDialog"
       @click="resetDialog()"
     >
     </BaseDialog>
@@ -267,6 +289,24 @@ useMeta({ title: 'Orders', base: true })
           >Yes</BaseButton
         >
         <BaseButton @click="removeDialog = false">No</BaseButton>
+      </div>
+    </div>
+  </transition>
+
+  <transition name="zoom">
+    <div
+      class="border-bi-600 fixed top-1/2 left-1/2 z-30 max-h-[85vh] w-full max-w-prose origin-top-left -translate-x-1/2 -translate-y-1/2 scale-100 overflow-auto rounded-md border bg-white p-5 font-medium text-black md:min-w-prose"
+      v-if="switchDialog"
+    >
+      <BaseTitle>Retract Bid</BaseTitle>
+      <p class="my-3">Are you sure you want to proceed?</p>
+      <div class="flex justify-end gap-2">
+        <BaseButton
+          class="!bg-red-600 hover:!bg-red-700"
+          @click="approveSwitch()"
+          >Yes</BaseButton
+        >
+        <BaseButton @click="switchDialog = false">No</BaseButton>
       </div>
     </div>
   </transition>
