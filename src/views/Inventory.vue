@@ -372,10 +372,20 @@ useMeta({ title: $t(text.title), base: true })
         <transition name="fade">
           <BaseError v-if="error">{{ error }}</BaseError>
         </transition>
-        <BaseButton @click="editItem" v-if="isEditing"
+        <BaseButton
+          @click="editItem"
+          class="disabled:bg-indigo-300"
+          :disabled="isLoading"
+          v-if="isEditing"
           >{{ $t(text.save) }}
         </BaseButton>
-        <BaseButton @click="addItem" v-else>{{ $t(text.newItem) }} </BaseButton>
+        <BaseButton
+          @click="addItem"
+          class="disabled:bg-indigo-300"
+          :disabled="isLoading"
+          v-else
+          >{{ $t(text.newItem) }}
+        </BaseButton>
       </form>
     </div>
   </transition>
