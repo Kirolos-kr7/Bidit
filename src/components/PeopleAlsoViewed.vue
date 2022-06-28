@@ -28,16 +28,16 @@ onMounted(async () => {
 })
 
 const text = $ref({
-  youRecentlyViewed: {
-    ar: `مزادات مشابهة`,
-    en: `Similar Bids`,
+  peopleAlsoViewed: {
+    ar: `مستخدمون اخرون شاهدوا`,
+    en: `Pepole Also Viewed`,
   },
 })
 </script>
 
 <template>
   <section class="my-4 p-4 md:my-6">
-    <BaseTitle>{{ $t(text.youRecentlyViewed) }}</BaseTitle>
+    <BaseTitle>{{ $t(text.peopleAlsoViewed) }}</BaseTitle>
     <Bids :bids="bids" :isLoading="isLoading" />
   </section>
 </template>

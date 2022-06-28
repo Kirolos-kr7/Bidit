@@ -15,7 +15,7 @@ import BaseDialog from '../components/Base/BaseDialog.vue'
 import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
-import SimilarBids from '../components/SimilarBids.vue'
+import PeopleAlsoViewed from '../components/PeopleAlsoViewed.vue'
 
 let reportsDialog = $ref(false),
   reportType = $ref(reportTypes[0].en),
@@ -499,7 +499,7 @@ const newReport = async () => {
     </div>
   </div>
 
-  <SimilarBids v-if="!isLoading" />
+  <PeopleAlsoViewed v-if="!isLoading" />
 
   <transition name="fade">
     <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
