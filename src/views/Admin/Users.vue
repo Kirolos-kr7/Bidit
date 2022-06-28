@@ -11,7 +11,7 @@ import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 import BaseError from '../../components/Base/BaseError.vue'
 
 let data = $ref([])
-let limit = $ref(8)
+let limit = $ref(10)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)

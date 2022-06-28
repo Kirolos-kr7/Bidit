@@ -7,7 +7,7 @@ import Bids from '../components/Bids.vue'
 import Paginate from '../components/Paginate.vue'
 
 let bids = $ref([])
-let limit = $ref(1)
+let limit = $ref(8)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)

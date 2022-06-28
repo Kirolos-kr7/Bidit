@@ -6,7 +6,7 @@ import Paginate from '../components/Paginate.vue'
 import { $t, useAxios, useMeta } from '../functions'
 
 let bids = $ref([])
-let limit = $ref(4)
+let limit = $ref(8)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(true)

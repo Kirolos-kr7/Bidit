@@ -28,7 +28,7 @@ const text = $ref({
 </script>
 
 <template>
-  <div class="my-8 flex flex-col items-center justify-center gap-3">
+  <div class="mt-8 flex flex-col items-center justify-center gap-3">
     <span class="select-none text-xs font-semibold text-gray-500"
       >{{ $t(text.showing) }} {{ curr }} {{ $t(text.from) }} {{ max }}</span
     >

@@ -12,7 +12,7 @@ import Paginate from '../../components/Paginate.vue'
 import BaseSearchBox from '../../components/Base/BaseSearchBox.vue'
 
 let data = $ref([])
-let limit = $ref(4)
+let limit = $ref(10)
 let curr = $ref(0)
 let max = $ref(0)
 let isLoading = $ref(false)

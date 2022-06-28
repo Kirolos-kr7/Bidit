@@ -32,7 +32,7 @@ let itemsDialog = $ref(false),
   itemType = $ref(),
   itemDesc = $ref(''),
   itemImages = $ref([]),
-  limit = $ref(4),
+  limit = $ref(8),
   curr = $ref(0),
   max = $ref(0)
 
