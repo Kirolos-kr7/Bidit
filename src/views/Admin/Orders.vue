@@ -64,7 +64,7 @@ let formatedData = computed(() => {
       auctioneer: x.auctioneer.email,
       bidder: x.bidder.email,
       totalPrice: x.price + x.shipping,
-      switch: x.status === 'pending' ? true : false,
+      switch: x.status !== 'canceled' ? true : false,
     }
   })
 })
