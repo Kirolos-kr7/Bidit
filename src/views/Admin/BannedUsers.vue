@@ -80,7 +80,6 @@ const open = async (val) => {
 const cancel = (val) => {
   unbanDialog = true
   selectedBan = val
-  console.log(selectedBan._id)
 }
 
 const approveUnban = async () => {

@@ -26,7 +26,7 @@ const getBids = async () => {
     'get',
     `/bid/category/${route.params.cat.toLowerCase()}?limit=${limit}&skip=${curr}`,
   )
-  console.log(response)
+
   if (response.data.ok) {
     response.data.data.bids.forEach((bid) => {
       bids.push(bid)

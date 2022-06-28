@@ -40,10 +40,10 @@ const updateProfile = async () => {
     phone,
   })
 
-  console.log(response)
-
   if (!response.data.ok) error = response.data.message
   else {
+    error = null
+
     state.user = response.data.data
     resetDialog()
   }

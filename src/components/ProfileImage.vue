@@ -51,15 +51,15 @@ const deleteProfileImage = async () => {
     image: props.image,
   })
 
-  console.log(response.data)
+  if (response.data.ok) {
+    isLoading = false
+    let { response: user } = await useAxios('get', '/auth/user')
 
-  isLoading = false
-  let { response: user } = await useAxios('get', '/auth/user')
-
-  if (user.data.ok) {
-    state.user = user.data.data
+    if (user.data.ok) {
+      state.user = user.data.data
+    }
+    emits('done')
   }
-  emits('done')
 }
 
 let text = $ref({

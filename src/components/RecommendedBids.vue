@@ -13,7 +13,7 @@ onMounted(async () => {
   if (!state.user) return
   isLoading = true
   let { response } = await useAxios('get', '/bid/recommended')
-  console.log(response)
+
   if (response.data.ok) {
     bids = response.data.data
   }

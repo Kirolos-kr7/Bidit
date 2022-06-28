@@ -76,7 +76,6 @@ onMounted(async () => {
 
     socket.on('bidNotFound', () => router.replace(`/${state.lang}/404`))
     socket.on('bidError', (err) => {
-      console.log(err)
       error = err
     })
   })

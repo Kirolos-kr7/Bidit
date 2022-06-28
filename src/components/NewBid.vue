@@ -42,7 +42,6 @@ const text = $ref({
 })
 
 const newBid = async () => {
-  console.log(startDate)
   let { response } = await useAxios('post', '/bid/add', {
     startDate: new Date(startDate).toGMTString(),
     endDate: new Date(endDate).toGMTString(),

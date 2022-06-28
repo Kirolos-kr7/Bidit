@@ -111,7 +111,7 @@ const approveBan = async (days = 0) => {
 
   try {
     let { response } = await useAxios('delete', `/admin/ban-account`, body)
-    console.log(response)
+
     if (!response.data.ok) error = response.data.message
     else {
       removeDialog = false

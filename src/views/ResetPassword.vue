@@ -39,11 +39,11 @@ const resetPassword = async () => {
   }
 
   let { response } = await useAxios('patch', '/auth/reset-password', body)
-  console.log(response.data)
+
   if (!response.data.ok) {
     error = response.data.message
   } else {
-    error = ''
+    error = null
     router.push({
       name: 'login',
       params: { lang: state.lang },
