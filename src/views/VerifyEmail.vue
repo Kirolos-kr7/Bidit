@@ -11,6 +11,7 @@ const { $state: state } = $(useStore())
 const router = useRouter()
 let verificationToken = $ref(router.currentRoute.value.params.token)
 let isLoading = $ref(false)
+let isVerified = $ref(false)
 let error = $ref('')
 let successfull = $ref('')
 
@@ -24,9 +25,7 @@ onMounted(async () => {
       error = response.data.message
     } else {
       successfull = response.data.message
-      setTimeout(() => {
-        router.push(`/${state.lang}/`)
-      }, 3000)
+      isVerified = true
     }
   }
 })
@@ -86,6 +85,10 @@ useMeta({ title: $t(text.verifyEmail), base: true })
         :disabled="isLoading && 'disabled'"
         >{{ $t(text.sendMail) }}</BaseButton
       >
+
+      <RouterLink :to="`/${state.lang}/`">
+        <BaseButton v-if="isVerified" class="mt-2">TO Home Page</BaseButton>
+      </RouterLink>
     </div>
   </div>
 </template>
