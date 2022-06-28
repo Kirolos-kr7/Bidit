@@ -74,7 +74,7 @@ const router = createRouter({
         },
         {
           path: 'account/inventory',
-          name: 'account/inventory',
+          name: 'accountInventory',
           component: () => import('./views/Inventory.vue'),
           meta: {
             requiresAuth: true,
@@ -82,7 +82,7 @@ const router = createRouter({
         },
         {
           path: 'account/notification',
-          name: 'account/notification',
+          name: 'userNotification',
           component: () => import('./views/Notifications.vue'),
           meta: {
             requiresAuth: true,
@@ -90,7 +90,7 @@ const router = createRouter({
         },
         {
           path: 'account/purchases',
-          name: 'account/purchases',
+          name: 'accountPurchases',
           component: () => import('./views/Purchases.vue'),
           meta: {
             requiresAuth: true,
@@ -98,7 +98,7 @@ const router = createRouter({
         },
         {
           path: 'account/sales',
-          name: 'account/sales',
+          name: 'accountSales',
           component: () => import('./views/Sales.vue'),
           meta: {
             requiresAuth: true,
@@ -106,7 +106,7 @@ const router = createRouter({
         },
         {
           path: 'account/orders',
-          name: 'orders',
+          name: 'accountOrders',
           component: () => import('./views/Orders.vue'),
           meta: {
             requiresAuth: true,
@@ -288,7 +288,8 @@ router.beforeEach(async (to, from, next) => {
     !state.user.isVerified &&
     to.name !== 'verifyEmail' &&
     to.name !== 'verifyEmailWToken' &&
-    to.name !== 'account'
+    to.name !== 'verifyEmailWToken' &&
+    to.name !== 'userNotification'
   ) {
     return next({
       name: 'verifyEmail',
