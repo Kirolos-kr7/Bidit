@@ -12,8 +12,8 @@ const { $state: state } = $(useStore())
 
 const router = useRouter()
 const { cookies } = useCookies()
-let email = $ref('kiroloskr7@gmail.com')
-let password = $ref('k123456')
+let email = $ref('')
+let password = $ref('')
 let isLoading = $ref(false)
 let error = $ref('')
 
