@@ -7,7 +7,7 @@ import { useStore } from '../store'
 import { $t, useAxios, useMeta } from '../functions'
 const { $state: state } = $(useStore())
 
-let email = $ref('kiroloskr7@gmail.com')
+let email = $ref('')
 let isLoading = $ref(false)
 let error = $ref('')
 let successful = $ref('')
