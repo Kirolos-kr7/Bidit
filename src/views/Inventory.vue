@@ -257,7 +257,7 @@ useMeta({ title: $t(text.title), base: true })
         $t(text.addItem)
       }}</BaseButton>
     </div>
-    <div v-if="items.length > 0">
+    <div v-if="!isLoading || items.length > 0">
       <BaseEmpty
         v-if="items.length === 0"
         :msg="{
