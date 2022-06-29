@@ -16,7 +16,6 @@ defineProps({
 })
 
 onMounted(async () => {
-  console.log('x')
   isLoading = true
   let { response } = await useAxios(
     'get',

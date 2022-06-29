@@ -16,6 +16,7 @@ import BaseTitle from '../components/Base/BaseTitle.vue'
 import BaseTextArea from '../components/Base/BaseTextArea.vue'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import PeopleAlsoViewed from '../components/PeopleAlsoViewed.vue'
+import BaseLoader from '../components/Base/BaseLoader.vue'
 
 let reportsDialog = $ref(false),
   reportType = $ref(reportTypes[0].en),
@@ -498,8 +499,9 @@ const newReport = async () => {
       </div>
     </div>
   </div>
+  <BaseLoader v-else class="mt-14" />
 
-  <PeopleAlsoViewed :isLoading="isLoading" />
+  <PeopleAlsoViewed :isLoadingBidView="isLoading" />
 
   <transition name="fade">
     <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
