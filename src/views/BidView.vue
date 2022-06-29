@@ -499,7 +499,7 @@ const newReport = async () => {
     </div>
   </div>
 
-  <PeopleAlsoViewed v-if="!isLoading" />
+  <PeopleAlsoViewed :isLoading="isLoading" />
 
   <transition name="fade">
     <BaseDialog v-if="reportsDialog" @click="reportsDialog = false">
