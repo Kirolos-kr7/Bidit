@@ -21,5 +21,11 @@ module.exports = {
   },
   rules: {
     'vue/multi-word-component-names': 0,
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 }
