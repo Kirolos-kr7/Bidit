@@ -5,7 +5,6 @@ import BaseButton from '../components/Base/BaseButton.vue'
 import { useStore } from '../store'
 import BaseSelect from '../components/Base/BaseSelect.vue'
 import { $t, useAxios, useMeta } from '../functions'
-import { useRouter } from 'vue-router'
 import BaseError from '../components/Base/BaseError.vue'
 import BasePhone from '../components/Base/BasePhone.vue'
 import { useCookies } from 'vue3-cookies'
@@ -13,7 +12,6 @@ const { $state: state } = $(useStore())
 const { cookies } = useCookies()
 
 useMeta({ title: 'Register', base: true })
-const router = useRouter()
 let name = $ref('')
 let email = $ref('')
 let address = $ref('')
@@ -39,9 +37,9 @@ const registerUser = async () => {
   if (response.data.ok) {
     let data = response.data.data
     state.user = data.user
+    state.isLoggedIn = true
     cookies.set('authToken', data.token, '3d')
     cookies.set('isLoggedIn', true, '3d')
-    router.replace(`/${state.lang}/`)
   } else {
     error = response.data.message
   }
@@ -51,6 +49,14 @@ const text = $ref({
   myAccount: {
     ar: 'حساب جديد',
     en: 'New Account',
+  },
+  success: {
+    ar: 'تم التسجيل بنجاح',
+    en: `You've successfully registered`,
+  },
+  nextStep: {
+    ar: `قم بالذهاب الى البريد الالكتروني الخاص بك واضغط زر التأكيد`,
+    en: `Headover to your email and click the verification link`,
   },
   namePlaceholder: {
     ar: 'الاسم كامل',
@@ -112,6 +118,7 @@ useMeta({ title: $t(text.myAccount), base: true })
 <template>
   <div
     class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+    v-if="!state.isLoggedIn"
   >
     <BaseTitle>{{ $t(text.myAccount) }}</BaseTitle>
 
@@ -198,5 +205,17 @@ useMeta({ title: $t(text.myAccount), base: true })
         </div>
       </div>
     </form>
+  </div>
+  <div
+    class="max-w-[850px] rounded-md bg-white p-4 shadow-sm sm:mx-auto sm:w-full sm:p-6"
+    v-else
+  >
+    <BaseTitle>{{ $t(text.success) }}</BaseTitle>
+    <p class="mt-5">{{ $t(text.nextStep) }}</p>
+    <router-link
+      :to="`/${state.lang}/verify-email`"
+      class="mt-2 block text-bi-300 transition-colors hover:text-bi-400/50"
+      >Or get a new verification link</router-link
+    >
   </div>
 </template>
