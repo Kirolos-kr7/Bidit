@@ -285,7 +285,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (
     state.isLoggedIn &&
-    !state.user.isVerified &&
+    !state.user?.isVerified &&
     to.name !== 'verifyEmail' &&
     to.name !== 'verifyEmailWToken' &&
     to.name !== 'verifyEmailWToken' &&
@@ -299,7 +299,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (
     state.isLoggedIn &&
-    state.user.isVerified &&
+    state.user?.isVerified &&
     (to.name === 'verifyEmail' || to.name === 'verifyEmailWToken')
   ) {
     return next({
