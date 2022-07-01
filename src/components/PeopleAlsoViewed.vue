@@ -17,6 +17,7 @@ defineProps({
 
 onMounted(async () => {
   isLoading = true
+
   let { response } = await useAxios(
     'get',
     `/bid/similar/${route.params?.bidID}`,
@@ -32,13 +33,13 @@ onMounted(async () => {
 const text = $ref({
   peopleAlsoViewed: {
     ar: `مستخدمون اخرون شاهدوا`,
-    en: `Pepole Also Viewed`,
+    en: `People Also Viewed`,
   },
 })
 </script>
 
 <template>
-  <section class="my-4 p-4 md:my-6" v-if="!isLoadingBidView">
+  <section class="my-4 p-4 md:my-6" v-if="!isLoadingBidView && bids.length > 0">
     <BaseTitle>{{ $t(text.peopleAlsoViewed) }}</BaseTitle>
     <Bids :bids="bids" :isLoading="isLoading" />
   </section>
