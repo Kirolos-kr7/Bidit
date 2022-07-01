@@ -104,6 +104,8 @@ const resetDialog = () => {
 }
 
 const addItem = async () => {
+  isLoading = true
+
   let { response } = await useAxios('post', '/item/add', {
     name: itemName,
     type: itemType,
@@ -131,6 +133,8 @@ const showEditItem = (item) => {
 }
 
 const editItem = async () => {
+  isLoading = true
+
   let newItem = {
     name: itemName,
     type: itemType,
