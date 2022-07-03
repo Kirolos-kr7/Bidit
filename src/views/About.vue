@@ -14,7 +14,7 @@ const text = $ref({
     ar: 'تم تصميم النظام بحيث يحتوي على العديد من الفئات للعناصر المعروضة والتي يمكن لمقدم العطاء الاختيار من بينها: الفن والأثاث والتحف والتكنولوجيا والملابس والسيارات والحيوانات وأخيراً أشياء أخرى',
     en: 'The system designed to have many categories for the viewed items that bidder can choose from like: art, furniture, antiques, technology, clothes, cars, animals and finally others.',
   },
-  Header: {
+  subTitle: {
     ar: 'ماذا نقدم؟',
     en: 'What are we offering?',
   },
@@ -47,7 +47,7 @@ const text = $ref({
   <div class="m-5 font-semibold capitalize">
     <p>{{ $t(text.paragraph1) }}</p>
     <p class="my-5">{{ $t(text.paragraph2) }}</p>
-    <p class="mb-2 text-2xl font-bold">{{ $t(text.Header) }}</p>
+    <p class="mb-2 text-2xl font-bold">{{ $t(text.subTitle) }}</p>
     <p class="my-5">{{ $t(text.paragraph3) }}</p>
     <p class="my-5">{{ $t(text.paragraph4) }}</p>
     <p class="my-5">{{ $t(text.paragraph5) }}</p>

@@ -10,10 +10,6 @@ const text = $ref({
     ar: 'يمكنك التواصل معنا عبر الوسائل التالية:',
     en: 'You can contact us throw the following medias:',
   },
-  Facebook: {
-    ar: 'فيسبوك',
-    en: 'Facebook',
-  },
 })
 </script>
 
@@ -136,4 +132,5 @@ const text = $ref({
       </a>
     </div>
   </div>
+
 </template>
