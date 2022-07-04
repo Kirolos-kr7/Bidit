@@ -35,8 +35,8 @@ const text = $ref({
     en: 'The platform also has a recommendation system that provides bidders with better suggestions based on their position on bids that might interest him.',
   },
   paragraph7: {
-    ar: 'وأخيرًا عندما يكون محتوى غير مرغوب فيه، يمكن لمقدم العطاء والمزاد تقديم تقرير يمكن للمسؤولين اتخاذ إجراء بناءً عليه.',
-    en: 'Finally when it is spam, the bidder and auctioneer can submit a report on which officials can take action.',
+    ar: 'وأخيرًا عندما يكون محتوى غير مرغوب فيه، يمكن لمقدم العطاء تقديم تقرير يمكن للمسؤولين اتخاذ إجراء بناءً عليه.',
+    en: 'Finally when it is spam, the bidder can submit a report on which officials can take action.',
   },
 })
 </script>
