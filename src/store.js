@@ -6,7 +6,7 @@ export const useStore = defineStore('main', {
       lang: null,
       user: null,
       isLoggedIn: false,
-      BASE_URL: 'https://bidit-app.herokuapp.com',
+      BASE_URL: 'https://bidit.onrender.com',
       // BASE_URL: 'http://localhost:8080',
     }
   },
